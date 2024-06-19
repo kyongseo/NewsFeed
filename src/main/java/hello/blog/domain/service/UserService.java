@@ -1,5 +1,6 @@
 package hello.blog.domain.service;
 
+import hello.blog.domain.domain.Role;
 import hello.blog.domain.domain.RoleName;
 import hello.blog.domain.domain.User;
 import hello.blog.domain.repository.RoleRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -42,7 +44,11 @@ public class UserService {
         user.setEmail(email);
         user.setPassword(password);
         user.setUserNick(usernick);
-        user.setAdmin(false);
+        user.setRegistrationDate(LocalDate.now());
+        Role userRole = roleRepository.findByRoleName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
+        user.addRole(userRole);
+
         return userRepository.save(user);
     }
 
@@ -53,11 +59,10 @@ public class UserService {
     // 사용자 있는지 없는지 검증 로직 --
     public boolean validateUser(String username, String password) {
         Optional<User> userOptional = userRepository.findByUserName(username);
-        return userOptional.isPresent() && userOptional.get().getPassword().equals(password);
-    }
-
-    // email 검증 로직 --
-    public boolean checkEmailExists(String email) {
-        return userRepository.existsByEmail(email);
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            return user.getPassword().equals(password);
+        }
+        return false;
     }
 }

@@ -10,12 +10,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Getter @Setter
 @Entity
 @Table(name = "users")
+@Getter@Setter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
@@ -32,15 +30,11 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private boolean isAdmin;
+    @Column
+    private LocalDate registrationDate;
 
     @Column
     private String profileImage;
-
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "role")
-//    private RoleName rolename;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -48,10 +42,10 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role = new HashSet<>();
 
-//    @PrePersist
-//    protected void onRegist() {
-//        registrationDate = LocalDate.now();
-//    }
+    @PrePersist
+    protected void onRegist() {
+        registrationDate = LocalDate.now();
+    }
 
     public void addRole(Role role) {
         this.role.add(role);
@@ -60,11 +54,4 @@ public class User {
     public void removeRole(Role role) {
         this.role.remove(role);
     }
-
-    private LocalDateTime registrationDate;
-
-//    @PrePersist
-//    protected void onCreate() {
-//        registrationDate = LocalDateTime.now();
-//    }
 }

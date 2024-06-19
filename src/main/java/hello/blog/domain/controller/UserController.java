@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     /**
@@ -48,8 +49,9 @@ public class UserController {
                             HttpServletResponse response) {
         if (userService.validateUser(username, password)) {
             Cookie cookie = new Cookie("username", username);
-            cookie.setMaxAge(60 * 60 * 24); //하루
+            cookie.setMaxAge(60 * 60 * 24); //하루동안만
             response.addCookie(cookie);
+            // 어드민 일때 아닐때 구분해서 리다이렉트 구현
             return "redirect:/" + username;
         }
         return "redirect:/loginform?error";
