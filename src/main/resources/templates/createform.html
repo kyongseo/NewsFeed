@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글 작성</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<form th:action="@{/posts/create}" th:method="post">
+    <div>
+        <label for="title"></label>
+        <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
+    </div>
+    <div>
+        <label for="username"></label>
+        <input type="text" id="username-display" readonly>
+        <input type="hidden" id="username" name="username">
+    </div>
+    <div>
+        <label for="content"></label>
+        <textarea id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+    </div>
+    <button type="submit">출간하기</button>
+</form>
+
+<script>
+    function getCookieValue(name) {
+        let value = `; ${document.cookie}`;
+        let parts = value.split(`; ${name}=`);
+        if (parts.length === 2)
+            return parts.pop().split(';').shift();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const usernameDisplayField = document.getElementById('username-display');
+        const usernameHiddenField = document.getElementById('username');
+        const username = getCookieValue('username');
+
+        if (username) {
+            console.log(`Cookie: ${document.cookie}`);
+            console.log(`Username from cookie: ${username}`);
+
+            usernameDisplayField.value = username;
+            usernameHiddenField.value = username;
+        } else {
+            console.error('유저 이름을 쿠키에서 찾을 수 없습니다.')
+        }
+    });
+</script>
+</body>
+</html>

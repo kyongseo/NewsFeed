@@ -24,7 +24,8 @@ public class HomeController {
 
     // 메인 홈 화면
     @GetMapping("/")
-    public String showHomePage(Model model, @CookieValue(value = "username", defaultValue = "") String username) {
+    public String showHomePage(Model model,
+                               @CookieValue(value = "username", defaultValue = "") String username) {
         if (!username.isEmpty()) {
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {

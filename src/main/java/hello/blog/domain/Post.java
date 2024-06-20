@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "posts")
 @Getter @Setter
@@ -24,14 +26,32 @@ public class Post {
     @JoinColumn(name = "blog_id")
     private Blog blog;
 
-    private Long likes = 0L;
+//    private Long likes = 0L;
+//
+//    private String detailLink;
 
-    private String detailLink;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    public Post(String title, String content, String detailLink) {
+    @Column
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
-        this.detailLink = detailLink;
     }
 }

@@ -1,5 +1,6 @@
 package hello.blog.service;
 
+import hello.blog.domain.Post;
 import hello.blog.domain.Role;
 import hello.blog.domain.RoleName;
 import hello.blog.domain.User;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,13 @@ public class UserService {
             return user.getPassword().equals(password);
         }
         return false;
+    }
+
+    public Set<Post> getUserPosts(String username) {
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getPosts();
+        }
+        throw new RuntimeException("User not found");
     }
 }

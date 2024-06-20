@@ -10,8 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
 @Getter@Setter
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +32,25 @@ public class User {
     @Column
     private LocalDate registrationDate;
 
-    @Column
-    private String profileImage;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Post> posts = new HashSet<>();
+
+//    @PrePersist
+//    protected void onRegist() {
+//        registrationDate = LocalDate.now();
+//    }
+//
+//    public void addRole(Role role) {
+//        this.role.add(role);
+//    }
+//
+//    public void removeRole(Role role) {
+//        this.role.remove(role);
+//    }
 }
