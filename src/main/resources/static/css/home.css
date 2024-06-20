@@ -1,0 +1,67 @@
+.top-nav {
+    padding: 20px 30px 20px 30px;
+}
+
+.top-nav-sub1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+#default {
+    margin: 10px 0px 0px 0px;
+}
+
+.login-link {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: #ff8033;
+    padding: 10px 15px 10px 15px;
+    border-radius: 30px;
+    color: white;
+}
+
+.login-link:visited {
+    color: white;
+}
+
+.main-content {
+    width: 100%;
+    height: 1000px;
+    background-color: #efe7e1;
+}
+
+.hidden {
+    display: none;
+}
+
+#iscookie {
+    margin: 10px 0px 0px 0px;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+.new-post-button {
+    border: solid 1px black;
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+.new-post-button:hover {
+    border: solid 1px #ff8033;
+    color: #ff8033;
+}
+
+#user-link {
+    text-decoration: none;
+    color: black;
+}
+
+.user-name {
+    margin: 0px 0px 0px 20px;
+    cursor: pointer;
+    padding: 0px 0px 5px 0px;
+}

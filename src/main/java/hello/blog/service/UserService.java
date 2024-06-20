@@ -32,7 +32,6 @@ public class UserService {
         return userRepository.findByUserName(username);
     }
 
-
     // 사용자 있는지 없는지 검증 로직 --
     public boolean validateUser(String username, String password) {
         Optional<User> userOptional = userRepository.findByUserName(username);

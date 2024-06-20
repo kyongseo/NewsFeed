@@ -31,8 +31,6 @@ public class PostService {
                 Post post = new Post();
                 post.setTitle(title);
                 post.setContent(content);
-                post.setDetailLink("/posts/" + post.getId());
-                post.setBlog(blog);
                 return postRepository.save(post);
             }
         }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">글 상세 페이지</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div>
+    <h1 th:text="${post.title}">글 제목</h1>
+    <div>
+        <p th:text="${post.user.userName}">작성자</p>
+        <p th:text="${post.getCreatedAt()}">등록일</p>
+    </div>
+    <div>
+        <p th:text="${post.content}">글 내용</p>
+    </div>
+    <a id="blog-link">블로그로</a>
+</div>
+
+<script>
+    function getCookieValue(name) {
+        let value = `; ${document.cookie}`;
+        let parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const blogLink = document.getElementById('blog-link');
+        const username = getCookieValue('username');
+
+        if (username) {
+            blogLink.href = `/@${username}/posts`;
+        } else {
+            console.error('유저 이름을 쿠키에서 찾을 수 없습니다.');
+        }
+    });
+</script>
+</body>
+</html>
