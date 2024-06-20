@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Blog</title>
+</head>
+<body>
+<main>
+    <h1>새 블로그 만들기</h1>
+    <form method="post" th:action="@{/api/blogs/create}" th:object="${blog}">
+        <div>
+            <label for="title">블로그 제목:</label>
+            <input type="text" id="title" name="title" th:field="*{title}">
+        </div>
+        <div>
+            <button type="submit">블로그 생성</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
