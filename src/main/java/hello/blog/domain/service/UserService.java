@@ -21,23 +21,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-//    @PostConstruct
-//    public void init() {
-//        //초기 관리자 계정 생성
-//        if (!userRepository.findByUserName("admin").isPresent()) {
-//            User adminUser = new User();
-//            adminUser.setUserName("admin");
-//            adminUser.setPassword("1111");
-//            adminUser.setEmail("admin@gmail.com");
-//            adminUser.setUserNick("관리자");
-//            adminUser.setRegistrationDate(LocalDate.now());
-//            adminUser.setProfileImage(null);
-//            adminUser.addRole(roleRepository.findByRoleName(RoleName.ROLE_ADMIN)
-//                    .orElseThrow(() -> new RuntimeException("Role not found")));
-//            userRepository.save(adminUser);
-//        }
-//    }
-
     public void registerUser(String username, String email, String password, String usernick) {
         User user = new User();
         user.setUserName(username);
@@ -52,6 +35,7 @@ public class UserService {
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUserName(username);
     }
+
 
     // 사용자 있는지 없는지 검증 로직 --
     public boolean validateUser(String username, String password) {

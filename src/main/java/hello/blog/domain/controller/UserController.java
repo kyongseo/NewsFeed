@@ -1,6 +1,8 @@
 package hello.blog.domain.controller;
 
+import hello.blog.domain.domain.Post;
 import hello.blog.domain.domain.User;
+import hello.blog.domain.service.PostService;
 import hello.blog.domain.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -9,14 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     /**
      * 회원가입
@@ -66,13 +69,16 @@ public class UserController {
         Optional<User> userOptional = userService.findByUserName(username);
         if (userOptional.isPresent()) {
             model.addAttribute("user", userOptional.get());
+            List<Post> userPosts = postService.getPostsByUsername(username);
+            model.addAttribute("blogPosts", userPosts);
             return "mypage";
         }
         return "redirect:/loginform";
     }
     // 관리자 대시보드
     @GetMapping("/admin/dashboard")
-    public String showAdminDashboard() {
-        return "admin/adminpage";
+    public String showAdminDashboard(Model model) {
+        model.addAttribute("username", "admin");
+        return "redirect:/";
     }
 }

@@ -21,23 +21,31 @@ public class BlogController {
     private final BlogService blogService;
 
     @GetMapping("/create")
-    public String create(Model model) {
+    public String createBlogForm(@CookieValue(value = "username", defaultValue = "") String username, Model model) {
+        if (username.isEmpty()) {
+            return "redirect:/loginform";
+        }
         model.addAttribute("blog", new Blog());
         return "blog/create";
     }
 
     @PostMapping("/create")
     public String createBlog(@ModelAttribute BlogDto blogDto,
-                             @AuthenticationPrincipal UserDetails userDetails,
+                             @CookieValue(value = "username", defaultValue = "") String username,
                              Model model,
                              RedirectAttributes redirectAttributes) {
 
-        Optional<Blog> blog = blogService.findBlogByUserLoginId(userDetails.getUsername());
-        if (blog.isEmpty()){
-            Blog createBlog = blogService.createBlog(blogDto, userDetails.getUsername());
-            return "redirect:/blogs/" + createBlog.getId();
+        if (username.isEmpty()) {
+            return "redirect:/loginform";
         }
-        redirectAttributes.addFlashAttribute("blogExistError","블로그가 이미 존재합니다.");
+
+        Optional<Blog> blog = blogService.findBlogByUserLoginId(username);
+        if (blog.isEmpty()) {
+            Blog createBlog = blogService.createBlog(blogDto, username);
+            return "redirect:/api/blogs/" + createBlog.getId();
+        }
+
+        redirectAttributes.addFlashAttribute("blogExistError", "블로그가 이미 존재합니다.");
         return "redirect:/";
     }
 
@@ -49,17 +57,28 @@ public class BlogController {
     }
 
     @GetMapping("/my")
-    public String getMyBlog(@AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
-        Optional<Blog> blog = blogService.findBlogByUserLoginId(userDetails.getUsername());
-        if (blog.isEmpty()){
-            redirectAttributes.addFlashAttribute("error", "먼저 블로그를 생성하세요");
-            return "redirect:/";
+    public String getMyBlog(@CookieValue(value = "username", defaultValue = "") String username, RedirectAttributes redirectAttributes) {
+        if (username.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "먼저 로그인을 하세요.");
+            return "redirect:/loginform";
         }
+
+        Optional<Blog> blog = blogService.findBlogByUserLoginId(username);
+        if (blog.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "먼저 블로그를 생성하세요");
+            return "redirect:/api/blogs/create";
+        }
+
         return "redirect:/api/blogs/" + blog.get().getId();
     }
 
     @GetMapping("/{blogId}/edit")
-    public String editForm(@PathVariable("blogId") Long blogId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    public String editForm(@PathVariable("blogId") Long blogId, Model model,
+                           @CookieValue(value = "username", defaultValue = "") String username) {
+        if (username.isEmpty()) {
+            return "redirect:/loginform";
+        }
+
         Blog blog = blogService.getBlogById(blogId);
         BlogDto blogDto = new BlogDto();
         blogDto.setTitle(blog.getTitle());
@@ -71,8 +90,12 @@ public class BlogController {
     @PostMapping("{blogId}/edit")
     public String edit(@PathVariable("blogId") Long blogId,
                        @ModelAttribute BlogDto blogDto,
-                       @AuthenticationPrincipal UserDetails userDetails) {
-        blogService.updateBlog(blogDto, userDetails.getUsername());
+                       @CookieValue(value = "username", defaultValue = "") String username) {
+        if (username.isEmpty()) {
+            return "redirect:/loginform";
+        }
+
+        blogService.updateBlog(blogDto, username);
         return "redirect:/api/blogs/" + blogId;
     }
 }

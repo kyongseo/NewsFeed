@@ -28,10 +28,6 @@ public class Post {
 
     private Long likes = 0L;
 
-    //private String image;
-//    private LocalDate createdAt;
-//    private LocalDate publishedAt;
-
     private String detailLink;
 
 

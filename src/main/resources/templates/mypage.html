@@ -16,6 +16,23 @@
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${user.registrationDate}">2024-06-19</span></p>
         </div>
+        <div class="container mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <div class="col mb-5" th:each="post : ${blogPosts}">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <h5 class="fw-bolder" th:text="${post.title}">제목</h5>
+                                <p th:text="${post.content}">내용</p>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" th:href="${post.detailLink}">상세보기</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div>
             <p class="mb-5 pb-lg-2" style="color: #393f81;"><a th:href="@{/}" style="color: #393f81;">이동하기</a></p>
         </div>

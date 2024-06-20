@@ -2,26 +2,53 @@ package hello.blog.domain.controller;
 
 import hello.blog.domain.domain.Blog;
 import hello.blog.domain.domain.Post;
+import hello.blog.domain.domain.User;
+import hello.blog.domain.service.PostService;
+import hello.blog.domain.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
+    private final UserService userService;
+    private final PostService postService;
+
     @GetMapping("/")
-    public String showHomePage(Model model) {
-        List<Post> blogPosts = Arrays.asList(
-                new Post("제목1", "내용1", "/detail/1"),
-                new Post("제목2", "내용2", "/detail/2"),
-                new Post("제목3", "내용3", "/detail/3"),
-                new Post("제목4", "내용4", "/detail/4"),
-                new Post("제목5", "내용5", "/detail/5")
-        );
+    public String showHomePage(Model model, @CookieValue(value = "username", defaultValue = "") String username) {
+        if (!username.isEmpty()) {
+            Optional<User> userOptional = userService.findByUserName(username);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("nickname", user.getUserNick());
+                model.addAttribute("username", user.getUserName());
+            }
+        } else {
+            model.addAttribute("username", "");
+        }
+
+        Iterable<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
         return "home";
     }
+
+    @GetMapping("/logout")
+    public String logoutUser (HttpServletResponse response){
+        Cookie cookie = new Cookie("username", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        return "redirect:/";
+    }
 }
+
