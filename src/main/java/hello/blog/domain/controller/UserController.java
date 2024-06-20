@@ -51,7 +51,10 @@ public class UserController {
             Cookie cookie = new Cookie("username", username);
             cookie.setMaxAge(60 * 60 * 24); //하루동안만
             response.addCookie(cookie);
-            // 어드민 일때 아닐때 구분해서 리다이렉트 구현
+            // 어드민 일 때와 아닐 때 구분해서 리다이렉트 구현
+            if ("admin".equals(username) && "admin".equals(password)) {
+                return "redirect:/admin/dashboard";
+            }
             return "redirect:/" + username;
         }
         return "redirect:/loginform?error";
@@ -66,5 +69,10 @@ public class UserController {
             return "mypage";
         }
         return "redirect:/loginform";
+    }
+    // 관리자 대시보드
+    @GetMapping("/admin/dashboard")
+    public String showAdminDashboard() {
+        return "admin/adminpage";
     }
 }

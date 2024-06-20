@@ -38,22 +38,19 @@ public class UserService {
 //        }
 //    }
 
-    public User registerUser(String username, String email, String password, String usernick) {
+    public void registerUser(String username, String email, String password, String usernick) {
         User user = new User();
         user.setUserName(username);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(password); // 실제로는 암호화하여 저장해야 함
         user.setUserNick(usernick);
-        user.setRegistrationDate(LocalDate.now());
-        Role userRole = roleRepository.findByRoleName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        user.addRole(userRole);
-
-        return userRepository.save(user);
+        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER);
+        userRole.ifPresent(user.getRole()::add);
+        userRepository.save(user);
     }
 
-    public Optional<User> findByUserName(String userName) {
-        return userRepository.findByUserName(userName);
+    public Optional<User> findByUserName(String username) {
+        return userRepository.findByUserName(username);
     }
 
     // 사용자 있는지 없는지 검증 로직 --

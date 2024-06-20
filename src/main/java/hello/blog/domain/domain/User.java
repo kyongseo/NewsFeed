@@ -42,16 +42,16 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role = new HashSet<>();
 
-    @PrePersist
-    protected void onRegist() {
-        registrationDate = LocalDate.now();
-    }
-
-    public void addRole(Role role) {
-        this.role.add(role);
-    }
-
-    public void removeRole(Role role) {
-        this.role.remove(role);
-    }
+//    @PrePersist
+//    protected void onRegist() {
+//        registrationDate = LocalDate.now();
+//    }
+//
+//    public void addRole(Role role) {
+//        this.role.add(role);
+//    }
+//
+//    public void removeRole(Role role) {
+//        this.role.remove(role);
+//    }
 }
