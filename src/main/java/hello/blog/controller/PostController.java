@@ -1,8 +1,12 @@
 package hello.blog.controller;
 
 import hello.blog.domain.Post;
+import hello.blog.domain.User;
 import hello.blog.repository.PostRepository;
 import hello.blog.service.PostService;
+import hello.blog.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final UserService userService;
 
     @GetMapping("/{postId}")
     public String getPostById(@PathVariable("postId") Long postId, Model model) {
@@ -31,16 +36,83 @@ public class PostController {
         return "/post/createPost";
     }
 
+//    @PostMapping("/create")
+//    public String processForm(@RequestParam("title") String title,
+//                              @RequestParam("content") String content,
+//                              HttpServletRequest request) {
+//
+//        // HttpServletRequest를 통해 쿠키 배열을 가져온다
+//        Cookie[] cookies = request.getCookies();
+//        String username = null;
+//
+//        if (cookies != null) {
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getName().equals("userName")) {
+//                    username = cookie.getValue();
+//                    break;
+//                }
+//            }
+//        }
+//
+//        if (username == null || username.isEmpty()) {
+//            // 쿠키에 사용자 이름이 없으면 로그인 페이지로 리다이렉트
+//            return "redirect:/login";
+//        }
+//
+//        // 사용자 이름으로 사용자 정보를 조회
+//        Optional<User> userOptional = userService.findByUserName(username);
+//        if (!userOptional.isPresent()) {
+//            throw new RuntimeException("User not found for username: " + username);
+//        }
+//        User user = userOptional.get(); // user 변수로 사용자 정보를 저장
+//
+//        // 게시물 등록
+//        postService.createPost(title, content, username);
+//
+//        return "redirect:/";
+//    }
+
+
+//    @PostMapping("/create")
+//    public String createPost(@RequestParam("title") String title,
+//                             @RequestParam("content") String content,
+//                             @CookieValue(value = "userName", defaultValue = "") String userName) {
+//        if (userName.isEmpty()) {
+//            // username이 쿠키에 없으면 로그인 페이지로 리다이렉트
+//            return "redirect:/login";
+//        }
+//        // 게시물 등록
+//        postService.createPost(title, content, userName);
+//        return "redirect:/";
+//    }
+
     @PostMapping("/create")
-    public String createPost(@RequestParam("title") String title,
-                             @RequestParam("content") String content,
-                             @CookieValue(value = "userName", defaultValue = "") String userName) {
-        if (userName.isEmpty()) {
-            // username이 쿠키에 없으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
+    public String processForm(@RequestParam("title") String title,
+                              @RequestParam("content") String content,
+                              HttpServletRequest request) {
+
+        // HttpServletRequest를 통해 쿠키 배열을 가져온다
+        Cookie[] cookies = request.getCookies();
+        //추가함
+        //
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("userName")) {
+                    String userName = cookie.getValue();
+
+                    // 사용자 이름(userName)을 이용하여 게시물 등록 등의 작업을 수행
+                    System.out.println("User name from cookie: " + userName);
+
+                    // 여기서 게시물 등록 로직을 호출하도록 구현
+                    postService.createPost(title, content, userName);
+                    break;
+                }
+            }
+        } else {
+            // 쿠키가 존재하지 않는 경우 처리할 코드
+            System.out.println("No cookies found");
         }
-        // 게시물 등록
-        postService.createPost(title, content, userName);
         return "redirect:/";
     }
 

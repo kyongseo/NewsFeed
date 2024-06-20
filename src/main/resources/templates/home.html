@@ -43,6 +43,28 @@
     </div>
   </div>
 </header>
+
+<!-- Section-->
+<section class="py-5">
+  <div class="container" th:if="${username != ''}">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto" th:each="post : ${blogPosts}">
+        <div class="post-preview">
+          <a th:href="@{'/posts/' + ${post.id}}">
+            <h2 class="post-title" th:text="${post.title}">게시물 제목</h2>
+            <h3 class="post-subtitle" th:text="${post.content}">게시물 내용</h3>
+          </a>
+          <p class="post-meta">작성자:
+            <span th:text="${post.user}">작성자 이름</span>
+            | 작성일:
+            <span th:text="${#dates.format(post.createdDate, 'yyyy-MM-dd HH:mm')}">작성일자</span>
+          </p>
+        </div>
+        <hr />
+      </div>
+    </div>
+  </div>
+</section>
 <!-- Section-->
 <section class="py-5">
   <div class="text-center mt-4" th:if="${username != ''}">
