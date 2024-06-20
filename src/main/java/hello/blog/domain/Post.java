@@ -1,11 +1,9 @@
-package hello.blog.domain.domain;
+package hello.blog.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "posts")

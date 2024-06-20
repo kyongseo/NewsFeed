@@ -1,8 +1,8 @@
-package hello.blog.domain.controller;
+package hello.blog.controller;
 
-import hello.blog.domain.domain.Post;
-import hello.blog.domain.repository.PostRepository;
-import hello.blog.domain.service.PostService;
+import hello.blog.domain.Post;
+import hello.blog.repository.PostRepository;
+import hello.blog.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

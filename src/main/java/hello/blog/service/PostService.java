@@ -1,11 +1,11 @@
-package hello.blog.domain.service;
+package hello.blog.service;
 
-import hello.blog.domain.domain.Blog;
-import hello.blog.domain.domain.Post;
-import hello.blog.domain.domain.User;
-import hello.blog.domain.repository.BlogRepository;
-import hello.blog.domain.repository.PostRepository;
-import hello.blog.domain.repository.UserRepository;
+import hello.blog.domain.Blog;
+import hello.blog.domain.Post;
+import hello.blog.domain.User;
+import hello.blog.repository.BlogRepository;
+import hello.blog.repository.PostRepository;
+import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

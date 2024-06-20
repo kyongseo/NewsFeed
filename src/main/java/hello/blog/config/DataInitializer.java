@@ -1,10 +1,10 @@
-package hello.blog.domain.config;
+package hello.blog.config;
 
-import hello.blog.domain.domain.Role;
-import hello.blog.domain.domain.RoleName;
-import hello.blog.domain.domain.User;
-import hello.blog.domain.repository.RoleRepository;
-import hello.blog.domain.repository.UserRepository;
+import hello.blog.domain.Role;
+import hello.blog.domain.RoleName;
+import hello.blog.domain.User;
+import hello.blog.repository.RoleRepository;
+import hello.blog.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,9 +1,9 @@
-package hello.blog.domain.controller;
+package hello.blog.controller;
 
-import hello.blog.domain.domain.Post;
-import hello.blog.domain.domain.User;
-import hello.blog.domain.service.PostService;
-import hello.blog.domain.service.UserService;
+import hello.blog.domain.Post;
+import hello.blog.domain.User;
+import hello.blog.service.PostService;
+import hello.blog.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

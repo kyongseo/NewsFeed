@@ -1,17 +1,13 @@
-package hello.blog.domain.service;
+package hello.blog.service;
 
-import hello.blog.domain.domain.Role;
-import hello.blog.domain.domain.RoleName;
-import hello.blog.domain.domain.User;
-import hello.blog.domain.repository.RoleRepository;
-import hello.blog.domain.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
+import hello.blog.domain.Role;
+import hello.blog.domain.RoleName;
+import hello.blog.domain.User;
+import hello.blog.repository.RoleRepository;
+import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service

@@ -1,4 +1,4 @@
-package hello.blog.domain.domain;
+package hello.blog.domain;
 
 
 import jakarta.persistence.*;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
