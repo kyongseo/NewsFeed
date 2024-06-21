@@ -20,8 +20,12 @@
                             <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">회원가입</p>
 
-                                <!--- 아이디 입력 -->
+
                                 <form th:action="@{/userregform}" method="post">
+                                    <div th:if="${msg}" class="alert alert-success" role="alert">
+                                        <span th:text="${msg}"></span>
+                                    </div>
+                                    <!--- 아이디 입력 -->
                                     <div class="form-group mb-4">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -69,10 +73,13 @@
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                         <button type="submit" class="btn btn-primary btn-lg">가입하기</button>
                                     </div>
+                                    <div>
+                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">로그인 없이 이용하고 싶으신가요? <a th:href="@{/}" style="color: #393f81;">이동하기</a></p>
+                                    </div>
                                 </form>
                             </div>
                             <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                <img src="/files/join.png" class="img-fluid" alt="Sample image">
+                                <img src="/files/img.png" class="img-fluid" alt="Sample image">
                             </div>
                         </div>
                     </div>

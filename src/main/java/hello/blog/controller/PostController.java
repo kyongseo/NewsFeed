@@ -30,43 +30,6 @@ public class PostController {
         return "/post/createPost";
     }
 
-//    @PostMapping("/create")
-//    public String processForm(@RequestParam("title") String title,
-//                              @RequestParam("content") String content,
-//                              HttpServletRequest request) {
-//
-//        // HttpServletRequest를 통해 쿠키 배열을 가져온다
-//        Cookie[] cookies = request.getCookies();
-//        String username = null;
-//
-//        if (cookies != null) {
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getName().equals("userName")) {
-//                    username = cookie.getValue();
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (username == null || username.isEmpty()) {
-//            // 쿠키에 사용자 이름이 없으면 로그인 페이지로 리다이렉트
-//            return "redirect:/login";
-//        }
-//
-//        // 사용자 이름으로 사용자 정보를 조회
-//        Optional<User> userOptional = userService.findByUserName(username);
-//        if (!userOptional.isPresent()) {
-//            throw new RuntimeException("User not found for username: " + username);
-//        }
-//        User user = userOptional.get(); // user 변수로 사용자 정보를 저장
-//
-//        // 게시물 등록
-//        postService.createPost(title, content, username);
-//
-//        return "redirect:/";
-//    }
-
-
     @PostMapping("/create")
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
@@ -152,5 +115,4 @@ public class PostController {
         postService.deletePostById(postId);
         return "redirect:/posts";
     }
-
 }

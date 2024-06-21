@@ -24,7 +24,7 @@ public class UserService {
         User user = new User();
         user.setUserName(username);
         user.setEmail(email);
-        user.setPassword(password); // 실제로는 암호화하여 저장해야 함
+        user.setPassword(password);
         user.setUserNick(usernick);
         Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER);
         userRole.ifPresent(user.getRole()::add);
@@ -45,7 +45,7 @@ public class UserService {
         return false;
     }
 
-    // 글등록
+    // 글등록할 때 사용자 이름을 기반으로 조회하기
     public Set<Post> getUserPosts(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -53,4 +53,6 @@ public class UserService {
         }
         throw new RuntimeException("User not found");
     }
+
+
 }

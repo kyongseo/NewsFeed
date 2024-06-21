@@ -33,8 +33,10 @@ public class UserController {
     public String registerUser(@RequestParam("username") String username,
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
-                               @RequestParam("usernick") String usernick) {
+                               @RequestParam("usernick") String usernick,
+                               Model model) {
         userService.registerUser(username, email, password, usernick);
+        model.addAttribute("msg","회원가입에 성공했습니다.");
         return "redirect:/loginform";
     }
 
@@ -76,7 +78,7 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    // 관리자 대시보드
+    // 관리자 대시보드 -- 시큐리티 배으고 나중에 구현..
     @GetMapping("/admin/dashboard")
     public String showAdminDashboard(Model model) {
         model.addAttribute("username", "admin");
