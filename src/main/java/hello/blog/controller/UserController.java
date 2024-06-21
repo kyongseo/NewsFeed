@@ -69,7 +69,9 @@ public class UserController {
         Optional<User> userOptional = userService.findByUserName(username);
         if (userOptional.isPresent()) {
             model.addAttribute("user", userOptional.get());
-            return "mypage";
+            List<Post> allPosts = postService.getAllPosts();
+            model.addAttribute("posts", allPosts);
+            return "/user/mypage";
         }
         return "redirect:/loginform";
     }
