@@ -127,6 +127,7 @@ public class PostController {
                            @RequestParam("title") String title,
                            @RequestParam("content") String content) {
         postService.updatePost(postId, title, content);
+
         return "redirect:/posts/" + postId;
     }
 
@@ -145,7 +146,7 @@ public class PostController {
     /**
      * 게시글 삭제
      */
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/{postId}/delete")
     public String deletePost(@PathVariable("postId") Long postId) {
 
         postService.deletePostById(postId);
