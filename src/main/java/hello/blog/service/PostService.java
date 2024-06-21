@@ -61,7 +61,6 @@ public class PostService {
             Post post = postOptional.get();
             post.setTitle(title);
             post.setContent(content);
-
             return postRepository.save(post);
         }
         throw new RuntimeException("Post not found");

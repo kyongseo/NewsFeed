@@ -2,7 +2,6 @@ package hello.blog.service;
 
 import hello.blog.domain.Blog;
 import hello.blog.domain.User;
-import hello.blog.exception.BlogNotFoundException;
 
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

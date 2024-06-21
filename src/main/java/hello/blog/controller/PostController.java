@@ -81,6 +81,7 @@ public class PostController {
     public String showEditPost(@PathVariable("postId") Long postId, Model model) {
 
         Optional<Post> post = postService.getPostById(postId);
+
         model.addAttribute("post", post);
         return "/post/editPost";
     }
@@ -102,6 +103,7 @@ public class PostController {
 
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+
         model.addAttribute("post", post);
         return "/post/viewPost";
     }

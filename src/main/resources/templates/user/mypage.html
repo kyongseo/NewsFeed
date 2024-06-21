@@ -14,7 +14,7 @@
             <h5 class="card-title">유저 정보</h5>
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
-            <p class="card-text"><strong>가입일 :</strong> <span th:text="${user.registrationDate}">2024-06-19</span></p>
+            <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd HH:mm')}">2024-06-19</span></p>
         </div>
     </div>
     <div class="mt-5">
