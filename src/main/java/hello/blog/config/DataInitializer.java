@@ -34,7 +34,7 @@ public class DataInitializer {
                 admin.setUserName("admin");
                 admin.setUserNick("Admin");
                 admin.setEmail("admin@example.com");
-                admin.setPassword("admin");  // 비밀번호는 실제로는 암호화하여 저장해야 함
+                admin.setPassword("admin");
                 admin.getRole().add(adminRole);
                 userRepository.save(admin);
             }

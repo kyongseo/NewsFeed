@@ -63,21 +63,6 @@ public class UserController {
         return "redirect:/loginform?error";
     }
 
-    @GetMapping("/@{username}/posts")
-    public String getUserPosts(@PathVariable("username") String username, Model model) {
-        Set<Post> userPosts = userService.getUserPosts(username);
-        model.addAttribute("username", username);
-        model.addAttribute("posts", userPosts);
-        return "blog";
-    }
-
-    // 관리자 대시보드
-    @GetMapping("/admin/dashboard")
-    public String showAdminDashboard(Model model) {
-        model.addAttribute("username", "admin");
-        return "redirect:/";
-    }
-
     // 로그인 성공 시 username의 마이페이지 보여주기
     @GetMapping("/{username}")
     public String showMyPage(@PathVariable("username") String username, Model model) {
@@ -87,5 +72,20 @@ public class UserController {
             return "mypage";
         }
         return "redirect:/loginform";
+    }
+
+    // 관리자 대시보드
+    @GetMapping("/admin/dashboard")
+    public String showAdminDashboard(Model model) {
+        model.addAttribute("username", "admin");
+        return "redirect:/";
+    }
+
+    @GetMapping("/@{username}/posts")
+    public String getUserPosts(@PathVariable("username") String username, Model model) {
+        Set<Post> userPosts = userService.getUserPosts(username);
+        model.addAttribute("username", username);
+        model.addAttribute("posts", userPosts);
+        return "blog";
     }
 }

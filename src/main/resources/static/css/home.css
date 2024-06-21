@@ -1,67 +1,92 @@
-.top-nav {
-    padding: 20px 30px 20px 30px;
+/* styles.css */
+
+/* 기본 바디 스타일 */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
 }
 
-.top-nav-sub1 {
-    display: flex;
-    justify-content: space-between;
+/* 네비게이션 바 스타일 */
+.navbar {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-#default {
-    margin: 10px 0px 0px 0px;
-}
-
-.login-link {
-    font-size: 1.2em;
+.navbar-brand {
     font-weight: bold;
-    text-decoration: none;
-    background-color: #ff8033;
-    padding: 10px 15px 10px 15px;
-    border-radius: 30px;
-    color: white;
+    color: #007bff !important;
 }
 
-.login-link:visited {
-    color: white;
+/* 버튼 스타일 */
+.btn-outline-dark {
+    margin-left: 10px;
 }
 
-.main-content {
-    width: 100%;
-    height: 1000px;
-    background-color: #efe7e1;
+.btn-outline-dark:hover {
+    background-color: #007bff;
+    color: #fff;
 }
 
-.hidden {
-    display: none;
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
 }
 
-#iscookie {
-    margin: 10px 0px 0px 0px;
-    font-size: 1.2em;
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* 헤더 스타일 */
+header {
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    color: #fff;
+}
+
+header .display-4 {
     font-weight: 700;
 }
 
-.new-post-button {
-    border: solid 1px black;
-    border-radius: 20px;
-    padding: 5px 10px 5px 10px;
-    cursor: pointer;
+header .lead {
+    font-weight: 300;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+table thead {
+    background-color: #007bff;
+    color: #fff;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* 링크 스타일 */
+a {
     text-decoration: none;
-    color: black;
+    color: #007bff;
 }
 
-.new-post-button:hover {
-    border: solid 1px #ff8033;
-    color: #ff8033;
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
 
-#user-link {
-    text-decoration: none;
-    color: black;
-}
-
-.user-name {
-    margin: 0px 0px 0px 20px;
-    cursor: pointer;
-    padding: 0px 0px 5px 0px;
+/* 글 작성 버튼 스타일 */
+.text-center.mt-4 a {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2em;
 }

@@ -20,6 +20,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    // 글 작성
     @Transactional
     public Post createPost(String username, String title, String content) {
         // 사용자 이름으로 사용자 조회
@@ -39,6 +40,7 @@ public class PostService {
         throw new RuntimeException("User not found");
     }
 
+    // 글 전체 조회
     @Transactional(readOnly = true)
     public List<Post> getAllPosts() { //게시물 전체보기
         List<Post> posts = postRepository.findAll();
@@ -49,8 +51,9 @@ public class PostService {
         return postRepository.findById(postId);
     }
 
+    // 게시글 수정
     public Post updatePost(Long postId, String title, String content) {
-        //게시물 수정
+
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
@@ -62,12 +65,11 @@ public class PostService {
         throw new RuntimeException("Post not found");
     }
 
-    public void deletePostById(Long postId) { //게시물 삭제
+    //게시물 삭제
+    public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
     }
 }
-
-
 
 //@Service
 //@RequiredArgsConstructor

@@ -21,15 +21,9 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
 
-    @GetMapping("/{postId}")
-    public String getPostById(@PathVariable("postId") Long postId, Model model) {
-        //게시물 상세 페이지
-        Post post = postService.getPostById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-        model.addAttribute("post", post);
-        return "post";
-    }
-
+    /**
+     * 게시글 등록
+     */
     @GetMapping("/create")
     public String showCreatePost(Model model) {
         model.addAttribute("post", new Post());
@@ -117,12 +111,15 @@ public class PostController {
 //        return "redirect:/";
 //    }
 
+    /**
+     * 게시글 수정
+     */
     @GetMapping("/{postId}/edit")
     public String showEditPost(@PathVariable("postId") Long postId, Model model) {
-        //게시글 수정 폼
+
         Optional<Post> post = postService.getPostById(postId);
         model.addAttribute("post", post);
-        return "editform";
+        return "/post/editPost";
     }
 
     @PostMapping("/{postId}/edit")
@@ -133,9 +130,24 @@ public class PostController {
         return "redirect:/posts/" + postId;
     }
 
+    /**
+     * 상세 페이지
+     */
+    @GetMapping("/{postId}")
+    public String getPostById(@PathVariable("postId") Long postId, Model model) {
+
+        Post post = postService.getPostById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        model.addAttribute("post", post);
+        return "/post/viewPost";
+    }
+
+    /**
+     * 게시글 삭제
+     */
     @DeleteMapping("/{postId}")
     public String deletePost(@PathVariable("postId") Long postId) {
-        //게시물 삭제
+
         postService.deletePostById(postId);
         return "redirect:/posts";
     }

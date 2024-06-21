@@ -19,6 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    // 회원가입
     public void registerUser(String username, String email, String password, String usernick) {
         User user = new User();
         user.setUserName(username);
@@ -44,6 +45,7 @@ public class UserService {
         return false;
     }
 
+    // 글등록
     public Set<Post> getUserPosts(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
