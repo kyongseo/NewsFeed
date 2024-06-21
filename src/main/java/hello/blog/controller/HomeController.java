@@ -36,7 +36,6 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
-
         List<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
         return "home";

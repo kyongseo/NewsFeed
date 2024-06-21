@@ -22,9 +22,9 @@ public class Post {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "blog_id")
-    private Blog blog;
+//    @ManyToOne
+//    @JoinColumn(name = "blog_id")
+//    private Blog blog;
 
 //    private Long likes = 0L;
 //

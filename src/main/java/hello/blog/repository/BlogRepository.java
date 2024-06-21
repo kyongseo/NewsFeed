@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface BlogRepository extends JpaRepository<Blog, Long> {
-    Optional<Blog> findBlogByUser(User user);
-}
+//@Repository
+//public interface BlogRepository extends JpaRepository<Blog, Long> {
+////    Optional<Blog> findBlogByUser(User user);
+//}

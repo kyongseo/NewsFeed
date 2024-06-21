@@ -3,7 +3,6 @@ package hello.blog.service;
 import hello.blog.domain.Blog;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
-import hello.blog.repository.BlogRepository;
 import hello.blog.repository.PostRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
