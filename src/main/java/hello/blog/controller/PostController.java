@@ -76,11 +76,13 @@ public class PostController {
 
     /**
      * 게시글 수정
+
      */
     @GetMapping("/{postId}/edit")
-    public String showEditPost(@PathVariable("postId") Long postId, Model model) {
-
-        Optional<Post> post = postService.getPostById(postId);
+    public String showEditPost(@PathVariable("postId") Long postId,
+                               Model model) {
+        Post post = postService.getPostById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         model.addAttribute("post", post);
         return "/post/editPost";
@@ -91,8 +93,7 @@ public class PostController {
                            @RequestParam("title") String title,
                            @RequestParam("content") String content) {
         postService.updatePost(postId, title, content);
-
-        return "redirect:/posts/" + postId;
+        return "redirect:/posts/" + postId; // 수정된 게시글로 리디렉션
     }
 
     /**
@@ -102,7 +103,7 @@ public class PostController {
     public String getPostById(@PathVariable("postId") Long postId, Model model) {
 
         Post post = postService.getPostById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         model.addAttribute("post", post);
         return "/post/viewPost";
