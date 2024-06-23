@@ -11,6 +11,11 @@
     <div class="card">
         <div class="card-header text-center">
             <h1 th:text="${post.title}">글 제목</h1>
+            <div class="action-links">
+                <a th:href="@{/}">이동</a>
+                <a th:href="@{/posts/{postId}/edit(postId=${post.id})}">수정</a>
+                <a th:href="@{/{postId}/delete}">삭제</a>
+            </div>
         </div>
         <div class="card-body">
             <div class="mb-3 text-muted">
@@ -20,10 +25,6 @@
             <div class="content">
                 <p th:text="${post.content}">글 내용</p>
             </div>
-        </div>
-        <div class="card-footer text-center">
-            <a th:href="@{/}" id="blog-link" class="btn btn-primary">이동하기</a>
-            <a th:href="@{/posts/{postId}/edit(postId=${post.id})}" class="btn btn-primary">수정하기</a>
         </div>
     </div>
 </div>
