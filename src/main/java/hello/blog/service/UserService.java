@@ -51,7 +51,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             return userOptional.get().getPosts();
         }
-        throw new RuntimeException("User not found");
+        throw new RuntimeException("작성 권한이 없습니다.");
     }
 
 

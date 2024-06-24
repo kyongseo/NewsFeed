@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 사용자 도메인
+ */
 @Entity
 @Getter@Setter
 @Table(name = "users")
