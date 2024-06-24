@@ -90,3 +90,7 @@ a:hover {
 .card-body {
     min-height: 200px; /* 카드의 최소 높이 설정 */
 }
+
+.emphasized{
+    font-weight: bold;
+}

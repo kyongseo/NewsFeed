@@ -12,11 +12,11 @@
     <form th:action="@{/posts/create}" method="post">
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required="required">
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+            <textarea class="form-control" id="content" name="content" rows="5" placeholder="당신의 이야기를 적어보세요..." required="required"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">작성</button>
     </form>

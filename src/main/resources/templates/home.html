@@ -58,6 +58,7 @@
         </div>
         <div class="card-footer bg-light">
           <small class="text-muted" th:text="${#temporals.format(board.createdAt, 'yyyy/MM/dd')}">게시일</small>
+          <small class="emphasized"> by <span th:text= "${username}"></span> </small>
         </div>
       </div>
     </div>
