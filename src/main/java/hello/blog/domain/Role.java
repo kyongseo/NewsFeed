@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 역할
+ * 사용자와 관리자
+ */
 @Entity
 @Table(name = "roles")
 @Getter@Setter
