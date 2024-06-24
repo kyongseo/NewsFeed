@@ -38,13 +38,19 @@ body {
     color: #007bff; /* 링크 색상을 파란색으로 변경 */
 }
 
-.action-links a {
-    color: #03dac5;
+.action-links a,
+.action-links button {
+    color: #03dac5; /* 링크와 버튼 색상 */
     text-decoration: none;
+    background: none;
+    border: none;
     margin-left: 10px;
+    padding: 0;
+    cursor: pointer;
 }
 
-.action-links a:hover {
+.action-links a:hover,
+.action-links button:hover {
     text-decoration: underline;
 }
 

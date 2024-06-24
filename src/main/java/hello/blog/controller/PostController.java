@@ -35,7 +35,7 @@ public class PostController {
                              @RequestParam("content") String content,
                              @CookieValue(value = "username", defaultValue = "") String username) {
         if (!username.isEmpty()) {
-            // 사용자 이름(userName)을 이용하여 게시물 등록 등의 작업을 수행
+            // 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
             postService.createPost(username, title, content);
         } else {
             // 사용자 정보가 없는 경우 처리할 코드
@@ -112,10 +112,18 @@ public class PostController {
     /**
      * 게시글 삭제
      */
-    @DeleteMapping("/{postId}/delete")
-    public String deletePost(@PathVariable("postId") Long postId) {
+//    @DeleteMapping("/{postId}/delete")
+//    public String deletePost(@PathVariable("postId") Long postId) {
+//
+//        postService.deletePostById(postId);
+//        return "redirect:/";
+//    }
 
-        postService.deletePostById(postId);
-        return "redirect:/posts";
+    @PostMapping("/{postId}/delete")
+    public String deletePost(@PathVariable("postId") Long postId, @RequestParam("_method") String method) {
+        if ("delete".equalsIgnoreCase(method)) {
+            postService.deletePostById(postId);
+        }
+        return "redirect:/";
     }
 }

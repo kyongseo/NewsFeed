@@ -39,7 +39,7 @@ public class PostService {
 
             return postRepository.save(post); // 저장 및 반환
         }
-        throw new RuntimeException("User not found");
+        throw new RuntimeException("작성 권한이 없습니다.");
     }
 
     // 글 전체 조회
@@ -64,7 +64,7 @@ public class PostService {
 
             return postRepository.save(post);
         }
-        throw new RuntimeException("Post not found");
+        throw new RuntimeException("게시글을 찾을 수 없습니다.");
     }
 
     //게시물 삭제

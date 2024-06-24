@@ -14,7 +14,10 @@
             <div class="action-links">
                 <a th:href="@{/}">이동</a>
                 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}">수정</a>
-                <a th:href="@{/{postId}/delete}">삭제</a>
+                <form th:action="@{/posts/{postId}/delete(postId=${post.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit">삭제</button>
+                </form>
             </div>
         </div>
         <div class="card-body">
