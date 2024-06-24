@@ -22,13 +22,13 @@
       </ul>
       <!-- 사용자 영역 -->
       <div th:if="${username != ''}" class="d-flex">
+        <a class="btn btn-primary" th:href="@{/posts/create}">새 글 작성</a>
         <a class="btn btn-outline-dark me-2" th:href="@{'/' + ${username}}" th:text="${nickname} + '님'"></a>
         <a class="btn btn-outline-dark" th:href="@{/logout}">로그아웃</a>
       </div>
       <!-- 비로그인 유저 -->
       <div th:if="${username == ''}" class="d-flex">
         <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
-        <a class="btn btn-outline-dark" th:href="@{/userregform}">회원가입</a>
       </div>
       <!-- 관리자 영역 -->
       <div th:if="${username == 'admin'}" class="d-flex">
@@ -37,16 +37,17 @@
     </div>
   </div>
 </nav>
-<header class="bg-dark py-5">
-  <div class="container text-center text-white">
-    <h1 class="display-4 fw-bolder">블로그 홈 화면</h1>
-    <p class="lead fw-normal text-white-50 mb-0">환영합니다!</p>
-  </div>
-</header>
-<div class="text-center mt-4" th:if="${username != ''}">
-  <a class="btn btn-primary" th:href="@{/posts/create}">글 작성</a>
-</div>
+
 <main class="container my-5">
+    <div class="container">
+      <div class="d-flex">
+        <div class="col-md-4 mb-3">
+          <a class="btn btn-outline-dark" th:href="@{/}">트렌딩</a>
+          <a class="btn btn-outline-dark" th:href="@{/}">최신</a>
+          <a class="btn btn-outline-dark" th:href="@{/}">피드</a>
+        </div>
+      </div>
+    </div>
   <div th:if="${!blogPosts.empty}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
     <div th:each="board : ${blogPosts}" class="col">
       <div class="card h-100 shadow-sm">
