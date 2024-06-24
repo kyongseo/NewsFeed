@@ -4,8 +4,10 @@ package hello.blog.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +34,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column
-    private LocalDate registrationDate;
+//    @Column
+//    private LocalDate registrationDate;
+
+    @Column(name = "registration_date", updatable = false)
+    @CreatedDate
+    private LocalDateTime registrationDate = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -44,16 +50,6 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts = new HashSet<>();
 
-//    @PrePersist
-//    protected void onRegist() {
-//        registrationDate = LocalDate.now();
-//    }
-//
-//    public void addRole(Role role) {
-//        this.role.add(role);
-//    }
-//
-//    public void removeRole(Role role) {
-//        this.role.remove(role);
-//    }
+    private String filename; // 파일 이름
+    private String filepath; // 파일 경로
 }
