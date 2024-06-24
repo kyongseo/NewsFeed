@@ -34,9 +34,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-//    @Column
-//    private LocalDate registrationDate;
-
     @Column(name = "registration_date", updatable = false)
     @CreatedDate
     private LocalDateTime registrationDate = LocalDateTime.now();

@@ -32,6 +32,7 @@ public class HomeController {
                 User user = userOptional.get();
                 model.addAttribute("nickname", user.getUserNick());
                 model.addAttribute("username", user.getUserName());
+                model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
             }
         } else {
             model.addAttribute("username", "");

@@ -14,3 +14,6 @@ spring:
 
 server:
   port: 80
+
+file:
+  upload-dir: src/main/resources/static/files/

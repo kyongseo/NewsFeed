@@ -23,3 +23,12 @@ body {
     color: #ffffff;
     background-color: #343a40;
 }
+
+.profile-image img {
+    width: 100px; /* 프로필 사진의 너비 */
+    height: 100px; /* 프로필 사진의 높이 */
+    border-radius: 50%; /* 원형 모양으로 만들기 */
+    object-fit: cover; /* 이미지를 요소에 맞게 자동으로 크롭 */
+    float: left; /* 좌측 정렬 */
+    margin-right: 20px; /* 사용자 이름과의 간격 조정 */
+}

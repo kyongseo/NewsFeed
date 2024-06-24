@@ -1,18 +1,13 @@
 package hello.blog.controller;
 
 import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.PostRepository;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts")

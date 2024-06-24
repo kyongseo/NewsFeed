@@ -12,6 +12,9 @@
     <h3 class="my-4">안녕하세요, <span th:text="${user.userNick}">User</span> 님</h3>
     <div class="card">
         <div class="card-body">
+            <div class="profile-image">
+                <img th:src="@{${profileImage}}" alt="Profile Image" />
+            </div>
             <!--<h5 class="card-title">유저 정보</h5>-->
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>

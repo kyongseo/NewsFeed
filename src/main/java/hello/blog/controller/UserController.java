@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.Set;
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +37,15 @@ public class UserController {
                                @RequestParam("email") String email,
                                @RequestParam("password") String password,
                                @RequestParam("usernick") String usernick,
+                               @RequestParam("file") MultipartFile file,
                                Model model) {
-        userService.registerUser(username, email, password, usernick);
-        model.addAttribute("msg","회원가입에 성공했습니다.");
+        try {
+            userService.registerUser(username, email, password, usernick, file);
+            model.addAttribute("msg","회원가입에 성공했습니다.");
+        } catch (IOException e) {
+            model.addAttribute("msg","회원가입에 실패했습니다.");
+            e.printStackTrace();
+        }
         return "redirect:/loginform";
     }
 
@@ -73,6 +82,7 @@ public class UserController {
             model.addAttribute("user", userOptional.get());
             List<Post> allPosts = postService.getAllPosts();
             model.addAttribute("posts", allPosts);
+            model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
             return "/user/mypage";
         }
         return "redirect:/loginform";
