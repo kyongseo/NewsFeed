@@ -31,8 +31,6 @@ public class Post {
 //    private Blog blog;
 
 //    private Long likes = 0L;
-//
-//    private String detailLink;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

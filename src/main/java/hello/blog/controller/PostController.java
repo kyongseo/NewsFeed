@@ -34,6 +34,8 @@ public class PostController {
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
                              @CookieValue(value = "username", defaultValue = "") String username) {
+//        System.out.println("Title: " + title);
+//        System.out.println("Content: " + content);
         if (!username.isEmpty()) {
             // 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
             postService.createPost(username, title, content);
