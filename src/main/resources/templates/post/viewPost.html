@@ -22,8 +22,11 @@
         </div>
         <div class="card-body">
             <div class="mb-3 text-muted">
-                <p class="mb-1"><strong>작성자:</strong> <span th:text="${post.user.userName}">작성자</span></p>
-                <p class="mb-1"><strong>등록일:</strong> <span th:text="${#temporals.format(post.getCreatedAt, 'yyyy/MM/dd HH:mm')}">등록일</span></p>
+                <p class="mb-1">
+                    <strong><span th:text="${post.user.userName}">작성자</span></strong>
+                    <span th:text="${#temporals.format(post.getCreatedAt, 'yyyy/MM/dd HH:mm')}">등록일</span>
+                </p>
+
             </div>
             <div class="content">
                 <p th:text="${post.content}">글 내용</p>

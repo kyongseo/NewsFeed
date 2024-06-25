@@ -1,34 +1,68 @@
 body {
-    background-color: #f8f9fa;
-}
-.container {
-    max-width: 800px;
-    margin: 50px auto;
+    background-color: #121212;
+    color: #E0E0E0;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 .card {
+    background-color: #1E1E1E;
     border-radius: 15px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 .card-title {
-    color: #007bff;
+    color: #FFFFFF;
 }
 .card-text {
     margin-bottom: 10px;
+    color: #FFFFFF;
 }
 .btn-outline-dark {
-    color: #343a40;
-    border-color: #343a40;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
 }
 .btn-outline-dark:hover {
-    color: #ffffff;
-    background-color: #343a40;
+    color: #000000;
+    background-color: #FFFFFF;
 }
-
-.profile-image img {
-    width: 100px; /* 프로필 사진의 너비 */
-    height: 100px; /* 프로필 사진의 높이 */
-    border-radius: 50%; /* 원형 모양으로 만들기 */
-    object-fit: cover; /* 이미지를 요소에 맞게 자동으로 크롭 */
-    float: left; /* 좌측 정렬 */
-    margin-right: 20px; /* 사용자 이름과의 간격 조정 */
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.profile-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+}
+.profile-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.profile-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+.profile-info .username {
+    font-size: 24px;
+    font-weight: bold;
+}
+.profile-info .greeting {
+    font-size: 18px;
+    color: #AAAAAA;
+}
+.nav-tabs {
+    border-bottom: 1px solid #444444;
+}
+.nav-link {
+    color: #E0E0E0;
+}
+.nav-link.active {
+    color: #FFFFFF;
+    border-color: #007bff;
+}
+.navbar {
+    background-color: #000000 !important;
 }

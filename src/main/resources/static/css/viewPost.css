@@ -1,7 +1,7 @@
 body {
-    background-color: #f0f0f0; /* 배경을 회색으로 변경 */
-    color: #000000; /* 글씨를 검정색으로 변경 */
-    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #E0E0E0;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .container {
@@ -11,20 +11,20 @@ body {
 }
 
 .card {
-    background-color: #ffffff; /* 카드 배경을 흰색으로 변경 */
+    background-color: #121212;
     border: none;
     border-radius: 10px;
 }
 
 .card-header {
-    background-color: #ffffff; /* 카드 헤더 배경을 흰색으로 변경 */
-    border-bottom: 1px solid #ccc; /* 헤더 하단 경계 색상을 연한 회색으로 변경 */
+    background-color: #121212;
+    border-bottom: 1px solid #121212; /* 헤더 하단 경계 색상을 연한 회색으로 변경 */
     position: relative;
     padding-bottom: 3rem;
 }
 
 .card-header h1 {
-    color: #000000; /* 제목 글씨를 검정색으로 변경 */
+    color: #ffffff; /* 제목 글씨를 검정색으로 변경 */
     font-size: 2em;
     margin: 0;
     display: inline-block;
@@ -64,7 +64,7 @@ body {
 
 .card-body p {
     margin: 0.5rem 0;
-    color: #000000; /* 본문 글씨를 검정색으로 변경 */
+    color: #ffffff; /* 본문 글씨를 검정색으로 변경 */
 }
 
 .card-footer {
@@ -76,4 +76,11 @@ body {
 
 .card-footer .btn {
     display: none; /* Hide footer buttons */
+}
+
+.card-header h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
 }
