@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -83,7 +84,32 @@ public class UserService {
     }
 
     // 사용자 마이페이지 수정
+    public void updateUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setUserNick(usernick);
 
+            if (!file.isEmpty()) {
+                Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
 
+                String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Path filePath = uploadPath.resolve(filename);
+                Files.copy(file.getInputStream(), filePath);
+                user.setFilename(filename);
+                user.setFilepath(filePath.toString());
+            }
+            userRepository.save(user);
+        }
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
 
 }

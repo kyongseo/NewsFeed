@@ -1,12 +1,15 @@
 package hello.blog.controller;
 
 import hello.blog.domain.Post;
+import hello.blog.domain.User;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @Controller
@@ -73,7 +76,6 @@ public class PostController {
 
     /**
      * 게시글 수정
-
      */
     @GetMapping("/{postId}/edit")
     public String showEditPost(@PathVariable("postId") Long postId,
@@ -97,12 +99,17 @@ public class PostController {
      * 상세 페이지
      */
     @GetMapping("/{postId}")
-    public String getPostById(@PathVariable("postId") Long postId, Model model) {
+    public String getPostById(@PathVariable("postId") Long postId, Model model,
+                              @CookieValue(value = "username", defaultValue = "") String username) {
 
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+        Optional<User> userOptional = userService.findByUserName(username);
+        User user = userOptional.get();
 
         model.addAttribute("post", post);
+        model.addAttribute("username", user.getUserName());
+        model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
         return "/post/viewPost";
     }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>마이페이지</title>
@@ -43,8 +43,8 @@
     <div class="profile-info">
         <img th:src="@{${profileImage}}" alt="Profile Image" />
         <div>
-            <div class="username">박경서</div>
-            <div class="greeting">안녕하세요, 박경서입니다.</div>
+            <div class="username" th:text="${user.userName}">nickname</div>
+            <div class="greeting" th:text="'안녕하세요, ' + ${user.userName} + '입니다.'">안녕하세요, nickname 입니다.</div>
         </div>
     </div>
     <div class="card mt-4">
@@ -66,13 +66,18 @@
             <a class="btn btn-outline-dark" th:href="@{/}">소개</a>
         </li>
     </ul>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
-        <div class="col mb-4" th:each="post : ${posts}">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${post.title}">제목</h5>
-                    <p class="card-text" th:text="${post.content}">내용</p>
-                </div>
+    <div class="row justify-content-end">
+        <div class="col-lg-6 mb-4" th:each="post : ${posts}">
+            <div th:if="${post.user.userName == user.userName}" class="card h-100 shadow-sm">
+                <a th:href="@{/posts/{postId}(postId=${post.id})}" class="card h-100 text-decoration-none shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title fw-bold mb-3" th:text="${post.title}">게시글 제목</h5>
+                        <p class="card-text flex-grow-1" th:text="${post.content}">게시글 내용</p>
+                        <div class="mt-auto">
+                            <small class="emphasized" th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 dd일')}">게시일</small>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -80,3 +85,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+

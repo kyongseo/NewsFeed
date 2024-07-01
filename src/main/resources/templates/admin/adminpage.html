@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>admin</title>
+    <title>Admin Page</title>
 </head>
 <body>
+<h1>Admin Page</h1>
+<h2>Users</h2>
+<ul>
+    <li th:each="user : ${users}">
+        <span th:text="${user.userName}"></span>
+        <ul>
+            <li th:each="post : ${user.posts}">
+                <span th:text="${post.content}"></span>
+                <form th:action="@{/admin/post/delete/{postId}(postId=${post.id})}" method="post">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        </ul>
+    </li>
+</ul>
 </body>
 </html>

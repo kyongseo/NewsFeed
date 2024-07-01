@@ -7,12 +7,49 @@
     <link rel="stylesheet" href="/css/viewPost.css">
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+        <a class="navbar-brand text-white" th:href="@{/}">ks_velog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
+                </li>
+            </ul>
+            <!-- 사용자 영역 -->
+            <div th:if="${username != ''}" class="d-flex align-items-center">
+                <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
+                        <i class="bi bi-caret-down-fill text-white"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" th:href="@{'/' + ${username}}">마이페이지</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 비로그인 유저 -->
+            <div th:if="${username == ''}" class="d-flex">
+                <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
+            </div>
+            <!-- 관리자 영역 -->
+            <div th:if="${username == 'admin'}" class="d-flex">
+                <a class="btn btn-outline-dark" th:href="@{/}">관리자</a>
+            </div>
+        </div>
+    </div>
+</nav>
 <div class="container my-5">
     <div class="card">
         <div class="card-header text-center">
             <h1 th:text="${post.title}">글 제목</h1>
             <div class="action-links">
-                <a th:href="@{/}">이동</a>
+                <a th:href="@{/}">통계</a>
                 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}">수정</a>
                 <form th:action="@{/posts/{postId}/delete(postId=${post.id})}" method="post" style="display:inline;">
                     <input type="hidden" name="_method" value="delete">
@@ -23,8 +60,8 @@
         <div class="card-body">
             <div class="mb-3 text-muted">
                 <p class="mb-1">
-                    <strong><span th:text="${post.user.userName}">작성자</span></strong>
-                    <span th:text="${#temporals.format(post.getCreatedAt, 'yyyy/MM/dd HH:mm')}">등록일</span>
+                    <small><span th:text="${post.user.userName}">작성자</span></small>
+                    <small><span th:text="${#temporals.format(post.getCreatedAt, '· yyyy년 M월 d일')}">등록일</span></small>
                 </p>
 
             </div>

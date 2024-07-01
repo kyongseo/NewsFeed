@@ -89,17 +89,17 @@ public class UserController {
     }
 
     // 관리자 대시보드 -- 시큐리티 배으고 나중에 구현..
-    @GetMapping("/admin/dashboard")
-    public String showAdminDashboard(Model model) {
-        model.addAttribute("username", "admin");
-        return "redirect:/";
-    }
+//    @GetMapping("/admin/dashboard")
+//    public String showAdminDashboard(Model model) {
+//        model.addAttribute("username", "admin");
+//        return "redirect:/";
+//    }
 
-    @GetMapping("/@{username}/posts")
-    public String getUserPosts(@PathVariable("username") String username, Model model) {
-        Set<Post> userPosts = userService.getUserPosts(username);
-        model.addAttribute("username", username);
-        model.addAttribute("posts", userPosts);
-        return "blog";
-    }
+//    @GetMapping("/@{username}/posts")
+//    public String getUserPosts(@PathVariable("username") String username, Model model) {
+//        Set<Post> userPosts = userService.getUserPosts(username);
+//        model.addAttribute("username", username);
+//        model.addAttribute("posts", userPosts);
+//        return "blog";
+//    }
 }

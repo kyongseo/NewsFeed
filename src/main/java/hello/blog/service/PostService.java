@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +68,14 @@ public class PostService {
     //게시물 삭제
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    public Set<Post> getPostsByUser(String username) {
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getPosts();
+        }
+        throw new RuntimeException("사용자를 찾을 수 없습니다.");
     }
 }
 
