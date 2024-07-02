@@ -49,5 +49,4 @@ public class HomeController {
         response.addCookie(cookie);
         return "redirect:/";
     }
-
 }

@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" th:href="@{'/' + ${username}}" th:text="${username} + '_velog'"></a>
+                    <a class="nav-link active text-white" aria-current="page" th:href="@{'/' + ${username}}" th:text="${username} + '_velog'" th:if="${username != ''}"></a>
                 </li>
             </ul>
             <!-- 사용자 영역 -->
@@ -35,11 +35,11 @@
             </div>
             <!-- 비로그인 유저 -->
             <div th:if="${username == ''}" class="d-flex">
-                <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
+                <a class="btn btn-outline-light me-3" th:href="@{/loginform}">로그인</a>
             </div>
             <!-- 관리자 영역 -->
             <div th:if="${username == 'admin'}" class="d-flex">
-                <a class="btn btn-outline-dark" th:href="@{/}">관리자</a>
+                <a class="btn btn-outline-dark" th:href="@{/admin/dashboard}">관리자</a>
             </div>
         </div>
     </div>
@@ -48,7 +48,7 @@
     <div class="card">
         <div class="card-header text-center">
             <h1 th:text="${post.title}">글 제목</h1>
-            <div class="action-links">
+            <div class="action-links" th:if="${username != ''}">
                 <a th:href="@{/}">통계</a>
                 <a th:href="@{/posts/{postId}/edit(postId=${post.id})}">수정</a>
                 <form th:action="@{/posts/{postId}/delete(postId=${post.id})}" method="post" style="display:inline;">
@@ -60,10 +60,11 @@
         <div class="card-body">
             <div class="mb-3 text-muted">
                 <p class="mb-1">
-                    <small><span th:text="${post.user.userName}">작성자</span></small>
+                    <small>
+                        <a th:href="@{'/' + ${post.user.userName}}" th:text="${post.user.userName}">작성자</a>
+                    </small>
                     <small><span th:text="${#temporals.format(post.getCreatedAt, '· yyyy년 M월 d일')}">등록일</span></small>
                 </p>
-
             </div>
             <div class="content">
                 <p th:text="${post.content}">글 내용</p>

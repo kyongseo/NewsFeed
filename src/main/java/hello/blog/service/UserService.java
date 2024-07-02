@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,16 +27,21 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    // private final BCryptPasswordEncoder passwordEncoder;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
 
     // 회원가입
     public void registerUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
+
         User user = new User();
         user.setUserName(username);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(password); //  user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setUserNick(usernick);
 
         if (!file.isEmpty()) {
