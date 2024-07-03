@@ -20,9 +20,13 @@
 ### 2. 프로젝트 설명
 - 권한에 따라 다른 기능 분리
     - SpringSecurity를 활용해 Admin, User 권한에 따라 다른 기능 분리
-- **게시판 -** User, Class 관련 CRUD API 개발, 조회수, 페이징 및 검색 처리
-- **사용자 -** Security 회원가입 및 로그인, JWT를 이용하여 AccessToken, Refresh Token 발급, 회원정보 수정, 회원가입시 유효성 검사 및 중복 검사, OAuth 2.0 깃허브, 구글, 네이버 로그인
-- 로그인 세션을 이용한 ROLE별로 사용자와 관리자 페이지 렌더링
+- 게시판
+     - User, Class 관련 CRUD API 개발, 조회수, 페이징 및 검색 처리
+- 사용자
+    -  Security 회원가입 및 로그인, JWT를 이용하여 AccessToken, Refresh Token 발급
+    -  회원정보 수정, 회원가입시 유효성 검사 및 중복 검사
+    -  OAuth 2.0 깃허브, 구글, 네이버 로그인
+- 로그인 세션을 이용한 ROLE 별로 사용자와 관리자 페이지 렌더링
 - 사용자
     - 사용자 페이지, 게시글 CRUD, 마이페이지, 글 관리
 - 관리자
