@@ -1,6 +1,6 @@
-# 📢 Bolg Clone Project
+# 📢 Blogg Clone Project
 
-> Bolg Clone Project
+> Blog Clone Project
 
 ## 목차
 - [들어가며](#들어가며)
