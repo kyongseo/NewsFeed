@@ -22,7 +22,7 @@
                 </li>
             </ul>
             <!-- 사용자 영역 -->
-            <div th:if="${username != ''}" class="d-flex align-items-center ms-auto">
+            <div th:if="${user != user.userName}" class="d-flex align-items-center ms-auto">
                 <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,6 +35,10 @@
                     </ul>
                 </div>
             </div>
+            <!-- 비로그인 유저
+            <div th:if="${username == null or username == ''}" class="d-flex">
+                <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
+            </div>-->
         </div>
     </div>
 </nav>

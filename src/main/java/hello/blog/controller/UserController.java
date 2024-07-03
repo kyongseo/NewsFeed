@@ -79,7 +79,7 @@ public class UserController {
     // 특정 회원의 페이지 보여주기
     @GetMapping("/{username}")
     public String showMyPage(@PathVariable("username") String username, Model model) {
-        Optional<User> userOptional = userService.findByUserName(username);
+        Optional<User> userOptional = userService.findByUserName(username); // 경로에서 전달된 사용자 아이디 조회
         if (userOptional.isPresent()) {
             model.addAttribute("user", userOptional.get());
             List<Post> allPosts = postService.getAllPosts();
@@ -90,11 +90,14 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    // 로그인 성공 시 로그인한 유저의 마이페이지 보여주기
+//     로그인 성공 시 로그인한 유저의 마이페이지 보여주기
     @GetMapping("/mypage")
     public String showMyPage(Model model, Authentication authentication) {
-        String username = authentication.getName();
-        Optional<User> userOptional = userService.findByUserName(username);
+
+        String username = authentication.getName(); // // 현재 로그인한 사용자 아이디
+
+        Optional<User> userOptional = userService.findByUserName(username); // 조회하고
+
         if (userOptional.isPresent()) {
             model.addAttribute("user", userOptional.get());
             List<Post> allPosts = postService.getAllPosts();

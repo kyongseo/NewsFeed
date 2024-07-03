@@ -21,9 +21,10 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/userregform", "/loginform", "/css/**", "/files/**", "/").permitAll() // 이 주소로 시작되면 인증이 필요
-                        .requestMatchers("/posts/**","/{username}").permitAll() // 이 주소로 시작되면 인증이 필요
-                        .anyRequest().authenticated() // 그게 아닌 모든 주소는 인증 필요 없음
+                        .requestMatchers("/userregform", "/loginform", "/css/**", "/files/**", "/main","/").permitAll() // 이 주소로 시작되면 인증 필요 없음
+                        .requestMatchers("/posts/**","/{username}").permitAll() // 이 주소로 시작되면 인증 필요 없음
+                        .requestMatchers("/posts/create").authenticated() // 이 주소로 시작되면 인증 필요 없음
+                        .anyRequest().authenticated() // 그게 아닌 모든 주소는 인증 필요
                 )
                 .formLogin(form -> form
                                 .loginPage("/loginform") // 인증필요한 주소로 접속하면 이 주소로 이동시킴(GetMapping)

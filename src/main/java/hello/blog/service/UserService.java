@@ -71,15 +71,15 @@ public class UserService {
     }
 
     // 사용자 있는지 없는지 검증 로직 --
-    public boolean validateUser(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUserName(username);
-        if (userOptional.isPresent()){
-            User user = userOptional.get();
-//            return user.getPassword().equals(password);
-            return passwordEncoder.matches(password, user.getPassword());
-        }
-        return false;
-    }
+//    public boolean validateUser(String username, String password) {
+//        Optional<User> userOptional = userRepository.findByUserName(username);
+//        if (userOptional.isPresent()){
+//            User user = userOptional.get();
+////            return user.getPassword().equals(password);
+//            return passwordEncoder.matches(password, user.getPassword());
+//        }
+//        return false;
+//    }
 
     // 글 등록할 때 사용자 이름을 기반으로 조회하기
     public Set<Post> getUserPosts(String username) {

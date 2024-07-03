@@ -23,6 +23,15 @@ public class HomeController {
     private final UserService userService;
     private final PostService postService;
 
+    // 로그인 안한 유저가 보이는 폼
+//    @GetMapping("/")
+//    public String mainPageNoneLogin(Model model) {
+//        List<Post> blogPosts = postService.getAllPosts();
+//        model.addAttribute("blogPosts", blogPosts);
+//        return "none/main";
+//    }
+
+
     // 메인 홈 화면
     @GetMapping("/")
     public String showHomePage(Model model,
