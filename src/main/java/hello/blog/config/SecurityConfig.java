@@ -22,7 +22,7 @@ public class SecurityConfig{
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/userregform", "/loginform", "/css/**", "/files/**", "/main","/").permitAll() // 이 주소로 시작되면 인증 필요 없음
+                        .requestMatchers("/userregform", "/loginform", "/css/**", "/files/**", "/").permitAll() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers("/posts/**","/{username}").permitAll() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers("/posts/create").authenticated() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers(HttpMethod.POST, "/posts/{postId}/edit", "/posts/{postId}/delete").authenticated()
