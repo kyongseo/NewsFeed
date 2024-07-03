@@ -7,6 +7,7 @@ import hello.blog.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -25,8 +26,10 @@ public class HomeController {
     // 메인 홈 화면
     @GetMapping("/")
     public String showHomePage(Model model,
-                               @CookieValue(value = "username", defaultValue = "") String username) {
-        if (!username.isEmpty()) {
+                               @CookieValue(value = "username", defaultValue = "") String username,
+                               Authentication authentication) {
+        if (authentication != null) {
+            username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
@@ -42,11 +45,30 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("/logout")
-    public String logoutUser (HttpServletResponse response){
-        Cookie cookie = new Cookie("username", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        return "redirect:/";
-    }
+//    @GetMapping("/")
+//    public String showHomePage(Model model,
+//                               @CookieValue(value = "username", defaultValue = "") String username) {
+//        if (!username.isEmpty()) {
+//            Optional<User> userOptional = userService.findByUserName(username);
+//            if (userOptional.isPresent()) {
+//                User user = userOptional.get();
+//                model.addAttribute("nickname", user.getUserNick());
+//                model.addAttribute("username", user.getUserName());
+//                model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
+//            }
+//        } else {
+//            model.addAttribute("username", "");
+//        }
+//        List<Post> blogPosts = postService.getAllPosts();
+//        model.addAttribute("blogPosts", blogPosts);
+//        return "home";
+//    }
+
+//    @GetMapping("/logout")
+//    public String logoutUser (HttpServletResponse response){
+//        Cookie cookie = new Cookie("username", null);
+//        cookie.setMaxAge(0);
+//        response.addCookie(cookie);
+//        return "redirect:/";
+//    }
 }

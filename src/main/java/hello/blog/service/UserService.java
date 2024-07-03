@@ -7,7 +7,9 @@ import hello.blog.domain.User;
 import hello.blog.repository.RoleRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -16,10 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,21 +26,24 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    // private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
 
     // 회원가입
+    @Transactional
     public void registerUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
-        if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
-        }
+        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER);
 
         User user = new User();
+        user.setRole(new HashSet<>());
+        Set<Role> roles = new HashSet<>();
+        roles.add(userRole.get());
+        user.setRole(Collections.singleton(userRole.get()));
         user.setUserName(username);
         user.setEmail(email);
-        user.setPassword(password); //  user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(password));
         user.setUserNick(usernick);
 
         if (!file.isEmpty()) {
@@ -57,11 +59,13 @@ public class UserService {
             user.setFilepath(filePath.toString());
         }
 
-        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER);
-        userRole.ifPresent(user.getRole()::add);
+        if (userRole.isPresent()) {
+            user.setRole(Collections.singleton(userRole.get()));
+        }
         userRepository.save(user);
     }
 
+    @Transactional
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUserName(username);
     }
@@ -71,12 +75,13 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()){
             User user = userOptional.get();
-            return user.getPassword().equals(password);
+//            return user.getPassword().equals(password);
+            return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
     }
 
-    // 글등록할 때 사용자 이름을 기반으로 조회하기
+    // 글 등록할 때 사용자 이름을 기반으로 조회하기
     public Set<Post> getUserPosts(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
