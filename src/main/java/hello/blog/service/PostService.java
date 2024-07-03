@@ -19,7 +19,6 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-
     // 글 작성
     @Transactional
     public Post createPost(String username, String title, String content) {
@@ -42,12 +41,13 @@ public class PostService {
 
     // 글 전체 조회
     @Transactional(readOnly = true)
-    public List<Post> getAllPosts() { //게시물 전체보기
+    public List<Post> getAllPosts() {
         List<Post> posts = postRepository.findAll();
         return posts;
     }
 
-    public Optional<Post> getPostById(Long postId) { //게시물 검색
+    //게시물 검색
+    public Optional<Post> getPostById(Long postId) {
         return postRepository.findById(postId);
     }
 

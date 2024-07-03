@@ -5,12 +5,12 @@ import hello.blog.domain.User;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
 
 @Controller
 @RequestMapping("/posts")
@@ -21,6 +21,7 @@ public class PostController {
 
     /**
      * 게시글 등록
+     * 쿠키가 아닌 인증된 사용자를 확인하는 코드 --> 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
      */
     @GetMapping("/create")
     public String showCreatePost(Model model) {
@@ -28,19 +29,35 @@ public class PostController {
         return "/post/createPost";
     }
 
+//    @PostMapping("/create")
+//    public String createPost(@RequestParam("title") String title,
+//                             @RequestParam("content") String content,
+//                             @CookieValue(value = "username", defaultValue = "") String username) {
+//
+//        if (!username.isEmpty()) {
+//            // 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
+//            postService.createPost(username, title, content);
+//        } else {
+//            // 사용자 정보가 없는 경우 처리할 코드
+//            return "redirect:/loginform";
+//        }
+//        return "redirect:/";
+//    }
+
     @PostMapping("/create")
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
-                             @CookieValue(value = "username", defaultValue = "") String username) {
+                             Authentication authentication) {
 
-        if (!username.isEmpty()) {
-            // 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
+        // 쿠키가 아닌 인증된 사용자를 확인하는 코드
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
             postService.createPost(username, title, content);
+            return "redirect:/";
         } else {
             // 사용자 정보가 없는 경우 처리할 코드
             return "redirect:/loginform";
         }
-        return "redirect:/";
     }
 
     /**
@@ -66,17 +83,41 @@ public class PostController {
 
     /**
      * 상세 페이지
+     * 시큐리티에서 인증된 사용자를 확인
      */
+//    @GetMapping("/{postId}")
+//    public String getPostById(@PathVariable("postId") Long postId, Model model,
+//                              @CookieValue(value = "username", defaultValue = "") String username) {
+//
+//        Post post = postService.getPostById(postId)
+//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+//
+//        model.addAttribute("post", post);
+//
+//        if (!username.isEmpty()) {
+//            Optional<User> userOptional = userService.findByUserName(username);
+//            if (userOptional.isPresent()) {
+//                User user = userOptional.get();
+//                model.addAttribute("username", user.getUserName());
+//                model.addAttribute("profileImage", "/files/" + user.getFilename());
+//            }
+//        } else {
+//            model.addAttribute("username", "");
+//        }
+//
+//        return "/post/viewPost";
+//    }
     @GetMapping("/{postId}")
     public String getPostById(@PathVariable("postId") Long postId, Model model,
-                              @CookieValue(value = "username", defaultValue = "") String username) {
+                              Authentication authentication) {
 
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         model.addAttribute("post", post);
 
-        if (!username.isEmpty()) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
