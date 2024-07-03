@@ -82,12 +82,12 @@ body {
 }
 .card-header {
     background-color: #121212;
-    border-bottom: 1px solid #121212; /* 헤더 하단 경계 색상을 연한 회색으로 변경 */
+    border-bottom: 1px solid #121212;
     position: relative;
     padding-bottom: 3rem;
 }
 .card-header h1 {
-    color: #ffffff; /* 제목 글씨를 흰색으로 변경 */
+    color: #ffffff;
     font-size: 2em;
     margin: 0;
     display: inline-block;
@@ -97,21 +97,23 @@ body {
     top: 3.5rem;
     right: 1rem;
     font-size: 0.9em;
-    color: #ffffff; /* 링크 색상을 흰색으로 변경 */
+    color: #ffffff;
 }
 .action-links a,
-.action-links button {
-    color: #ffffff; /* 링크와 버튼 색상 */
-    text-decoration: none;
+.action-links button,
+.action-links form {
+    display: inline-block;
+    margin-right: 10px;
+    color: #ffffff;
     background: none;
     border: none;
-    margin-left: 10px;
     padding: 0;
     cursor: pointer;
+    text-decoration: underline;
 }
 .action-links a:hover,
 .action-links button:hover {
-    text-decoration: underline;
+    color: #cccccc;
 }
 .card-body {
     padding: 20px;
@@ -121,16 +123,16 @@ body {
 }
 .card-body p {
     margin: 0.5rem 0;
-    color: #ffffff; /* 본문 글씨를 흰색으로 변경 */
+    color: #ffffff;
 }
 .card-footer {
-    background-color: #ffffff; /* 카드 푸터 배경을 흰색으로 변경 */
-    border-top: 1px solid #ccc; /* 푸터 상단 경계 색상을 연한 회색으로 변경 */
+    background-color: #ffffff;
+    border-top: 1px solid #ccc;
     padding: 10px;
     /*   display: none; 푸터 버튼 숨기기 */
 }
 .card-footer .btn {
-    display: none; /* Hide footer buttons */
+    display: none;
 }
 .card-header h1 {
     white-space: nowrap;
@@ -143,5 +145,5 @@ a {
 }
 a:hover {
     color: #AAAAAA;
-    text-decoration: underline;
+ /*   text-decoration: underline;*/
 }

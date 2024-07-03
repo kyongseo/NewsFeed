@@ -3,6 +3,7 @@ package hello.blog.config;
 import hello.blog.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,7 +25,9 @@ public class SecurityConfig{
                         .requestMatchers("/userregform", "/loginform", "/css/**", "/files/**", "/main","/").permitAll() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers("/posts/**","/{username}").permitAll() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers("/posts/create").authenticated() // 이 주소로 시작되면 인증 필요 없음
-                        .anyRequest().authenticated() // 그게 아닌 모든 주소는 인증 필요
+                        .requestMatchers(HttpMethod.POST, "/posts/{postId}/edit", "/posts/{postId}/delete").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/posts/{postId}/edit").authenticated()
+                        .anyRequest().permitAll() // 그게 아닌 모든 주소는 인증 필요
                 )
                 .formLogin(form -> form
                                 .loginPage("/loginform") // 인증필요한 주소로 접속하면 이 주소로 이동시킴(GetMapping)

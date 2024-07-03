@@ -65,9 +65,14 @@ public class PostController {
      */
     @GetMapping("/{postId}/edit")
     public String showEditPost(@PathVariable("postId") Long postId,
-                               Model model) {
+                               Model model,
+                               Authentication authentication) {
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        if (authentication == null || !authentication.isAuthenticated() || !postService.isPostOwner(postId, authentication.getName())) {
+            return "redirect:/loginform";
+        }
 
         model.addAttribute("post", post);
         return "/post/editPost";
@@ -76,9 +81,14 @@ public class PostController {
     @PostMapping("/{postId}/edit")
     public String editPost(@PathVariable("postId") Long postId,
                            @RequestParam("title") String title,
-                           @RequestParam("content") String content) {
-        postService.updatePost(postId, title, content);
-        return "redirect:/posts/" + postId; // 수정된 게시글로 리디렉션
+                           @RequestParam("content") String content,
+                           Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName())) {
+            postService.updatePost(postId, title, content);
+            return "redirect:/posts/" + postId;
+        } else {
+            return "redirect:/loginform";// 수정된 게시글로 리디렉션
+        }
     }
 
     /**
@@ -135,10 +145,16 @@ public class PostController {
      * 게시글 삭제
      */
     @PostMapping("/{postId}/delete")
-    public String deletePost(@PathVariable("postId") Long postId, @RequestParam("_method") String method) {
-        if ("delete".equalsIgnoreCase(method)) {
+    public String deletePost(@PathVariable("postId") Long postId,
+                             @RequestParam("_method") String method,
+                             Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName()) && "delete".equalsIgnoreCase(method)) {
             postService.deletePostById(postId);
         }
         return "redirect:/";
+//        if ("delete".equalsIgnoreCase(method)) {
+//            postService.deletePostById(postId);
+//        }
+//        return "redirect:/";
     }
 }

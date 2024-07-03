@@ -39,6 +39,7 @@ public class PostService {
         throw new RuntimeException("작성 권한이 없습니다.");
     }
 
+
     // 글 전체 조회
     @Transactional(readOnly = true)
     public List<Post> getAllPosts() {
@@ -76,5 +77,14 @@ public class PostService {
             return userOptional.get().getPosts();
         }
         throw new RuntimeException("사용자를 찾을 수 없습니다.");
+    }
+
+    public boolean isPostOwner(Long postId, String username) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if (postOptional.isPresent()) {
+            Post post = postOptional.get();
+            return post.getUser().getUserName().equals(username);
+        }
+        return false;
     }
 }
