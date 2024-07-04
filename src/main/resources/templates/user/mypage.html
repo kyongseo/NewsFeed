@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" th:href="@{/mypage}" th:text="${user.userName} + '_velog'"></a>
+                    <a class="nav-link active text-white" aria-current="page" th:href="@{/mypage}" th:text="${username} + '_velog'"></a>
                 </li>
             </ul>
             <!-- 사용자 영역 -->
@@ -30,7 +30,7 @@
                         <i class="bi bi-caret-down-fill text-white"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" th:href="@{/mypage}">마이페이지</a></li>
+                        <li><a class="dropdown-item" th:href="@{/{username}(username=${username})}">마이페이지</a></li>
                         <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                     </ul>
                 </div>
@@ -44,6 +44,19 @@
             요구사항 : viewpost 글 상세보기에서 글 작성자를 클릭하면 글작성자의 마이페이지가 보여 질 것..
             근데 문제가 로그인 한 사용자의 마이페이지가 아닌 글 작성자의 마이페이지가 보여지넴.. 컨트롤러랑 서비스 다시 보자
             </div>-->
+            <div th:if="${user.userName != username}" class="d-flex align-items-center ms-auto">
+                <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
+                        <i class="bi bi-caret-down-fill text-white"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" th:href="@{/{username}(username=${username})}">마이페이지</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

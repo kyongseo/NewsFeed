@@ -28,19 +28,20 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 파일 업로드 디렉토리 경로
     @Value("${file.upload-dir}")
     private String uploadDir;
 
     // 회원가입
     @Transactional
     public void registerUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
-        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER);
+        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER); // ROLE_USER 역할 조회
 
         User user = new User();
-        user.setRole(new HashSet<>());
-        Set<Role> roles = new HashSet<>();
-        roles.add(userRole.get());
-        user.setRole(Collections.singleton(userRole.get()));
+//        user.setRole(new HashSet<>());
+//        Set<Role> roles = new HashSet<>();
+//        roles.add(userRole.get());
+        user.setRole(Collections.singleton(userRole.get())); // 사용자 객체에 역할 설정 -- 회원가입을 하는 모든 사용자는 기본적으로 다 단일 역할 ROLE_USER 부여
         user.setUserName(username);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
@@ -58,8 +59,16 @@ public class UserService {
             user.setFilename(filename);
             user.setFilepath(filePath.toString());
         }
+//       else {
+//                // 기본 이미지 설정
+//                File defaultUploadFile = new UploadFile("user.png", "user.png");
+//                ImgFile defaultImgFile = new ImgFile();
+//                defaultImgFile.setAttachFile(defaultUploadFile);
+//                imgFileRepository.save(defaultImgFile);
+//                blog.setProfileImg(defaultImgFile);
+//        }
 
-        if (userRole.isPresent()) {
+        if (userRole.isPresent()) { // 역할이 존재하면
             user.setRole(Collections.singleton(userRole.get()));
         }
         userRepository.save(user);
