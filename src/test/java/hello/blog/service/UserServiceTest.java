@@ -43,6 +43,7 @@ public class UserServiceTest {
         String username = "testUser";
         String email = "testUser@example.com";
         String password = "password";
+        String passwordCheck = "password";
         String usernick = "testNick";
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "test data".getBytes());
         String uploadDir = "uploads/";
@@ -54,7 +55,7 @@ public class UserServiceTest {
         when(passwordEncoder.encode(password)).thenReturn("encodedPassword");
 
         // When
-        userService.registerUser(username, email, password, usernick, file);
+        userService.registerUser(username, email, password, usernick, passwordCheck, file);
 
         // Then
         verify(userRepository, times(1)).save(any(User.class));

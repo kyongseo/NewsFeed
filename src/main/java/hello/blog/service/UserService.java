@@ -36,7 +36,18 @@ public class UserService {
 
     // 회원가입
     @Transactional
-    public void registerUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
+    public void registerUser(String username, String email, String password, String passwordCheck, String usernick, MultipartFile file) throws IOException {
+        if (!password.equals(passwordCheck)) {
+            throw new IllegalArgumentException("비밀번호가 다릅니다。");
+        }
+        if (userRepository.existsByUserName(username)) {
+            throw new IllegalArgumentException("아이디가 존재합니다.");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("이메일이 존재합니다.");
+        }
+
         Role role;
 
         // admin 사용자의 비밀번호를 암호화 안해서 암호화하기
@@ -71,7 +82,7 @@ public class UserService {
         } else {
             // 추가하지않은 채 회원가입했다면 기본 이미지 사용
             String defaultFilename = "user.png";
-            String defaultFilepath = "src/main/resources/static/files/" + defaultFilename;
+            String defaultFilepath = uploadDir + defaultFilename;
             user.setFilename(defaultFilename);
             user.setFilepath(defaultFilepath);
         }
@@ -186,5 +197,4 @@ public class UserService {
         user.setFilename(filename);
         user.setFilepath(filePath.toString());
     }
-
 }

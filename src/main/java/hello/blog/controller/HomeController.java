@@ -4,8 +4,6 @@ import hello.blog.domain.Post;
 import hello.blog.domain.User;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -35,10 +33,10 @@ public class HomeController {
     // 메인 홈 화면
     @GetMapping("/")
     public String showHomePage(Model model,
-                               @CookieValue(value = "username", defaultValue = "") String username,
                                Authentication authentication) {
+
         if (authentication != null) {
-            username = authentication.getName();
+            String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();

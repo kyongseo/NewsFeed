@@ -17,7 +17,9 @@ import java.util.stream.Collectors;
 
 /**
  * loadUserByUsername : 사용자의 세부 정보를 가져오는 메서드 --> 데이터베이스에서 사용자를 조회
- * loadUserByUsername 메서드는 주어진 사용자 이름(username)을 기반으로 사용자의 세부 정보를 검색하고 반환하는 역할
+ * loadUserByUsername 메서드는 주어진 사용자 이름(username)을 기반으로 로그인 아이디 확인 -- 사용자의 세부 정보를 검색하고 반환하는 역할
+ * 시큐리티 설정에서 loginProcessingUrl("/login")
+ * login 요청이 오면 자동으로 UserDetailService 타입으로 Ioc 되어있는 loadUserByUserName 함수가 실행
  */
 @Service
 @RequiredArgsConstructor
@@ -39,10 +41,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 //        userBuilder.roles(user.getRole().stream().map(role -> role.getRoleName()).toArray(String[]::new));
 
         Optional<User> userOptional = userRepository.findByUserName(username); // 데이터베이스에서 사용자 이름을 기준으로 사용자를 조회
-
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("해당 사용자가 존재하지 않습니다. : " + username);
         }
+//        User user = userOptional.get();
+//        return new CustomUserDetails(user);
 
         User user = userOptional.get();
 
