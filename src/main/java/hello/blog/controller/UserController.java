@@ -157,15 +157,14 @@ public class UserController {
     @PostMapping("/mypage/edit")
     public String editUser(Authentication authentication,
                            @RequestParam("email") String email,
-                           @RequestParam("password") String password,
                            @RequestParam("usernick") String usernick,
                            @RequestParam("file") MultipartFile file,
                            RedirectAttributes redirectAttributes) {
         String username = authentication.getName();
 
         try {
-            userService.updateUser(username, email, password, usernick, file);
-            redirectAttributes.addAttribute("msg", "회원정보가 수정되었습니다.");
+            userService.updateUser(username, email, usernick, file);
+            redirectAttributes.addFlashAttribute("msg", "회원정보가 수정되었습니다.");
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("msg", "회원정보 수정에 실패했습니다: " + e.getMessage());
             e.printStackTrace();

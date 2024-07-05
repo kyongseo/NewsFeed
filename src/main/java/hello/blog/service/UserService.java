@@ -156,12 +156,11 @@ public class UserService {
     }
 
     // 사용자 마이페이지 수정
-    public void updateUser(String username, String email, String password, String usernick, MultipartFile file) throws IOException {
+    public void updateUser(String username, String email, String usernick, MultipartFile file) throws IOException {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setEmail(email);
-            user.setPassword(password);
             user.setUserNick(usernick);
 
             if (!file.isEmpty()) {

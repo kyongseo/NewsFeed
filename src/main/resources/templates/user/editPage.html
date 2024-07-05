@@ -59,23 +59,23 @@
         </div>
     </div>
     <div class="card mt-4">
-        <div class="card-body"><!-- th:action="@{'/${username}' + '/edit'}" -->
+        <div class="card-body">
             <form th:action="@{/mypage/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
                 <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
-                <p class="card-text"><strong>password</strong> <span th:text="${user.password}">password</span></p>
-                <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
                 <div class="mb-3">
-                <label class="form-label">벨로그 제목</label><br>
-                <input type="text" name="velog" th:value="${user.userName} + _velog"><br><br>
+                    <label class="form-label">이메일</label>
+                    <input type="email" name="email" th:value="${user.email}" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                <label class="form-label">소셜 정보</label><br>
-                <input type="text" name="email" th:value="${user.email}"><br><br>
-                <input type="text" name="usernick" th:value="${user.userNick}"><br><br>
+                    <label class="form-label">닉네임</label>
+                    <input type="text" name="usernick" th:value="${user.userNick}" class="form-control" required>
                 </div>
-                <button type="submit" class="btn btn-outline-light me-3">수정</button>
-
-                <a th:href="@{'/' + ${user.userName}}">뒤로가기</a>
+                <div class="mb-3">
+                    <label class="form-label">프로필 이미지</label>
+                    <input type="file" name="file" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-outline-light">수정</button>
+                <a th:href="@{'/' + ${user.userName}}" class="btn btn-outline-secondary">뒤로가기</a>
             </form>
         </div>
     </div>
