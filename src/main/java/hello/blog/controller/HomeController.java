@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -67,6 +68,27 @@ public class HomeController {
         return "home";
     }
 
+    // 검색어 찾기
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam("query") String query,
+                              Model model,
+                              Authentication authentication) {
+        if (authentication != null) {
+            String username = authentication.getName();
+            Optional<User> userOptional = userService.findByUserName(username);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("nickname", user.getUserNick());
+                model.addAttribute("username", user.getUserName());
+                model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
+            }
+        } else {
+            model.addAttribute("username", "");
+        }
+        List<Post> searchResults = postService.searchPosts(query); // 검색어에 맞는 게시글 검색
+        model.addAttribute("blogPosts", searchResults);
+        return "home"; // 검색 결과를 메인 홈 화면에 표시
+    }
 //    @GetMapping("/")
 //    public String showHomePage(Model model,
 //                               @CookieValue(value = "username", defaultValue = "") String username) {

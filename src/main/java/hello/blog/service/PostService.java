@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -94,5 +95,10 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<Post> getRecentPosts() {
         return postRepository.findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
+    }
+
+    //게시물 검색
+    public List<Post> searchPosts(String query) {
+        return postRepository.findByTitleContainingOrContentContaining(query, query);
     }
 }
