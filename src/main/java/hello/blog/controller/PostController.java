@@ -3,6 +3,7 @@ package hello.blog.controller;
 import hello.blog.domain.Comment;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.repository.LikeRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
@@ -23,6 +24,7 @@ public class PostController {
     private final PostService postService;
     private final UserService userService;
     private final CommentService commentService;
+    private final LikeRepository likeRepository;
 
     /**
      * 게시글 등록
@@ -139,12 +141,15 @@ public class PostController {
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
+                boolean liked = likeRepository.findByPostAndUser(post, user).isPresent();
+                model.addAttribute("liked", liked);
                 model.addAttribute("username", user.getUserName());
                 model.addAttribute("profileImage", "/files/" + user.getFilename());
             }
         } else {
             model.addAttribute("username", "");
         }
+        model.addAttribute("likeCount", likeRepository.countByPostId(postId));
 
         return "/post/viewPost";
     }

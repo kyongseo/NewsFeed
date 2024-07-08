@@ -28,6 +28,7 @@ public class SecurityConfig{
                         //.requestMatchers(HttpMethod.POST, "/posts/{postId}/edit", "/posts/{postId}/delete").authenticated()
                         //.requestMatchers(HttpMethod.GET, "/posts/{postId}/edit").authenticated()
                         .requestMatchers("/comments/post/**").authenticated()
+                        .requestMatchers("/likes/post/**").authenticated()
                         .anyRequest().permitAll() // 그게 아닌 모든 주소는 인증 필요 없음
                 )
                 .formLogin(form -> form

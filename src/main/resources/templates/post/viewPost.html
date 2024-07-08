@@ -70,15 +70,26 @@
             </div>
         </div>
     </div>
-    <!-- 댓글 영역 시작 -->
+    <!-- 좋아요 폼 -->
+    <p id="likeCount">❤️ <span th:text="${likeCount}">0</span></p>
+    <form th:action="@{/posts/{postId}/like(postId=${post.id})}" method="post" id="likeForm">
+        <button th:if="${username != null and username != ''}" type="submit" id="likeButton" class="btn btn-outline-primary">
+            <span th:if="${liked != null and liked}">좋아요 취소</span>
+            <span th:if="${liked == null or !liked}">좋아요</span>
+        </button>
+    </form>
+    <p th:if="${#authorization.expression('!isAuthenticated()')}">
+        <a href="/loginform">로그인 후 좋아요 누를 수 있습니다.</a>
+    </p>
+    <!-- 댓글 영역 -->
     <div class="container my-5">
         <div class="card">
             <div class="card-body">
                 <!-- 댓글 작성 폼 -->
                 <form th:action="@{/post/{postId}/comments(postId=${postId})}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
                     <div class="mb-3">
-                        <label for="content" class="form-label">댓글 작성</label>
-                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                        <label for="content" class="form-label">댓글</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" placeholder="댓글을 작성하새요" required></textarea>
                     </div>
                     <button type="submit" class="btn btn-outline-light me-3">댓글 작성</button>
                 </form>
@@ -91,7 +102,7 @@
                     <div class="card my-3">
                         <div class="card-body">
                             <p class="card-text" th:text="${comment.content}"></p>
-                            <small class="text-muted">작성자: <a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
+                            <small class="text-muted"><a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
                         </div>
                     </div>
                 </div>

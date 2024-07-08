@@ -150,3 +150,6 @@ a:hover {
 .form-label {
     color: #FFFFFF;
 }
+#content {
+    background-color: lightgray;
+}
