@@ -21,7 +21,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/post/{postId}/comments")
-    public String addComment(@PathVariable Long postId,
+    public String addComment(@PathVariable("postId") Long postId,
                              @RequestParam String content,
                              Authentication authentication,
                              Model model) {
