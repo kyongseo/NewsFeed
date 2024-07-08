@@ -23,7 +23,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // 댓글 작성자는 반드시 로그인된 사용자
+    private User user; // 댓글 작성자는 반드시 로그인된 사용자여야 한ㅁ
 
     @Column(nullable = false)
     private String content;
