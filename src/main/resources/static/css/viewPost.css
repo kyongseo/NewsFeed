@@ -153,3 +153,9 @@ a:hover {
 #content {
     background-color: lightgray;
 }
+.liked {
+    color: red;
+}
+.unliked {
+    color: black;
+}

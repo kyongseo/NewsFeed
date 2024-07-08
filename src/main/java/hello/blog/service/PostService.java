@@ -71,6 +71,7 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+    // 사용자별 게시글 조회
     public Set<Post> getPostsByUser(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -79,6 +80,7 @@ public class PostService {
         throw new RuntimeException("사용자를 찾을 수 없습니다.");
     }
 
+    // 게시글 작성자 확인
     public boolean isPostOwner(Long postId, String username) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
@@ -86,5 +88,11 @@ public class PostService {
             return post.getUser().getUserName().equals(username);
         }
         return false;
+    }
+
+    // 최신 글 조회
+    @Transactional(readOnly = true)
+    public List<Post> getRecentPosts() {
+        return postRepository.findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
     }
 }
