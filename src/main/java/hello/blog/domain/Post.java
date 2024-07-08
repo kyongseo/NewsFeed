@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 게시글 도메인
@@ -25,10 +27,6 @@ public class Post {
 
     @Column(nullable = false)
     private String content;
-
-//    @ManyToOne
-//    @JoinColumn(name = "blog_id")
-//    private Blog blog;
 
 //    private Long likes = 0L;
 
@@ -51,6 +49,9 @@ public class Post {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
 
     public Post(String title, String content) {
         this.title = title;

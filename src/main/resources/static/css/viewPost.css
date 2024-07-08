@@ -147,3 +147,6 @@ a:hover {
     color: #AAAAAA;
  /*   text-decoration: underline;*/
 }
+.form-label {
+    color: #FFFFFF;
+}

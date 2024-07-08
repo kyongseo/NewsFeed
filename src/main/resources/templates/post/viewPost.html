@@ -70,9 +70,37 @@
             </div>
         </div>
     </div>
+    <!-- 댓글 영역 시작 -->
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-body">
+                <!-- 댓글 작성 폼 -->
+                <form th:action="@{/post/{postId}/comments(postId=${postId})}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <div class="mb-3">
+                        <label for="content" class="form-label">댓글 작성</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-light me-3">댓글 작성</button>
+                </form>
+                <p th:if="${#authorization.expression('!isAuthenticated()')}">
+                    <a href="/loginform">로그인 후 댓글을 작성할 수 있습니다.</a>
+                </p>
+                <hr/>
+                <!-- 댓글 목록-->
+                <div th:each="comment : ${comments}">
+                    <div class="card my-3">
+                        <div class="card-body">
+                            <p class="card-text" th:text="${comment.content}"></p>
+                            <small class="text-muted">작성자: <a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 댓글 영역 끝 -->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

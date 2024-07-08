@@ -1,7 +1,9 @@
 package hello.blog.controller;
 
+import hello.blog.domain.Comment;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,14 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
+
     private final PostService postService;
     private final UserService userService;
+    private final CommentService commentService;
 
     /**
      * 게시글 등록
@@ -124,7 +129,10 @@ public class PostController {
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
+        List<Comment> comments = commentService.findByPostId(postId);
+
         model.addAttribute("post", post);
+        model.addAttribute("comments", comments);
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();

@@ -44,8 +44,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (!userOptional.isPresent()) {
             throw new UsernameNotFoundException("해당 사용자가 존재하지 않습니다. : " + username);
         }
-//        User user = userOptional.get();
-//        return new CustomUserDetails(user);
 
         User user = userOptional.get();
 
