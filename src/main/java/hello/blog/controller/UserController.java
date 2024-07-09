@@ -2,6 +2,7 @@ package hello.blog.controller;
 
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.repository.UserRepository;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class UserController {
 
     private final UserService userService;
     private final PostService postService;
+    private final UserRepository userRepository;
 
     /**
      * 회원가입
@@ -41,7 +43,7 @@ public class UserController {
                                RedirectAttributes redirectAttributes) {
         try {
             userService.registerUser(username, email, password, passwordCheck, usernick, file);
-            redirectAttributes.addAttribute("msg","회원가입에 성공했습니다.");
+            redirectAttributes.addFlashAttribute("msg", "회원가입에 성공했습니다.");
         } catch (IOException e) {
             redirectAttributes.addFlashAttribute("msg", "회원가입에 실패했습니다: " + e.getMessage());
             e.printStackTrace();
@@ -108,7 +110,7 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-//     로그인 성공 시 로그인한 유저의 마이페이지 보여주기
+    //     로그인 성공 시 로그인한 유저의 마이페이지 보여주기
     @GetMapping("/mypage")
     public String showMyPage(Model model,
                              Authentication authentication) {
@@ -129,7 +131,7 @@ public class UserController {
     // 마이페이지 수정
     @GetMapping("/mypage/edit")
     public String userEditForm(Model model,
-                               Authentication authentication){
+                               Authentication authentication) {
 
         String username = authentication.getName();
 
@@ -153,7 +155,7 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    // 사용자 정보 수정 처리
+    // 마이페이지 수정 처리
     @PostMapping("/mypage/edit")
     public String editUser(Authentication authentication,
                            @RequestParam("email") String email,
@@ -170,5 +172,74 @@ public class UserController {
             e.printStackTrace();
         }
         return "redirect:/" + username;
+    }
+
+    // 소개 페이지
+    @GetMapping("/about/{username}")
+    public String aboutUser(@PathVariable("username") String username,
+                            Model model,
+                            Authentication authentication) {
+
+        // 현재 로그인한 사용자 아이디를 가져옴
+        String loggedInUsername = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            loggedInUsername = authentication.getName();
+            model.addAttribute("username", loggedInUsername);
+
+            // 상단에 로그인한 사용자의 프포필이 보이도록
+            Optional<User> loggedInUserOptional = userService.findByUserName(loggedInUsername);
+            if (loggedInUserOptional.isPresent()) {
+                model.addAttribute("loggedInProfileImage", "/files/" + loggedInUserOptional.get().getFilename());
+            }
+        } else {
+            model.addAttribute("username", "");
+            model.addAttribute("loggedInProfileImage", "");
+        }
+
+        Optional<User> userOptional = userService.findByUserName(username); // 조회하고
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            model.addAttribute("user", user);
+
+            List<Post> allPosts = postService.getAllPosts();
+            model.addAttribute("posts", allPosts);
+            model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
+            return "/user/aboutPage";
+        }
+        return "redirect:/loginform";
+    }
+
+    @PostMapping("/about/{username}")
+    public String updateAbout(@PathVariable("username") String username,
+                              @RequestParam("about") String about,
+                              Authentication authentication,
+                              Model model) {
+
+        String loggedInUsername = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            loggedInUsername = authentication.getName();
+        }
+        Optional<User> userOptional = userService.findByUserName(loggedInUsername);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            if (user.getUserName().equals(username) || loggedInUsername.equals("admin")) {
+                user.setAbout(about);
+                userService.saveUser(user);
+
+                // 변경된 사용자 정보를 모델에 추가하여 반환
+                model.addAttribute("user", user);
+
+                List<Post> allPosts = postService.getAllPosts();
+                model.addAttribute("posts", allPosts);
+                model.addAttribute("username", user.getUserName());
+                model.addAttribute("profileImage", "/files/" + user.getFilename());
+
+                return "/user/aboutPage"; // 변경된 정보를 포함한 aboutPage 반환
+            }
+        }
+        return "redirect:/loginform"; // 사용자가 존재하지 않으면 로그인 폼으로 리다이렉트
     }
 }

@@ -39,6 +39,9 @@ public class User {
     @CreatedDate
     private LocalDateTime registrationDate = LocalDateTime.now();
 
+    @Column(name = "about", length = 1000, nullable = true) // 한 줄 소개
+    private String about;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),

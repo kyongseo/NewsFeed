@@ -49,7 +49,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         // 현재 사용자의 역할을 설정하는 부분 확인
         Set<GrantedAuthority> authorities = user.getRole().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName().name())) // role이 enum을 사용하니껜 문자열로 변환하여 사용
+                .map(role -> new SimpleGrantedAuthority(role.getRoleName().name())) // role이 enum 타입이라소 문자열로 변환하여 사용
                 .collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);

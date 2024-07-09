@@ -67,7 +67,7 @@ public class UserService {
                     .orElseThrow(() -> new UserNotFoundException("User 역할이 없습니다."));
         }
 
-        // 새로운 사용자 객체 생성
+        // 관리자가 아니면 user 역할의 새로운 사용자 객체 생성
         User user = new User();
         user.setRole(Collections.singleton(role));  // singleton -- 단일 역할 설정
         user.setUserName(username);  // 사용자 이름 설정
@@ -88,6 +88,10 @@ public class UserService {
         }
 
         // 사용자 저장
+        userRepository.save(user);
+    }
+    @Transactional
+    public void saveUser(User user) {
         userRepository.save(user);
     }
 
@@ -147,6 +151,7 @@ public class UserService {
 //    }
 
     // 글 등록할 때 사용자 이름을 기반으로 조회하기
+    @Transactional
     public Set<Post> getUserPosts(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -156,6 +161,7 @@ public class UserService {
     }
 
     // 사용자 마이페이지 수정
+    @Transactional
     public void updateUser(String username, String email, String usernick, MultipartFile file) throws IOException {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -179,6 +185,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }

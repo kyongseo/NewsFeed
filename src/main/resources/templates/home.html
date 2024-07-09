@@ -34,13 +34,14 @@
               <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
               <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
               <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
-            </ul>
-          </div>
-         </div>
-         <!-- 비로그인 유저 -->
+          </ul>
+        </div>
+      </div>
+      <!-- 비로그인 유저 -->
       <div th:if="${username == null or username == ''}" class="d-flex">
         <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
       </div>
+      <!-- 관리자 -->
       <div th:if="${username == 'admin'}" class="d-flex">
         <div class="dropdown">
           <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -65,10 +66,10 @@
           <a class="btn btn-outline-dark" th:href="@{/recent}">최신</a>
           <a class="btn btn-outline-dark" th:href="@{/}">피드</a>
     </div>
+    <!--검색   <button type="submit" class="btn btn-primary">검색</button> -->
     <div class="col-md-8 d-flex justify-content-end">
       <form th:action="@{/search}" method="get" class="d-flex">
-        <input type="text" id="searchQuery" name="query" class="form-control me-2" placeholder="검색어 입력" required>
-        <button type="submit" class="btn btn-primary">검색</button>
+        <input type="text" id="searchQuery" name="query" class="form-control me-2" placeholder="검색어를 입력하세요" required>
       </form>
     </div>
   </div>

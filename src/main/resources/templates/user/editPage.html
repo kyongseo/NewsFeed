@@ -45,30 +45,40 @@
         <div>
             <div class="username" th:text="${user.userName}">nickname</div>
             <div class="greeting" th:text="'안녕하세요, ' + ${user.userName} + '입니다.'">안녕하세요, nickname 입니다.</div>
-            <div class="action-links">
+           <!-- <div class="action-links">
                 <a th:href="@{/mypage}">수정</a>
-            </div>
+            </div>-->
         </div>
     </div>
-    <div class="card mt-4">
-        <div class="card-body">
-            <div class="action-links">
-                <a type="file">이미지 업로드</a>
-                <a th:href="@{/}">이미지 제거</a>
-            </div>
+    <!--    <div class="card mt-4">
+            <div class="card-body">
+                <div class="action-links">
+                    <a type="file">이미지 업로드</a>
+                    <a th:href="@{/}">이미지 제거</a>
+                </div>
+          div>
         </div>
-    </div>
+        <div class="card mt-4">
+            <div class="card-body">
+                <label class="form-label">프로필 이미지</label>
+                <div class="custom-file-input">
+                    <label class="action-links" for="file">이미지 업로드</label>
+                    <input type="file" id="file" name="file">
+                    <a th:href="@{/}">이미지 제거</a>
+                </div>
+            </div>
+            -->
     <div class="card mt-4">
         <div class="card-body">
             <form th:action="@{/mypage/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
                 <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
                 <div class="mb-3">
                     <label class="form-label">이메일</label>
-                    <input type="email" name="email" th:value="${user.email}" class="form-control" required>
+                    <input type="email" name="email" th:placeholder="${user.email}" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">닉네임</label>
-                    <input type="text" name="usernick" th:value="${user.userNick}" class="form-control" required>
+                    <input type="text" name="usernick" th:placeholder="${user.userNick}" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">프로필 이미지</label>

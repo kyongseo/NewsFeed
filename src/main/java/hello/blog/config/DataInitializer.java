@@ -5,12 +5,21 @@ import hello.blog.domain.RoleName;
 import hello.blog.domain.User;
 import hello.blog.repository.RoleRepository;
 import hello.blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * 관리자 계정 생성
+ * @Bean 메서드가 붙은 메서드만 등록
+ */
 @Configuration
+@RequiredArgsConstructor
 public class DataInitializer {
+
+    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public CommandLineRunner initRolesAndAdminUser(RoleRepository roleRepository, UserRepository userRepository) {
@@ -34,7 +43,7 @@ public class DataInitializer {
                 admin.setUserName("admin");
                 admin.setUserNick("Admin");
                 admin.setEmail("admin@example.com");
-                admin.setPassword("admin");
+                admin.setPassword(passwordEncoder.encode("admin"));
                 admin.getRole().add(adminRole);
                 userRepository.save(admin);
             }
