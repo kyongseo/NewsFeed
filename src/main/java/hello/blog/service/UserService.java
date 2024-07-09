@@ -90,6 +90,8 @@ public class UserService {
         // 사용자 저장
         userRepository.save(user);
     }
+
+    // 사용자 한줄 소개 업로드
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);

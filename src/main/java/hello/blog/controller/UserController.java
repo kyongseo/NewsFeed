@@ -229,7 +229,6 @@ public class UserController {
                 user.setAbout(about);
                 userService.saveUser(user);
 
-                // 변경된 사용자 정보를 모델에 추가하여 반환
                 model.addAttribute("user", user);
 
                 List<Post> allPosts = postService.getAllPosts();
@@ -237,9 +236,9 @@ public class UserController {
                 model.addAttribute("username", user.getUserName());
                 model.addAttribute("profileImage", "/files/" + user.getFilename());
 
-                return "/user/aboutPage"; // 변경된 정보를 포함한 aboutPage 반환
+                return "/user/aboutPage";
             }
         }
-        return "redirect:/loginform"; // 사용자가 존재하지 않으면 로그인 폼으로 리다이렉트
+        return "redirect:/loginform";
     }
 }
