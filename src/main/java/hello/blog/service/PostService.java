@@ -67,7 +67,7 @@ public class PostService {
         throw new RuntimeException("게시글을 찾을 수 없습니다.");
     }
 
-    //게시물 삭제
+    // 게시물 삭제
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
     }
@@ -97,7 +97,7 @@ public class PostService {
         return postRepository.findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
     }
 
-    //게시물 검색
+    // 게시물 검색
     public List<Post> searchPosts(String query) {
         return postRepository.findByTitleContainingOrContentContaining(query, query);
     }
