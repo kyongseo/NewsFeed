@@ -1,5 +1,6 @@
 package hello.blog.controller;
 
+import hello.blog.domain.Comment;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
 import hello.blog.service.LikeService;
@@ -41,8 +42,10 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
+
         List<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
+
         return "home";
     }
 

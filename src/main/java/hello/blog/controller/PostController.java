@@ -12,7 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,15 +56,14 @@ public class PostController {
     @PostMapping("/create")
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
-                             Authentication authentication) {
+                             @RequestParam("image") MultipartFile file,
+                             Authentication authentication) throws IOException {
 
-        // 쿠키가 아닌 인증된 사용자를 확인하는 코드
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            postService.createPost(username, title, content);
+            postService.createPost(username, title, content, file);
             return "redirect:/";
         } else {
-            // 사용자 정보가 없는 경우 처리할 코드
             return "redirect:/loginform";
         }
     }
@@ -89,9 +90,10 @@ public class PostController {
     public String editPost(@PathVariable("postId") Long postId,
                            @RequestParam("title") String title,
                            @RequestParam("content") String content,
-                           Authentication authentication) {
+                           @RequestParam("image") MultipartFile file,
+                           Authentication authentication) throws IOException {
         if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName())) {
-            postService.updatePost(postId, title, content);
+            postService.updatePost(postId, title, content, file);
             return "redirect:/posts/" + postId;
         } else {
             return "redirect:/loginform";// 수정된 게시글로 리디렉션
@@ -135,6 +137,7 @@ public class PostController {
 
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
+        model.addAttribute("postImage", "/files/" + post.getFilename());
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();

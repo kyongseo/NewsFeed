@@ -5,24 +5,32 @@ import hello.blog.domain.User;
 import hello.blog.repository.PostRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     // 글 작성
     @Transactional
-    public Post createPost(String username, String title, String content) {
+    public Post createPost(String username, String title, String content, MultipartFile file) throws IOException {
         // 사용자 이름으로 사용자 조회
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -35,11 +43,27 @@ public class PostService {
             post.setCreatedAt(LocalDateTime.now());
             post.setUser(user); // User 엔티티 설정
 
+            if (!file.isEmpty()) {
+                uploadUserFile(post, file);
+            }
+
             return postRepository.save(post); // 저장 및 반환
         }
         throw new RuntimeException("작성 권한이 없습니다.");
     }
 
+    private void uploadUserFile(Post post, MultipartFile file) throws IOException {
+        Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path filePath = uploadPath.resolve(filename);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        post.setFilename(filename);
+        post.setFilepath(filePath.toString());
+    }
 
     // 글 전체 조회
     @Transactional(readOnly = true)
@@ -54,13 +78,17 @@ public class PostService {
     }
 
     // 게시글 수정
-    public Post updatePost(Long postId, String title, String content) {
+    public Post updatePost(Long postId, String title, String content, MultipartFile file) throws IOException {
 
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             post.setTitle(title);
             post.setContent(content);
+
+            if (!file.isEmpty()) {
+                uploadUserFile(post, file);
+            }
 
             return postRepository.save(post);
         }

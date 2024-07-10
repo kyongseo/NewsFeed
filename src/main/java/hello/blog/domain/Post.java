@@ -55,6 +55,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
 
+    private String filename;
+    private String filepath;
+
     public Post(String title, String content) {
         this.title = title;
         this.content = content;

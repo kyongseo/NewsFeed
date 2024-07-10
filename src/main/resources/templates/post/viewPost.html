@@ -67,6 +67,9 @@
             </div>
             <div class="content">
                 <p th:text="${post.content}">글 내용</p>
+                <div th:if="${post.filename != null}">
+                    <img th:src="@{/files/{filename}(filename=${post.filename})}" class="img-fluid" alt="Post Image"/>
+                </div>
             </div>
         </div>
     </div>

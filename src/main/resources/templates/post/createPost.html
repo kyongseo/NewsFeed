@@ -9,7 +9,7 @@
 <body>
 <div class="container mt-5">
     <h2>글 작성</h2>
-    <form th:action="@{/posts/create}" method="post">
+    <form th:action="@{/posts/create}" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required="required">
@@ -17,6 +17,10 @@
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
             <textarea class="form-control" id="content" name="content" rows="5" placeholder="당신의 이야기를 적어보세요..." required="required"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">이미지 파일</label>
+            <input type="file" class="form-control" id="image" name="image">
         </div>
         <button type="submit" class="btn btn-outline-light me-3">출간하기</button>
     </form>

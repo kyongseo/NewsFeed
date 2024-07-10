@@ -79,6 +79,9 @@
         <div class="card-body d-flex flex-column">
           <h5 class="card-title fw-bold mb-3" th:text="${board.title}">게시글 제목</h5>
           <p class="card-text flex-grow-1" th:text="${board.content}">게시글 내용</p>
+          <div th:if="${board.filename != null}">
+            <img th:src="@{/files/{filename}(filename=${board.filename})}" class="img-fluid" alt="Post Image"/>
+          </div>
           <div class="mt-auto">
             <small class="text-muted" th:text="${#temporals.format(board.createdAt, 'yyyy년 M월 d일')}">게시일</small>
           </div>
