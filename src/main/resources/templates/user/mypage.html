@@ -100,6 +100,21 @@
                         <div class="mt-auto">
                             <small class="emphasized" th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 dd일')}">게시일</small>
                         </div>
+                        <!-- 팔로우 버튼
+                        <div th:if="${not post.user.userName.equals(user.userName)}">
+                            <form th:action="@{/follow}" method="post">
+                                <input type="hidden" name="followedUserId" th:value="${post.user.id}" />
+                                <button type="submit" class="btn btn-outline-primary mt-2" th:text="${post.user.userName} + ' 팔로우'">팔로우</button>
+                            </form>
+                        </div>
+                         팔로우 취소 버튼
+                        <div th:if="${post.user.userName.equals(user.userName)}">
+                            <form th:action="@{/unfollow}" method="post">
+                                <input type="hidden" name="followedUserId" th:value="${post.user.id}" />
+                                <button type="submit" class="btn btn-outline-danger mt-2">팔로우 취소</button>
+                            </form>
+                        </div>
+                        -->
                     </div>
                 </a>
             </div>
