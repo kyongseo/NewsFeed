@@ -22,6 +22,7 @@ public class LikeController {
     private final PostService postService;
     private final UserService userService;
 
+    // 좋아요 버튼을 눌렀을 때
     @PostMapping("/posts/{postId}/like")
     public String like(@PathVariable("postId") Long postId,
                        Authentication authentication) {
