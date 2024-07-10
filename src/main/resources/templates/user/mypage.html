@@ -77,6 +77,9 @@
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd')}">2024-06-19</span></p>
+            <div class="action-links">
+                <a th:href="@{'/' + ${user.userName} + '/follwings'}">팔로우</a>
+            </div>
         </div>
     </div>
     <ul class="nav nav-tabs mt-5 mb-4">
@@ -100,21 +103,6 @@
                         <div class="mt-auto">
                             <small class="emphasized" th:text="${#temporals.format(post.createdAt, 'yyyy년 M월 dd일')}">게시일</small>
                         </div>
-                        <!-- 팔로우 버튼
-                        <div th:if="${not post.user.userName.equals(user.userName)}">
-                            <form th:action="@{/follow}" method="post">
-                                <input type="hidden" name="followedUserId" th:value="${post.user.id}" />
-                                <button type="submit" class="btn btn-outline-primary mt-2" th:text="${post.user.userName} + ' 팔로우'">팔로우</button>
-                            </form>
-                        </div>
-                         팔로우 취소 버튼
-                        <div th:if="${post.user.userName.equals(user.userName)}">
-                            <form th:action="@{/unfollow}" method="post">
-                                <input type="hidden" name="followedUserId" th:value="${post.user.id}" />
-                                <button type="submit" class="btn btn-outline-danger mt-2">팔로우 취소</button>
-                            </form>
-                        </div>
-                        -->
                     </div>
                 </a>
             </div>

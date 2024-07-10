@@ -47,10 +47,14 @@
 <div class="container mt-4">
     <div class="profile-info">
         <img th:src="@{${profileImage}}" alt="Profile Image" />
-        <div>
-            <div class="username" th:text="${user.userName}">nickname</div>
-            <div class="greeting" th:text="'안녕하세요, ' + ${user.userName} + '입니다.'">안녕하세요, nickname 입니다.</div>
-        </div>
+        <!-- 팔로우 기능 -->
+        <form th:action="@{/follows/{username}(username=${user.userName})}" method="post">
+            <button th:if="${username != null and username != ''}" type="submit" id="followButton" class="btn btn-outline-primary">
+                <span th:if="${isFollowing}">Unfollow</span>
+                <span th:unless="${isFollowing}">Follow</span>
+            </button>
+        </form>
+
     </div>
     <div class="card mt-4">
         <div class="card-body">
@@ -60,6 +64,7 @@
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd')}">2024-06-19</span></p>
         </div>
     </div>
+
     <ul class="nav nav-tabs mt-5 mb-4">
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">글</a>
