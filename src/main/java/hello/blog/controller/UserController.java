@@ -2,7 +2,9 @@ package hello.blog.controller;
 
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.repository.FollowRepository;
 import hello.blog.repository.UserRepository;
+import hello.blog.service.FollowService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class UserController {
 
     private final UserService userService;
     private final PostService postService;
-    private final UserRepository userRepository;
+    private final FollowService followService;
 
     /**
      * 회원가입
@@ -101,11 +103,17 @@ public class UserController {
 
                 Optional<User> loggedInUserOptional = userService.findByUserName(loggedInUsername);
                 if (loggedInUserOptional.isPresent()) { // 로그인한 사용자의 프로필 사진이 보이도록
+                    User loggedInUser = loggedInUserOptional.get();
                     model.addAttribute("loggedInProfileImage", "/files/" + loggedInUserOptional.get().getFilename());
+
+                    // 팔로우 상태 확인 및 모델에 추가
+                    boolean isFollowing = followService.isFollowing(loggedInUser, userOptional.get());
+                    model.addAttribute("isFollowing", isFollowing);
                 }
             } else {
                 model.addAttribute("username", "");
                 model.addAttribute("loggedInProfileImage", "");
+                model.addAttribute("isFollowing", false);
             }
             return "/user/userPage";
         }
@@ -125,6 +133,7 @@ public class UserController {
             List<Post> allPosts = postService.getAllPosts();
             model.addAttribute("posts", allPosts);
             model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
+
             return "/user/mypage";
         }
         return "redirect:/loginform";
