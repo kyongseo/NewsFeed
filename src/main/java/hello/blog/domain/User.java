@@ -57,6 +57,17 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;
 
-    private String filename; // 파일 이름
-    private String filepath; // 파일 경로
+    private String filename;
+    private String filepath;
+
+    /**
+     * 기존 User에 소셜로그인 정보 추가
+     */
+    // socialId : 구굴 로그인 한 유저의 고유 ID가 들어감
+    @Column(name = "social_id", length = 255)
+    private String socialId;
+
+    // provider : kakao 들어감
+    @Column(name = "provider", length = 50)
+    private String provider;
 }

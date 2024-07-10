@@ -214,4 +214,20 @@ public class UserService {
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
     }
+
+    //oauth
+    public Optional<User> findByProviderAndSocialId(String provider, String socialId) {
+        return userRepository.findByProviderAndSocialId(provider, socialId);
+    }
+
+    @Transactional(readOnly = false)
+    public User saveUser(String username, String email, String socialId, String provider, PasswordEncoder passwordEncoder){
+        User user = new User();
+        user.setUserName(username);
+        user.setEmail(email);
+        user.setSocialId(socialId);
+        user.setProvider(provider);
+        user.setPassword(passwordEncoder.encode("")); // 비밀번호는 소셜 로그인 사용자의 경우 비워둡니다.
+        return userRepository.save(user);
+    }
 }

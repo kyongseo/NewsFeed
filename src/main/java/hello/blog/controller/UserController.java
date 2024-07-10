@@ -48,7 +48,9 @@ public class UserController {
             redirectAttributes.addFlashAttribute("msg", "회원가입에 실패했습니다: " + e.getMessage());
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("msg", e.getMessage());
+            // id, email -> 중복 체크, password check -> 틀린지 같은지..
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/userregform";
         }
         return "redirect:/loginform";
     }
