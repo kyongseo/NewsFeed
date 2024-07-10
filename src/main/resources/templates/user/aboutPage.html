@@ -93,13 +93,13 @@
         <p>소개가 작성되지 않았습니다.</p>
         <!-- 로그인 한 경우에만 보이는 부분 -->
         <div th:if="${username}">
-            <button th:if="${user.userName == username}" class="btn btn-primary" onclick="document.getElementById('aboutForm').style.display='block'; this.style.display='none';">소개글 작성하기</button>
+            <button th:if="${user.userName == username}" class="btn btn-outline-light me-3" onclick="document.getElementById('aboutForm').style.display='block'; this.style.display='none';">소개글 작성하기</button>
             <form id="aboutForm" th:action="@{/about/{username}(username=${user.userName})}" method="post" style="display: none;">
                 <div class="mb-3">
                     <label for="aboutNew" class="form-label">소개글</label>
                     <textarea id="aboutNew" placeholder="당신은 어떤 사람인가요?" name="about" class="form-control"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">저장하기</button>
+                <button type="submit" class="btn btn-outline-light me-3">저장하기</button>
             </form>
         </div>
     </div>
@@ -107,13 +107,13 @@
         <p th:text="${user.about}">소개글이 없습니다.</p>
         <!-- 로그인 한 경우에만 보이는 부분 -->
         <div th:if="${username}">
-            <button class="btn btn-primary" onclick="document.getElementById('aboutEditForm').style.display='block'; this.style.display='none';">소개글 수정하기</button>
+            <button class="btn btn-outline-light me-3" onclick="document.getElementById('aboutEditForm').style.display='block'; this.style.display='none';">소개글 수정하기</button>
             <form id="aboutEditForm" th:action="@{/about/{username}(username=${user.userName})}" method="post" style="display: none;">
                 <div class="mb-3">
                     <label for="aboutUpdate" class="form-label">소개글</label>
                     <textarea id="aboutUpdate" placeholder="당신은 어떤 사람인가요?" name="about" class="form-control" th:text="${user.about}"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">저장하기</button>
+                <button type="submit" class="btn btn-outline-light me-3">저장하기</button>
             </form>
         </div>
     </div>

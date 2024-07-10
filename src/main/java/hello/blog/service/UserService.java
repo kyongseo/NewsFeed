@@ -34,7 +34,9 @@ public class UserService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    // 회원가입
+    /**
+     * 회원가입
+     */
     @Transactional
     public void registerUser(String username, String email, String password, String passwordCheck, String usernick, MultipartFile file) throws IOException {
         if (!password.equals(passwordCheck)) {
@@ -91,7 +93,9 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // 사용자 한줄 소개 업로드
+    /**
+     * 사용자 한줄 소개 업로드
+     */
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
@@ -187,6 +191,7 @@ public class UserService {
         }
     }
 
+    // 관리자 - 전체 사용자 조회
     @Transactional
     public List<User> findAllUsers() {
         return userRepository.findAll();
@@ -204,5 +209,9 @@ public class UserService {
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         user.setFilename(filename);
         user.setFilepath(filePath.toString());
+    }
+
+    public Optional<User> getUser(Long id){
+        return userRepository.findById(id);
     }
 }
