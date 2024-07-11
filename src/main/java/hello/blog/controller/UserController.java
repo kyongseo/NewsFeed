@@ -1,16 +1,25 @@
 package hello.blog.controller;
 
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.FollowRepository;
-import hello.blog.repository.UserRepository;
+import hello.blog.domain.*;
+import hello.blog.dto.UserLoginDto;
+import hello.blog.dto.UserLoginResponseDto;
+import hello.blog.security.jwt.util.JwtTokenizer;
 import hello.blog.service.FollowService;
 import hello.blog.service.PostService;
+import hello.blog.service.RefreshTokenService;
 import hello.blog.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -18,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +36,11 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
     private final FollowService followService;
+
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenizer jwtTokenizer;
+    private final RefreshTokenService refreshTokenService;
+
 
     /**
      * 회원가입
@@ -65,6 +80,137 @@ public class UserController {
         return "login";
     }
 
+//    @PostMapping("/login")
+//    public ResponseEntity login(@RequestBody @Valid UserLoginDto userLoginDto,
+//                                BindingResult bindingResult, HttpServletResponse response) {
+//        // 입력된 데이터에 대한 유효성 검사
+//        if (bindingResult.hasErrors()) {
+//            return new ResponseEntity<>("Invalid input data", HttpStatus.BAD_REQUEST);
+//        }
+//
+//        // 사용자 이름으로 사용자 조회
+//        Optional<User> optionalUser = userService.findByUserName(userLoginDto.getUserName());
+//        if (optionalUser.isEmpty()) {
+//            return new ResponseEntity<>("User not found", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        User user = optionalUser.get();
+//
+//        // 비밀번호 검증
+//        if (!passwordEncoder.matches(userLoginDto.getPassword(), user.getPassword())) {
+//            return new ResponseEntity<>("Invalid password", HttpStatus.UNAUTHORIZED);
+//        }
+//
+//        // 사용자의 역할(Role) 정보 추출
+//        List<RoleName> roles = user.getRole().stream()
+//                .map(Role::getRoleName)
+//                .collect(Collectors.toList());
+//
+//        // 기존의 refreshToken 삭제
+//        refreshTokenService.deleteRefreshToken(user.getUserId());
+//
+//        // JWT 토큰 생성
+//        String accessToken = jwtTokenizer.createAccessToken(
+//                user.getUserId(), user.getEmail(), user.getUserName(), roles);
+//        String refreshToken = jwtTokenizer.createRefreshToken(
+//                user.getUserId(), user.getEmail(), user.getUserName(), roles);
+//
+//        // 새로운 refreshToken 저장
+//        RefreshToken refreshTokenEntity = new RefreshToken();
+//        refreshTokenEntity.setValue(refreshToken);
+//        refreshTokenEntity.setUserId(user.getUserId());
+//        refreshTokenService.addRefreshToken(refreshTokenEntity);
+//
+//        // JWT 토큰을 쿠키로 설정하여 응답
+//        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+//        accessTokenCookie.setHttpOnly(true);
+//        accessTokenCookie.setPath("/");
+//        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT / 1000)); // 초 단위
+//
+//        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+//        refreshTokenCookie.setHttpOnly(true);
+//        refreshTokenCookie.setPath("/");
+//        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT / 1000)); // 초 단위
+//
+//        response.addCookie(accessTokenCookie);
+//        response.addCookie(refreshTokenCookie);
+//
+//        // 로그인 응답 DTO 생성
+//        UserLoginResponseDto loginResponseDto = UserLoginResponseDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refreshToken)
+//                .userId(user.getUserId())
+//                .userName(user.getUserName())
+//                .build();
+//
+//        return ResponseEntity.ok(loginResponseDto);
+//    }
+
+//    @GetMapping("/api/logout")
+//    public String logout(HttpServletResponse response) {
+//        Cookie cookie = new Cookie("accessToken", null);
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//        cookie.setMaxAge(0); // 쿠키 삭제
+//
+//        response.addCookie(cookie);
+//        return "redirect:/"; // 로그아웃 후 API 페이지로 리다이렉트
+//    }
+
+//    @PostMapping("/loginform")
+//    public ResponseEntity login(@RequestBody @Valid UserLoginDto userLoginDto,
+//                                BindingResult bindingResult, HttpServletResponse response) {
+//        if(bindingResult.hasErrors()) {
+//            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//        }
+//
+//        Optional<User> user = userService.findByUserName(userLoginDto.getUserName());
+//        if(!passwordEncoder.matches(userLoginDto.getPassword(), user.get().getPassword())) {
+//            return new ResponseEntity("비밀번호가 올바르지 않습니다.",HttpStatus.UNAUTHORIZED);
+//
+//        }
+//
+//        List<RoleName> roles = user.get().getRole().stream().map(Role::getRoleName).collect(Collectors.toList());
+//
+//        //토큰 발급
+//        String accessToken = jwtTokenizer.createAccessToken(
+//                user.get().getUserId(), user.get().getEmail(),user.get().getUserName(),roles);
+//        String refreshToken = jwtTokenizer.createRefreshToken(
+//                user.get().getUserId(), user.get().getEmail(), user.get().getUserName(), roles);
+//
+//        RefreshToken refreshTokenEntity = new RefreshToken();
+//        refreshTokenEntity.setValue(refreshToken);
+//        refreshTokenEntity.setUserId(user.get().getUserId());
+//
+//        refreshTokenService.addRefreshToken(refreshTokenEntity);
+//
+//
+//        //응답으로 보낼 값들을 준비해요.
+//        UserLoginResponseDto loginResponseDto = UserLoginResponseDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refreshToken)
+//                .userId(user.get().getUserId())
+//                .userName(user.get().getUserName())
+//                .build();
+//
+//        Cookie accessTokenCookie = new Cookie("accessToken",accessToken);
+//        accessTokenCookie.setHttpOnly(true);  //보안 (쿠키값을 자바스크립트같은곳에서는 접근할수 없어요.)
+//        accessTokenCookie.setPath("/");
+//        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT/1000)); //30분 쿠키의 유지시간 단위는 초 ,  JWT의 시간단위는 밀리세컨드
+//
+//        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+//        refreshTokenCookie.setHttpOnly(true);
+//        refreshTokenCookie.setPath("/");
+//        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000)); //7일
+//
+//        response.addCookie(accessTokenCookie);
+//        response.addCookie(refreshTokenCookie);
+//
+//        return new ResponseEntity(loginResponseDto, HttpStatus.OK);
+//
+//    }
+
+//
 //    @PostMapping("/loginform")
 //    public String loginUser(@RequestParam("username") String username,
 //                            @RequestParam("password") String password,

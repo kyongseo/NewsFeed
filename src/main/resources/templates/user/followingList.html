@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팔로잉 목록</title>
+
+</head>
+<body>
+<h2 th:text="${user.userName} + '님의 팔로잉 목록'"></h2>
+<div th:if="${not #lists.isEmpty(followings)}">
+    <ul>
+        <li th:each="following : ${followings}">
+            <a th:href="@{/{username}(username=${following.userName})}"
+               th:text="${following.userName}"></a>
+        </li>
+    </ul>
+</div>
+<div th:if="${#lists.isEmpty(followings)}">
+    <p>팔로우한 사용자가 없습니다.</p>
+</div>
+</body>
+</html>

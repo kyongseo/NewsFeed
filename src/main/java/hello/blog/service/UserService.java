@@ -5,6 +5,7 @@ import hello.blog.domain.Post;
 import hello.blog.domain.Role;
 import hello.blog.domain.RoleName;
 import hello.blog.domain.User;
+import hello.blog.repository.PostRepository;
 import hello.blog.repository.RoleRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PostRepository postRepository;
 
     // 파일 업로드 디렉토리 경로
     @Value("${file.upload-dir}")
@@ -101,62 +103,12 @@ public class UserService {
         userRepository.save(user);
     }
 
-//        Optional<Role> userRole = roleRepository.findByRoleName(RoleName.ROLE_USER); // ROLE_USER 역할 조회
-//
-//        User user = new User();
-////        user.setRole(new HashSet<>());
-////        Set<Role> roles = new HashSet<>();
-////        roles.add(userRole.get());
-//        user.setRole(Collections.singleton(userRole.get())); // 사용자 객체에 역할 설정 -- 회원가입을 하는 모든 사용자는 기본적으로 다 단일 역할 ROLE_USER 부여
-//        user.setUserName(username);
-//        user.setEmail(email);
-//        user.setPassword(passwordEncoder.encode(password));
-//        user.setUserNick(usernick);
-//
-//        if (!file.isEmpty()) {
-//            Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
-//            if (!Files.exists(uploadPath)) {
-//                Files.createDirectories(uploadPath);
-//            }
-//
-//            String filename = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-//            Path filePath = uploadPath.resolve(filename);
-//            Files.copy(file.getInputStream(), filePath);
-//            user.setFilename(filename);
-//            user.setFilepath(filePath.toString());
-//        }
-////       else {
-////                // 기본 이미지 설정
-////                File defaultUploadFile = new UploadFile("user.png", "user.png");
-////                ImgFile defaultImgFile = new ImgFile();
-////                defaultImgFile.setAttachFile(defaultUploadFile);
-////                imgFileRepository.save(defaultImgFile);
-////                blog.setProfileImg(defaultImgFile);
-////        }
-//
-//        if (userRole.isPresent()) { // 역할이 존재하면
-//            user.setRole(Collections.singleton(userRole.get()));
-//        }
-//        userRepository.save(user);
-//    }
-
     @Transactional
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUserName(username);
     }
 
-    // 사용자 있는지 없는지 검증 로직 --
-//    public boolean validateUser(String username, String password) {
-//        Optional<User> userOptional = userRepository.findByUserName(username);
-//        if (userOptional.isPresent()){
-//            User user = userOptional.get();
-////            return user.getPassword().equals(password);
-//            return passwordEncoder.matches(password, user.getPassword());
-//        }
-//        return false;
-//    }
-
-    // 글 등록할 때 사용자 이름을 기반으로 조회하기
+//     관리자 글 등록할 때 사용자 이름을 기반으로 조회하기
     @Transactional
     public Set<Post> getUserPosts(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
@@ -164,6 +116,16 @@ public class UserService {
             return userOptional.get().getPosts();
         }
         throw new RuntimeException("작성 권한이 없습니다.");
+    }
+
+    @Transactional
+    public void deletePost(Long postId) {
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if (postOptional.isPresent()) {
+            postRepository.delete(postOptional.get());
+        } else {
+            throw new RuntimeException("게시글을 찾을 수 없습니다.");
+        }
     }
 
     // 사용자 마이페이지 수정
@@ -215,7 +177,9 @@ public class UserService {
         return userRepository.findById(id);
     }
 
-    //oauth
+    /**
+     * oauth
+     */
     public Optional<User> findByProviderAndSocialId(String provider, String socialId) {
         return userRepository.findByProviderAndSocialId(provider, socialId);
     }
@@ -229,5 +193,20 @@ public class UserService {
         user.setProvider(provider);
         user.setPassword(passwordEncoder.encode("")); // 비밀번호는 소셜 로그인 사용자의 경우 비워둡니다.
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public boolean authenticateByEmail(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return passwordEncoder.matches(password, user.getPassword());
+        }
+        return false;
+    }
+
+    @Transactional
+    public User findUserByUsername(String username) {
+        return userRepository.findByUserName(username).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }

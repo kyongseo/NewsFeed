@@ -77,8 +77,12 @@
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd')}">2024-06-19</span></p>
+            <!-- 팔로워, 팔로잉 목록-->
             <div class="action-links">
-                <a th:href="@{'/' + ${user.userName} + '/follwings'}">팔로우</a>
+                <a th:href="@{'/' + ${user.userName} + '/followers'}">팔로워</a>
+            </div>
+            <div class="action-links">
+                <a th:href="@{'/' + ${user.userName} + '/followings'}">팔로잉</a>
             </div>
         </div>
     </div>
