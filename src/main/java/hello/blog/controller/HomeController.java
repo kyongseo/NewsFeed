@@ -88,9 +88,30 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
-        List<Post> searchResults = postService.searchPosts(query); // 검색어에 맞는 게시글 검색
+        List<Post> searchResults = postService.searchPosts(query);
         model.addAttribute("blogPosts", searchResults);
-        return "home"; // 검색 결과를 메인 홈 화면에 표시
+        return "home";
+    }
+
+    // 좋아요 순 정렬 -- 트렌딩 클릭시
+    @GetMapping("/trending")
+    public String trendingPosts(Model model,
+                                Authentication authentication) {
+        if (authentication != null) {
+            String username = authentication.getName();
+            Optional<User> userOptional = userService.findByUserName(username);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("nickname", user.getUserNick());
+                model.addAttribute("username", user.getUserName());
+                model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
+            }
+        } else {
+            model.addAttribute("username", "");
+        }
+        List<Post> trendingPosts = postService.getPostsOrderByLikes();
+        model.addAttribute("blogPosts", trendingPosts);
+        return "home";
     }
 //    @GetMapping("/")
 //    public String showHomePage(Model model,
