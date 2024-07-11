@@ -6,6 +6,7 @@ import hello.blog.domain.User;
 import hello.blog.repository.LikeRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
+import hello.blog.service.TagService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,7 @@ public class PostController {
     private final UserService userService;
     private final CommentService commentService;
     private final LikeRepository likeRepository;
+//    private final TagService tagService;
 
     /**
      * 게시글 등록
@@ -168,9 +170,5 @@ public class PostController {
             postService.deletePostById(postId);
         }
         return "redirect:/";
-//        if ("delete".equalsIgnoreCase(method)) {
-//            postService.deletePostById(postId);
-//        }
-//        return "redirect:/";
     }
 }
