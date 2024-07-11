@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "comments")
@@ -31,4 +33,14 @@ public class Comment {
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdA = LocalDateTime.now();
+
+    // 대댓글
+    // 대댓글이 달릴 댓글 부모
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "parent_comment_id")
+//    private Comment parentComment;
+//
+//    // 자식 댓글들, 부모가 삭제되면 자식 댓글들더 삭재ㅔ
+//    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> replies = new ArrayList<>();
 }

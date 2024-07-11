@@ -36,4 +36,25 @@ public class CommentController {
             return "redirect:/loginform";
         }
     }
+
+    // 댓글 수ㅠ정
+    @PostMapping("/comment/{commentId}/update")
+    public String updateComment(@PathVariable("commentId") Long commentId,
+                                @RequestParam String content) {
+        Comment updatedComment = commentService.updateComment(commentId, content);
+        Long postId = updatedComment.getPost().getId();
+
+        return "redirect:/posts/" + postId;
+    }
+
+    // 댓글 삭제
+    @PostMapping("/comment/{commentId}/delete")
+    public String deleteComment(@PathVariable("commentId") Long commentId) {
+        Long postId = commentService.getPostIdByCommentId(commentId); // 댓글이 속한 포스트의 ID 가져오기
+
+        commentService.deleteComment(commentId); // 댓글 삭제 처리
+
+        // 삭제 후 해당 포스트 페이지로 리다이렉트
+        return "redirect:/posts/" + postId;
+    }
 }

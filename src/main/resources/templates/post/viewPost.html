@@ -106,6 +106,16 @@
                         <div class="card-body">
                             <p class="card-text" th:text="${comment.content}"></p>
                             <small class="text-muted"><a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
+                            <!-- 수정 폼 -->
+                            <form th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post">
+                                <textarea class="form-control" name="content" rows="2" required th:text="${comment.content}"></textarea>
+                                <button type="submit" class="btn btn-outline-primary mt-1">수정</button>
+                            </form>
+                            <!-- 삭제 폼 -->
+                            <form th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/delete(commentId=${comment.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="btn btn-outline-danger mt-1">삭제</button>
+                            </form>
                         </div>
                     </div>
                 </div>
