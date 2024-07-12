@@ -44,9 +44,9 @@ public class UserRestController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UserLoginDto userLoginDto,
-                                BindingResult bindingResult, HttpServletResponse response){
+                                BindingResult bindingResult, HttpServletResponse response) {
         System.out.println("들어오나*****************************************************************************");
-        System.out.println(userLoginDto.getUserName());
+        System.out.println(userLoginDto.getUsername());
         System.out.println(userLoginDto.getPassword());
 
         //username,password가 null일때..(정해진 형식에 맞지 않을때..)
@@ -56,7 +56,7 @@ public class UserRestController {
 
         //일단은 username과 password 값을 잘 받아왔다면..
         //우리 서비스에 가입한 사용자 인지...  요거 알아봐요..
-        Optional<User> user = userService.findByUserName(userLoginDto.getUserName());
+        Optional<User> user = userService.findByUserName(userLoginDto.getUsername());
         //요청정보에서 얻어온 비밀번호와 우리 서비스가 갖고있는 비밀번호가 일치하는지확인.
 
         if(!passwordEncoder.matches(userLoginDto.getPassword(), user.get().getPassword())) {
@@ -87,7 +87,7 @@ public class UserRestController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userId(user.get().getUserId())
-                .userName(user.get().getUserName())
+                .username(user.get().getUserName())
                 .build();
 
         Cookie accessTokenCookie = new Cookie("accessToken",accessToken);
@@ -102,6 +102,8 @@ public class UserRestController {
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
+
+
 
         return new ResponseEntity(loginResponseDto, HttpStatus.OK);
     }
@@ -155,7 +157,7 @@ public class UserRestController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .userId(user.getUserId())
-                .userName(user.getUserName())
+                .username(user.getUserName())
                 .build();
 
 
@@ -212,7 +214,7 @@ public class UserRestController {
 
         // /login 페이지로 리디렉션
         try {
-            response.sendRedirect("/loginform");
+            response.sendRedirect("/");
         } catch (IOException e) {
             e.printStackTrace();
         }

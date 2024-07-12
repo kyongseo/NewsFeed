@@ -41,9 +41,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtBlacklistService jwtBlacklistService;
     private final RefreshTokenService refreshTokenService;
 
-
     private static final List<String> PERMIT_ALL_PATHS = List.of(
-            "/", "/css/.*", "/js/.*", "/images/.*", "/api/login", "/api/.*",
+            "/", "/css/.*", "/api/login", "/api/.*",
             "/userregform", "/css/.*", "/files/.*", "/loginform"
             // 추가적으로 permitAll 경로들을 여기에 추가
     );
@@ -211,6 +210,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         Authentication authentication = new JwtAuthenticationToken(authorities, userDetails, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
     }
 
     // JWT Claims에서 권한 정보를 추출하는 메서드
