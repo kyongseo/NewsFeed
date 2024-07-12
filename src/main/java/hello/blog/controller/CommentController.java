@@ -8,9 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -40,7 +38,7 @@ public class CommentController {
     // 댓글 수ㅠ정
     @PostMapping("/comment/{commentId}/update")
     public String updateComment(@PathVariable("commentId") Long commentId,
-                                @RequestParam String content) {
+                                @RequestParam("content") String content) {
         Comment updatedComment = commentService.updateComment(commentId, content);
         Long postId = updatedComment.getPost().getId();
 
