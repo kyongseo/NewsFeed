@@ -37,7 +37,7 @@ public class UserService {
     private String uploadDir;
 
     /**
-     * 회원가입
+     * 사용자, 관리자 - 회원가입
      */
     @Transactional
     public void registerUser(String username, String email, String password, String passwordCheck, String usernick, MultipartFile file) throws IOException {
@@ -96,39 +96,25 @@ public class UserService {
     }
 
     /**
-     * 사용자 한줄 소개 업로드
+     * 사용자 - 한줄 소개 업로드
      */
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
     }
 
+    /**
+     * 사용자 - 아이디 가져오기
+     * 로그인한 유저인지 확인
+     */
     @Transactional
     public Optional<User> findByUserName(String username) {
         return userRepository.findByUserName(username);
     }
 
-//     관리자 글 등록할 때 사용자 이름을 기반으로 조회하기
-    @Transactional
-    public Set<Post> getUserPosts(String username) {
-        Optional<User> userOptional = userRepository.findByUserName(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get().getPosts();
-        }
-        throw new RuntimeException("작성 권한이 없습니다.");
-    }
-
-    @Transactional
-    public void deletePost(Long postId) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if (postOptional.isPresent()) {
-            postRepository.delete(postOptional.get());
-        } else {
-            throw new RuntimeException("게시글을 찾을 수 없습니다.");
-        }
-    }
-
-    // 사용자 마이페이지 수정
+    /**
+     * 사용자 - 마이페이지 수정
+     */
     @Transactional
     public void updateUser(String username, String email, String usernick, MultipartFile file) throws IOException {
         Optional<User> userOptional = userRepository.findByUserName(username);
@@ -153,13 +139,49 @@ public class UserService {
         }
     }
 
-    // 관리자 - 전체 사용자 조회
+    /**
+     * 관리자 -
+     */
+    @Transactional
+    public Set<Post> getUserPosts(String username) {
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getPosts();
+        }
+        throw new RuntimeException("작성 권한이 없습니다.");
+    }
+
+//    /**
+//     * 관리자 - 사용자 이름으로 된 게시글 삭제
+//     */
+//    @Transactional
+//    public void deletePost(Long postId) {
+//        Optional<Post> postOptional = postRepository.findById(postId);
+//        if (postOptional.isPresent()) {
+//            postRepository.delete(postOptional.get());
+//        } else {
+//            throw new RuntimeException("게시글을 찾을 수 없습니다.");
+//        }
+//    }
+
+    /**
+     * 관리자 - 회원가입한 전체 사용자 조회
+     */
     @Transactional
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    // 파일 업로드 처리 메서드
+    /**
+     * 관리자 - 사용자 삭제
+     */
+    @Transactional
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
+
+    // 회원가입 시 파일 업로드 처리 메서드
     private void uploadUserFile(User user, MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         if (!Files.exists(uploadPath)) {
@@ -173,12 +195,15 @@ public class UserService {
         user.setFilepath(filePath.toString());
     }
 
+    /**
+     * jwt 토큰 사용시 메서드.... 보류
+     */
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
     }
 
     /**
-     * oauth
+     * oauth 사용 시 메서드들....
      */
     public Optional<User> findByProviderAndSocialId(String provider, String socialId) {
         return userRepository.findByProviderAndSocialId(provider, socialId);

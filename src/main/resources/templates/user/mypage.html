@@ -51,6 +51,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                         <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
                         <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 저장된 글</a></li>
                         <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                     </ul>
                 </div>
@@ -80,21 +81,22 @@
             <!-- 팔로워, 팔로잉 목록-->
             <div class="action-links">
                 <a th:href="@{'/' + ${user.userName} + '/followers'}">팔로워</a>
-            </div>
-            <div class="action-links">
                 <a th:href="@{'/' + ${user.userName} + '/followings'}">팔로잉</a>
             </div>
         </div>
     </div>
     <ul class="nav nav-tabs mt-5 mb-4">
         <li class="nav-item">
-            <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">글</a>
+            <a class="btn btn-outline-dark" th:href="@{/}">글</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:href="@{/}">시리즈</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:href="@{'/about' + '/' + ${user.userName}}">소개</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-outline-dark" th:href="@{/posts/drafts}">임시 저장된 글</a>
         </li>
     </ul>
     <div class="row justify-content-end">
