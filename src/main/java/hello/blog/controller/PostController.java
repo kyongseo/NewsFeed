@@ -6,7 +6,7 @@ import hello.blog.domain.User;
 import hello.blog.repository.LikeRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
-import hello.blog.service.TagService;
+//import hello.blog.service.TagService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -18,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/posts")
@@ -28,7 +31,6 @@ public class PostController {
     private final UserService userService;
     private final CommentService commentService;
     private final LikeRepository likeRepository;
-//    private final TagService tagService;
 
     /**
      * 게시글 등록
@@ -63,7 +65,8 @@ public class PostController {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            postService.createPost(username, title, content, file);
+            Post post = postService.createPost(username, title, content, file);
+
             return "redirect:/";
         } else {
             return "redirect:/loginform";
@@ -140,6 +143,8 @@ public class PostController {
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         model.addAttribute("postImage", "/files/" + post.getFilename());
+
+
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();

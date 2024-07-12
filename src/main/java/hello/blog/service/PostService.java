@@ -2,6 +2,7 @@ package hello.blog.service;
 
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.repository.LikeRepository;
 import hello.blog.repository.PostRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final LikeRepository likeRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -128,5 +130,10 @@ public class PostService {
     // 게시물 검색
     public List<Post> searchPosts(String query) {
         return postRepository.findByTitleContainingOrContentContaining(query, query);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> getPostsOrderByLikes() {
+        return postRepository.findAllOrderByLikesDesc();
     }
 }
