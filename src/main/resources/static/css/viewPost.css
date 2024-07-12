@@ -22,9 +22,10 @@ body {
     border-color: #FFFFFF;
 }
 .btn-outline-dark:hover {
-    background-color: #ffffff;
-    color: #FFFFFF;
+    color: #000000;
+    background-color: #FFFFFF;
 }
+
 .profile-image {
     width: 40px;
     height: 40px;

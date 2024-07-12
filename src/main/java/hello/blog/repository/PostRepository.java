@@ -16,4 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p LEFT JOIN p.likes l GROUP BY p ORDER BY COUNT(l) DESC")
     List<Post> findAllOrderByLikesDesc(); // 좋아요 수 내림차순으로 게시글 조회
+
+    List<Post> findByUserAndIsDraftTrue(User user);
 }

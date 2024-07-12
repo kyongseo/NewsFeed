@@ -32,7 +32,7 @@ public class PostService {
 
     // 글 작성
     @Transactional
-    public Post createPost(String username, String title, String content, MultipartFile file) throws IOException {
+    public Post createPost(String username, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
         // 사용자 이름으로 사용자 조회
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
@@ -43,15 +43,35 @@ public class PostService {
             post.setTitle(title);
             post.setContent(content);
             post.setCreatedAt(LocalDateTime.now());
-            post.setUser(user); // User 엔티티 설정
+            post.setUser(user);
+            post.setDraft(isDraft); // 기본은 출간 상태(false)
 
             if (!file.isEmpty()) {
                 uploadUserFile(post, file);
             }
 
-            return postRepository.save(post); // 저장 및 반환
+            return postRepository.save(post); // 저장
         }
         throw new RuntimeException("작성 권한이 없습니다.");
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> getDraftPostsByUser(String username) {
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            return postRepository.findByUserAndIsDraftTrue(user);
+        }
+        throw new RuntimeException("사용자를 찾을 수 없습니다.");
+    }
+
+    // 출간하기 기능 구현
+    public void publishPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
+
+        post.setDraft(false); // 임시 저장 상태 해제
+        postRepository.save(post);
     }
 
     private void uploadUserFile(Post post, MultipartFile file) throws IOException {
@@ -80,16 +100,21 @@ public class PostService {
     }
 
     // 게시글 수정
-    public Post updatePost(Long postId, String title, String content, MultipartFile file) throws IOException {
+    public Post updatePost(Long postId, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
 
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
             post.setTitle(title);
             post.setContent(content);
+            post.setDraft(isDraft); // 기본은 출간 상태(false)
 
-            if (!file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 uploadUserFile(post, file);
+            } else if (file == null && post.getFilename() != null) {
+                // 파일이 변경되지 않았을 때 기존 파일 유지
+                post.setFilename(post.getFilename());
+                post.setFilepath(post.getFilepath());
             }
 
             return postRepository.save(post);
@@ -135,5 +160,14 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<Post> getPostsOrderByLikes() {
         return postRepository.findAllOrderByLikesDesc();
+    }
+
+
+    /**
+     * 관리자 - 게시글 삭제
+     */
+    @Transactional
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
     }
 }

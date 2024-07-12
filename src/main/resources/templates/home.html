@@ -19,21 +19,21 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active text-white" aria-current="page" th:href="@{'/' + ${username}}">Home</a>
+          <a class="nav-link active text-white" aria-current="page" th:href="@{/}">Home</a>
         </li>
       </ul>
       <!--로그인 한 유저 영역 -->
-      <div th:if="${username != ''}" th:unless="${username == 'admin'}" class="d-flex align-items-center">
+      <div th:if="${username != null and username != ''}" class="d-flex align-items-center ms-auto">
         <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
         <div class="dropdown">
           <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
             <i class="bi bi-caret-down-fill text-white"></i>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
-              <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
-              <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+            <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
+            <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+            <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
           </ul>
         </div>
       </div>
@@ -51,7 +51,7 @@
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
             <li><a class="dropdown-item" th:href="@{/admin/userboard}">사용자 확인</a></li>
             <li><a class="dropdown-item" th:href="@{/admin/postboard}">게시글 확인</a></li>
-            <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+            <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
           </ul>
         </div>
       </div>
@@ -62,11 +62,10 @@
 <main class="container my-5">
   <div class="d-flex mb-3">
     <div class="col-md-4">
-          <a class="btn btn-outline-dark" th:href="@{/}">트렌딩</a>
+          <a class="btn btn-outline-dark" th:href="@{/trending}">트렌딩</a>
           <a class="btn btn-outline-dark" th:href="@{/recent}">최신</a>
           <a class="btn btn-outline-dark" th:href="@{/}">피드</a>
     </div>
-    <!--검색   <button type="submit" class="btn btn-primary">검색</button> -->
     <div class="col-md-8 d-flex justify-content-end">
       <form th:action="@{/search}" method="get" class="d-flex">
         <input type="text" id="searchQuery" name="query" class="form-control me-2" placeholder="검색어를 입력하세요" required>
@@ -74,7 +73,7 @@
     </div>
   </div>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    <div th:each="board : ${blogPosts}" class="col mb-4">
+    <div th:each="board : ${blogPosts}" th:if="${!board.isDraft}" class="col mb-4">
       <a th:href="@{/posts/{postId}(postId=${board.id})}" class="card h-100 text-decoration-none shadow-sm">
         <div class="card-body d-flex flex-column">
           <h5 class="card-title fw-bold mb-3" th:text="${board.title}">게시글 제목</h5>

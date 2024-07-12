@@ -64,6 +64,9 @@ public class Post {
         this.content = content;
     }
 
+    @Column(name = "is_draft")
+    private boolean isDraft;
+
 //    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "post_tags",
 //            joinColumns = @JoinColumn(name = "post_id"),

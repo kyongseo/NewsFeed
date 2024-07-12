@@ -54,9 +54,12 @@
         <td th:text="${post.content}">Content</td>
         <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Created At</td>
         <td th:text="${post.user.userName}">User Name</td>
-        <!--<a th:href="@{'/admin/' + ${post.user.userName} + '/posts'}" </a> -->
-        <td><a th:href="@{/admin/edit-post/{postId}(postId=${post.id})}">수정</a></td>
-        <td><a th:href="@{/admin/delete-post/{postId}(postId=${post.id})}">삭제</a></td>
+        <td><a th:href="@{/admin/posts/{postId}/edit(postId=${post.id})}">수정</a></td>
+<!--        <form th:action="@{/admin/posts/{postId}/delete(postId=${post.id})}" method="post">
+            <button type="submit">삭제</button>
+        </form>
+        -->
+        <td><a th:href="@{/admin/posts/{postId}/delete(postId=${post.id})}">삭제</a></td>
     </tr>
     </tbody>
 </table>

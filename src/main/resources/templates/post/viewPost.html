@@ -32,7 +32,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                         <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
                         <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                        <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,7 +76,7 @@
     <!-- 좋아요 폼 -->
     <p id="likeCount">❤️ <span th:text="${likeCount}">0</span></p>
     <form th:action="@{/posts/{postId}/like(postId=${post.id})}" method="post" id="likeForm">
-        <button th:if="${username != null and username != ''}" type="submit" id="likeButton" class="btn btn-outline-primary">
+        <button th:if="${username != null and username != ''}" type="submit" id="likeButton" class="btn btn-outline-dark">
             <span th:if="${liked != null and liked}">좋아요 취소</span>
             <span th:if="${liked == null or !liked}">좋아요</span>
         </button>
@@ -94,7 +94,7 @@
                         <label for="content" class="form-label">댓글</label>
                         <textarea class="form-control" id="content" name="content" rows="3" placeholder="댓글을 작성하새요" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-outline-light me-3">댓글 작성</button>
+                    <button type="submit" class="btn btn-outline-dark">댓글 작성</button>
                 </form>
                 <p th:if="${#authorization.expression('!isAuthenticated()')}">
                     <a href="/loginform">로그인 후 댓글을 작성할 수 있습니다.</a>
@@ -105,12 +105,28 @@
                     <div class="card my-3">
                         <div class="card-body">
                             <p class="card-text" th:text="${comment.content}"></p>
-                            <small class="text-muted"><a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
-                            <!-- 수정 폼 -->
-                            <form th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post">
-                                <textarea class="form-control" name="content" rows="2" required th:text="${comment.content}"></textarea>
-                                <button type="submit" class="btn btn-outline-primary mt-1">수정</button>
-                            </form>
+                            <small class="text-muted">
+                                <a th:href="@{'/' + ${comment.user.userName}}">
+                                    <img th:src="${profileImage}" class="profile-image" alt="Post Image"/>
+                                    <span th:text="${comment.user.userName}"></span>
+                                </a>
+                            </small>
+                            <!--  <small class="text-muted"><a th:href="@{'/' + ${comment.user.userName}}" th:text="${comment.user.userName}"></a></small>
+                            -- 수정 폼
+                              <form th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post">
+                                  <textarea class="form-control" name="content" rows="2" required th:text="${comment.content}"></textarea>
+                                  <button type="submit" class="btn btn-outline-primary mt-1">수정</button>
+                              </form>-->
+                            <div th:if="${comment.user.userName == username}">
+                                <button class="btn btn-outline-light me-3" onclick="document.getElementById('commentEdit').style.display='block'; this.style.display='none';">수정</button>
+                                <form th:if="${comment.user.userName == username}" id="commentEdit" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post" style="display: none;">
+                                    <div class="mb-3">
+                                        <label for="commentEditNew" class="form-label">수정</label>
+                                        <textarea id="commentEditNew" th:text="${comment.content}" name="content" class="form-control"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-light me-3">수정</button>
+                                </form>
+                            </div>
                             <!-- 삭제 폼 -->
                             <form th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/delete(commentId=${comment.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
                                 <input type="hidden" name="_method" value="delete">
@@ -127,3 +143,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

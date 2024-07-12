@@ -61,16 +61,36 @@ public class PostController {
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
                              @RequestParam("image") MultipartFile file,
+                             @RequestParam(value = "isDraft", defaultValue = "false") boolean isDraft,
                              Authentication authentication) throws IOException {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            Post post = postService.createPost(username, title, content, file);
+            Post post = postService.createPost(username, title, content, file, isDraft);
 
-            return "redirect:/";
+            // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트
+            if (isDraft) {
+                return "redirect:/posts/drafts";
+            } else {
+                return "redirect:/"; // 출간된 글이면 메인 홈으로 리다이렉트
+            }
         } else {
             return "redirect:/loginform";
         }
+    }
+
+    /**
+     * 임시저장 목록 보여주기
+     */
+    @GetMapping("/drafts")
+    public String getDraftPosts(Model model, Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            List<Post> draftPosts = postService.getDraftPostsByUser(username);
+            model.addAttribute("draftPosts", draftPosts);
+            return "/post/draftPosts"; // 임시 저장된 글 목록을 보여주는 페이지
+        }
+        return "redirect:/loginform"; // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
     }
 
     /**
@@ -96,13 +116,23 @@ public class PostController {
                            @RequestParam("title") String title,
                            @RequestParam("content") String content,
                            @RequestParam("image") MultipartFile file,
+                           @RequestParam(value = "isDraft", defaultValue = "false") boolean isDraft,
                            Authentication authentication) throws IOException {
         if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName())) {
-            postService.updatePost(postId, title, content, file);
-            return "redirect:/posts/" + postId;
+            postService.updatePost(postId, title, content, file, isDraft);
+
+            if (isDraft) {
+                return "redirect:/posts/drafts";
+            } else {
+                return "redirect:/";
+            }
         } else {
-            return "redirect:/loginform";// 수정된 게시글로 리디렉션
+            return "redirect:/loginform";
         }
+//            return "redirect:/posts/" + postId;
+//        } else {
+//            return "redirect:/loginform";// 수정된 게시글로 리디렉션
+//        }
     }
 
     /**

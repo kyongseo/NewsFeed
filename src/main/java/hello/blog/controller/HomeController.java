@@ -29,7 +29,7 @@ public class HomeController {
     public String showHomePage(Model model,
                                Authentication authentication) {
 
-        if (authentication != null) {
+        if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
@@ -54,7 +54,7 @@ public class HomeController {
     public String recentPosts(Model model,
                               Authentication authentication) {
 
-        if (authentication != null) {
+        if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
@@ -76,7 +76,7 @@ public class HomeController {
     public String searchPosts(@RequestParam("query") String query,
                               Model model,
                               Authentication authentication) {
-        if (authentication != null) {
+        if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
@@ -97,7 +97,7 @@ public class HomeController {
     @GetMapping("/trending")
     public String trendingPosts(Model model,
                                 Authentication authentication) {
-        if (authentication != null) {
+        if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
             if (userOptional.isPresent()) {
