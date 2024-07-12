@@ -6,8 +6,10 @@ import hello.blog.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Set;
 
@@ -34,12 +36,32 @@ public class AdminController {
         return "admin/postboard";
     }
 
-    // 특정 사용자의 게시글
-    @GetMapping("/admin/{username}/posts")
-    public String getUserPosts(@PathVariable("username") String username, Model model) {
-        Set<Post> userPosts = userService.getUserPosts(username);
-        model.addAttribute("username", username);
-        model.addAttribute("posts", userPosts);
-        return "admin/blogs";
+    // 사용자 영구 삭제
+    @PostMapping("/admin/users/{username}/delete")
+    public String deleteUser(@PathVariable("username") Long username) {
+        userService.deleteUser(username);
+        return "redirect:/admin/dashboard";
+    }
+
+    // 게시글 영구 삭제
+    @PostMapping("/admin/posts/{postId}/delete")
+    public String deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return "redirect:/admin/dashboard";
+    }
+
+    // 사용자 중지
+
+    // 공지사항 올리기
+    @GetMapping("/notice/create")
+    public String createNoticeForm(Model model) {
+        model.addAttribute("post", new Post());
+        return "admin/noticeboard" ;
+    }
+
+    @PostMapping("/notice/create")
+    public String createNotice(@ModelAttribute Post post) {
+
+        return "redirect:/admin/dashboard";
     }
 }
