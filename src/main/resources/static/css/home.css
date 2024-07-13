@@ -75,3 +75,11 @@ body {
 .emphasized {
     font-weight: bold;
 }
+.card-img {
+    width: 40%;
+    height: auto;
+    object-fit: cover;
+}
+.space-between {
+    margin-right: 280px;
+}

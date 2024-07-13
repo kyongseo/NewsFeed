@@ -1,8 +1,8 @@
 package hello.blog.controller;
 
-import hello.blog.domain.Comment;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
+import hello.blog.repository.LikeRepository;
 import hello.blog.service.LikeService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class HomeController {
 
     private final UserService userService;
     private final PostService postService;
-    private final LikeService likeService;
+    private final LikeRepository likeRepository;
 
     // 메인 홈 화면
     @GetMapping("/")
@@ -45,7 +46,6 @@ public class HomeController {
 
         List<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
-
         return "home";
     }
 
@@ -67,6 +67,7 @@ public class HomeController {
             model.addAttribute("username", "");
         }
         List<Post> latestPosts = postService.getRecentPosts();
+
         model.addAttribute("blogPosts", latestPosts);
         return "home";
     }

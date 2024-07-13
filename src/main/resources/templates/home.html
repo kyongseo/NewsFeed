@@ -22,28 +22,24 @@
           <a class="nav-link active text-white" aria-current="page" th:href="@{/}">Home</a>
         </li>
       </ul>
-      <!--로그인 한 유저 영역 -->
       <div th:if="${username != null and username != ''}" class="d-flex align-items-center ms-auto">
         <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
-        <div class="dropdown">
+        <!-- 일반 사용자 -->
+        <div th:unless="${username == 'admin'}" class="dropdown">
           <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
             <i class="bi bi-caret-down-fill text-white"></i>
           </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
             <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
             <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+            <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 글</a></li>
             <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
           </ul>
         </div>
-      </div>
-      <!-- 비로그인 유저 -->
-      <div th:if="${username == null or username == ''}" class="d-flex">
-        <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
-      </div>
-      <!-- 관리자 -->
-      <div th:if="${username == 'admin'}" class="d-flex">
-        <div class="dropdown">
+
+        <!-- admin -->
+        <div th:if="${username == 'admin'}" class="dropdown">
           <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
             <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
             <i class="bi bi-caret-down-fill text-white"></i>
@@ -54,6 +50,10 @@
             <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
           </ul>
         </div>
+      </div>
+      <!-- 비로그인 -->
+      <div th:if="${username == null or username == ''}" class="d-flex">
+        <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
       </div>
     </div>
   </div>
@@ -79,15 +79,17 @@
           <h5 class="card-title fw-bold mb-3" th:text="${board.title}">게시글 제목</h5>
           <p class="card-text flex-grow-1" th:text="${board.content}">게시글 내용</p>
           <div th:if="${board.filename != null}">
-            <img th:src="@{/files/{filename}(filename=${board.filename})}" class="img-fluid" alt="Post Image"/>
+            <img th:src="@{/files/{filename}(filename=${board.filename})}" class="card-img" alt="Post Image"/>
           </div>
           <div class="mt-auto">
             <small class="text-muted" th:text="${#temporals.format(board.createdAt, 'yyyy년 M월 d일')}">게시일</small>
           </div>
           <div class="mt-auto">
-            <small> by <span class="emphasized" th:text="${board.user.userName}"></span></small>
+            <small class="space-between"> by <span class="emphasized" th:text="${board.user.userName}"></span></small>
+            <small> ❤️ <span class="emphasized" th:text="${board.likes.size()}"></span></small>
           </div>
         </div>
+
       </a>
     </div>
   </div>
