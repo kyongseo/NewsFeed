@@ -1,7 +1,6 @@
 package hello.blog.controller;
 
 import hello.blog.domain.User;
-//import hello.blog.service.FollowService;
 import hello.blog.service.FollowService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
