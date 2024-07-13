@@ -7,16 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-
+// Containing : LIKE '%keyword% --> 부분 일치
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개를 시간순으로 조회하는 메서드
+
+    @Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
+    List<Post> findTopByOrderByCreatedAtDesc(); // 최신 글 정렬 내림차순
+
     List<Post> findByTitleContainingOrContentContaining(String title, String content); // 제목, 내용에 검색어가 포함된 게시글 검색
 
     @Query("SELECT p FROM Post p LEFT JOIN p.likes l GROUP BY p ORDER BY COUNT(l) DESC")
-    List<Post> findAllOrderByLikesDesc(); // 좋아요 수 내림차순으로 게시글 조회
+    List<Post> findAllOrderByLikesDesc(); // 좋아요 수 정렬 내림차순
 
-    List<Post> findByUserAndIsDraftTrue(User user);
+    List<Post> findByUserAndIsDraftTrue(User user); // 게시글 임시저장 상태
 }

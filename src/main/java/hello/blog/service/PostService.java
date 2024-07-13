@@ -55,6 +55,7 @@ public class PostService {
         throw new RuntimeException("작성 권한이 없습니다.");
     }
 
+    // 임시저장
     @Transactional(readOnly = true)
     public List<Post> getDraftPostsByUser(String username) {
         Optional<User> userOptional = userRepository.findByUserName(username);
@@ -114,6 +115,7 @@ public class PostService {
     }
 
     // 게시물 삭제
+    @Transactional
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
     }
@@ -140,7 +142,7 @@ public class PostService {
     // 최신 글 정렬
     @Transactional(readOnly = true)
     public List<Post> getRecentPosts() {
-        return postRepository.findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
+        return postRepository.findTopByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
     }
 
     // 게시물 검색
