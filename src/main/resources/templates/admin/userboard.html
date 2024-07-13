@@ -8,7 +8,7 @@
         body {
             padding: 20px;
         }
-        h1, h2 {
+        h2 {
             margin-bottom: 20px;
         }
         table {
@@ -43,6 +43,7 @@
         <th>사용자 이름</th>
         <th>이메일</th>
         <th>닉네임</th>
+        <th>삭제</th>
     </tr>
     </thead>
     <tbody>
@@ -51,6 +52,12 @@
         <td th:text="${user.userName}">User Name</td>
         <td th:text="${user.email}">Email</td>
         <td th:text="${user.userNick}">Nick Name</td>
+        <td>
+            <form th:action="@{/admin/users/{username}/delete(username=${user.userId})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <input type="hidden" name="_method" value="post">
+                <button type="submit" class="btn btn-outline-danger">삭제</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
