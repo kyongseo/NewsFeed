@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>임시 저장된 글</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="/css/home.css" rel="stylesheet"/>
 </head>
 <body>
 
 <main class="container my-5">
-    <h2>임시 저장된 글 목록</h2>
+    <h2>임시 글 목록</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <div th:each="draftPost : ${draftPosts}" class="col mb-4">
             <div class="card h-100 shadow-sm">
@@ -21,11 +25,11 @@
                         <small class="text-muted" th:text="${#temporals.format(draftPost.createdAt, 'yyyy년 M월 d일')}">게시일</small>
                     </div>
                     <div class="d-flex mt-auto">
-                        <a class="btn btn-outline-dark me-3" th:href="@{/posts/{postId}/edit(postId=${draftPost.id})}">출간하기</a>
+                        <a class="btn btn-outline-black" th:href="@{/posts/{postId}/edit(postId=${draftPost.id})}">출간하기</a>
                         <!-- 삭제 버튼 -->
                         <form th:action="@{'/posts/' + ${draftPost.id} + '/delete'}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
                             <input type="hidden" name="_method" value="delete">
-                            <button type="submit">삭제</button>
+                            <button class="btn btn-outline-black" type="submit">삭제</button>
                         </form>
                     </div>
                 </div>
@@ -33,7 +37,6 @@
         </div>
     </div>
 </main>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

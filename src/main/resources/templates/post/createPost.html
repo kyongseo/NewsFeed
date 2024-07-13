@@ -23,28 +23,13 @@
             <input type="file" class="form-control" id="image" name="image">
         </div>
         <div class="mb-3">
-            <label for="isDraft">임시 저장:</label>
+            <label for="isDraft" class="form-label">임시 저장</label>
             <input type="checkbox" id="isDraft" name="isDraft" value="true"><br><br>
             <button type="submit" class="btn btn-outline-light me-3">출간하기</button>
+            <a th:href="@{/trending}" class="btn btn-outline-secondary">취소</a>
         </div>
-        <!-- 임시 저장 여부를 저장할 hidden 필드 추가
-        <input type="hidden" name="isDraft" id="isDraft" value="false">-->
-
-        <!--    <div class="mb-3">
-             출간하기 버튼
-            <button type="submit" class="btn btn-outline-light me-3">출간하기</button>
-             임시 저장 버튼
-            <button type="button" class="btn btn-outline-light" onclick="saveDraft()">임시저장</button>
-        </div>-->
     </form>
 </div>
-
-<script>
-    function saveDraft() {
-        document.getElementById('isDraft').value = 'true';
-        document.forms[0].submit();
-    }
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

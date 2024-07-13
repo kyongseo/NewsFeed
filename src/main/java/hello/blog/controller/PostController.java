@@ -6,7 +6,6 @@ import hello.blog.domain.User;
 import hello.blog.repository.LikeRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
-//import hello.blog.service.TagService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -16,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/posts")
@@ -72,7 +70,7 @@ public class PostController {
             if (isDraft) {
                 return "redirect:/posts/drafts";
             } else {
-                return "redirect:/"; // 출간된 글이면 메인 홈으로 리다이렉트
+                return "redirect:/trending"; // 출간된 글이면 메인 홈으로 리다이렉트
             }
         } else {
             return "redirect:/loginform";
@@ -124,7 +122,7 @@ public class PostController {
             if (isDraft) {
                 return "redirect:/posts/drafts";
             } else {
-                return "redirect:/";
+                return "redirect:/trending";
             }
         } else {
             return "redirect:/loginform";

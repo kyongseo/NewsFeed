@@ -55,13 +55,15 @@
         <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Created At</td>
         <td th:text="${post.user.userName}">User Name</td>
         <td><a th:href="@{/admin/posts/{postId}/edit(postId=${post.id})}">수정</a></td>
-<!--        <form th:action="@{/admin/posts/{postId}/delete(postId=${post.id})}" method="post">
-            <button type="submit">삭제</button>
-        </form>
-        -->
-        <td><a th:href="@{/admin/posts/{postId}/delete(postId=${post.id})}">삭제</a></td>
-    </tr>
-    </tbody>
+        <td>
+            <form id="deleteForm" th:action="@{/admin/posts/{postId}/delete(postId=${post.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <input type="hidden" name="_method" value="delete">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+        <!--   <td><a th:href="@{/admin/posts/{postId}/delete(postId=${post.id})}">삭제</a></td>-->
+       </tr>
+       </tbody>
 </table>
 </body>
 </html>

@@ -65,15 +65,6 @@ public class PostService {
         throw new RuntimeException("사용자를 찾을 수 없습니다.");
     }
 
-    // 출간하기 기능 구현
-    public void publishPost(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-
-        post.setDraft(false); // 임시 저장 상태 해제
-        postRepository.save(post);
-    }
-
     private void uploadUserFile(Post post, MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         if (!Files.exists(uploadPath)) {
@@ -128,13 +119,13 @@ public class PostService {
     }
 
     // 사용자별 게시글 조회
-    public Set<Post> getPostsByUser(String username) {
-        Optional<User> userOptional = userRepository.findByUserName(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get().getPosts();
-        }
-        throw new RuntimeException("사용자를 찾을 수 없습니다.");
-    }
+//    public Set<Post> getPostsByUser(String username) {
+//        Optional<User> userOptional = userRepository.findByUserName(username);
+//        if (userOptional.isPresent()) {
+//            return userOptional.get().getPosts();
+//        }
+//        throw new RuntimeException("사용자를 찾을 수 없습니다.");
+//    }
 
     // 게시글 작성자 확인
     public boolean isPostOwner(Long postId, String username) {
@@ -146,7 +137,7 @@ public class PostService {
         return false;
     }
 
-    // 최신 글 조회
+    // 최신 글 정렬
     @Transactional(readOnly = true)
     public List<Post> getRecentPosts() {
         return postRepository.findTop10ByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
@@ -157,6 +148,8 @@ public class PostService {
         return postRepository.findByTitleContainingOrContentContaining(query, query);
     }
 
+
+    // 좋아요 순 정렬
     @Transactional(readOnly = true)
     public List<Post> getPostsOrderByLikes() {
         return postRepository.findAllOrderByLikesDesc();
