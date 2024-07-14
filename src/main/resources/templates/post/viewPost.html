@@ -32,6 +32,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
                         <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
                         <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 글</a></li>
                         <li><a class="dropdown-item" th:href="@{/api/logout}">로그아웃</a></li>
                     </ul>
                 </div>
@@ -68,7 +69,7 @@
             <div class="content">
                 <p th:text="${post.content}">글 내용</p>
                 <div th:if="${post.filename != null}">
-                    <img th:src="@{/files/{filename}(filename=${post.filename})}" class="img-fluid" alt="Post Image"/>
+                    <img th:src="@{/files/{filename}(filename=${post.filename})}" class="card-img" alt="Post Image"/>
                 </div>
             </div>
         </div>
