@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand text-white" th:href="@{/}">velog</a>
+        <a class="navbar-brand text-white" th:href="@{/trending}">velog</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -32,6 +32,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
                         <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 글</a></li>
                         <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                     </ul>
                 </div>
@@ -45,29 +46,8 @@
         <div>
             <div class="username" th:text="${user.userName}">nickname</div>
             <div class="greeting" th:text="'안녕하세요, ' + ${user.userName} + '입니다.'">안녕하세요, nickname 입니다.</div>
-           <!-- <div class="action-links">
-                <a th:href="@{/mypage}">수정</a>
-            </div>-->
         </div>
     </div>
-    <!--    <div class="card mt-4">
-            <div class="card-body">
-                <div class="action-links">
-                    <a type="file">이미지 업로드</a>
-                    <a th:href="@{/}">이미지 제거</a>
-                </div>
-          div>
-        </div>
-        <div class="card mt-4">
-            <div class="card-body">
-                <label class="form-label">프로필 이미지</label>
-                <div class="custom-file-input">
-                    <label class="action-links" for="file">이미지 업로드</label>
-                    <input type="file" id="file" name="file">
-                    <a th:href="@{/}">이미지 제거</a>
-                </div>
-            </div>
-            -->
     <div class="card mt-4">
         <div class="card-body">
             <form th:action="@{/mypage/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
@@ -86,6 +66,15 @@
                 </div>
                 <button type="submit" class="btn btn-outline-light">수정</button>
                 <a th:href="@{'/' + ${user.userName}}" class="btn btn-outline-secondary">뒤로가기</a>
+            </form>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">회원 탈퇴</h5>
+            <p class="card-text">회원 탈퇴 시 모든 데이터가 삭제됩니다. 정말로 탈퇴하시겠습니까?</p>
+            <form th:action="@{/mypage/delete}" method="post">
+                <button type="submit" class="btn btn-danger">회원 탈퇴</button>
             </form>
         </div>
     </div>
