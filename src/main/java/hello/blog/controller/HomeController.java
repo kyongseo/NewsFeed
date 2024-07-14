@@ -147,30 +147,4 @@ public class HomeController {
 
         return "home";
     }
-//    @GetMapping("/")
-//    public String showHomePage(Model model,
-//                               @CookieValue(value = "username", defaultValue = "") String username) {
-//        if (!username.isEmpty()) {
-//            Optional<User> userOptional = userService.findByUserName(username);
-//            if (userOptional.isPresent()) {
-//                User user = userOptional.get();
-//                model.addAttribute("nickname", user.getUserNick());
-//                model.addAttribute("username", user.getUserName());
-//                model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
-//            }
-//        } else {
-//            model.addAttribute("username", "");
-//        }
-//        List<Post> blogPosts = postService.getAllPosts();
-//        model.addAttribute("blogPosts", blogPosts);
-//        return "home";
-//    }
-
-//    @GetMapping("/logout")
-//    public String logoutUser (HttpServletResponse response){
-//        Cookie cookie = new Cookie("username", null);
-//        cookie.setMaxAge(0);
-//        response.addCookie(cookie);
-//        return "redirect:/";
-//    }
 }

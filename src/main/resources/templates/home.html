@@ -64,7 +64,7 @@
     <div class="col-md-4">
           <a class="btn btn-outline-dark" th:href="@{/trending}">트렌딩</a>
           <a class="btn btn-outline-dark" th:href="@{/recent}">최신</a>
-          <a class="btn btn-outline-dark" th:href="@{/}">피드</a>
+          <a class="btn btn-outline-dark" th:href="@{/following}">피드</a>
     </div>
     <div class="col-md-8 d-flex justify-content-end">
       <form th:action="@{/search}" method="get" class="d-flex">
@@ -89,7 +89,6 @@
             <small> ❤️ <span class="emphasized" th:text="${board.likes.size()}"></span></small>
           </div>
         </div>
-
       </a>
     </div>
   </div>
