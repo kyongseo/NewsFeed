@@ -11,14 +11,14 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand text-white" href="#">velog</a>
+        <a class="navbar-brand text-white" th:href="@{/trending}">velog</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" aria-current="page" th:href="@{/}">Home</a>
+                    <a class="nav-link active text-white" aria-current="page" th:href="@{/trending}">Home</a>
                 </li>
             </ul>
             <!--로그인 한 유저 영역 -->
@@ -32,6 +32,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
                         <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 글</a></li>
                         <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
                     </ul>
                 </div>
