@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,28 +30,12 @@ public class PostController {
 
     /**
      * 게시글 등록
-     * 쿠키가 아닌 인증된 사용자를 확인하는 코드 --> 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
      */
     @GetMapping("/create")
     public String showCreatePost(Model model) {
         model.addAttribute("post", new Post());
         return "/post/createPost";
     }
-
-//    @PostMapping("/create")
-//    public String createPost(@RequestParam("title") String title,
-//                             @RequestParam("content") String content,
-//                             @CookieValue(value = "username", defaultValue = "") String username) {
-//
-//        if (!username.isEmpty()) {
-//            // 사용자 이름(userName)을 이용하여 게시물 등록 작업 수행
-//            postService.createPost(username, title, content);
-//        } else {
-//            // 사용자 정보가 없는 경우 처리할 코드
-//            return "redirect:/loginform";
-//        }
-//        return "redirect:/";
-//    }
 
     @PostMapping("/create")
     public String createPost(@RequestParam("title") String title,
@@ -127,38 +109,12 @@ public class PostController {
         } else {
             return "redirect:/loginform";
         }
-//            return "redirect:/posts/" + postId;
-//        } else {
-//            return "redirect:/loginform";// 수정된 게시글로 리디렉션
-//        }
     }
 
     /**
      * 상세 페이지
      * 시큐리티에서 인증된 사용자를 확인
      */
-//    @GetMapping("/{postId}")
-//    public String getPostById(@PathVariable("postId") Long postId, Model model,
-//                              @CookieValue(value = "username", defaultValue = "") String username) {
-//
-//        Post post = postService.getPostById(postId)
-//                .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
-//
-//        model.addAttribute("post", post);
-//
-//        if (!username.isEmpty()) {
-//            Optional<User> userOptional = userService.findByUserName(username);
-//            if (userOptional.isPresent()) {
-//                User user = userOptional.get();
-//                model.addAttribute("username", user.getUserName());
-//                model.addAttribute("profileImage", "/files/" + user.getFilename());
-//            }
-//        } else {
-//            model.addAttribute("username", "");
-//        }
-//
-//        return "/post/viewPost";
-//    }
     @GetMapping("/{postId}")
     public String getPostById(@PathVariable("postId") Long postId, Model model,
                               Authentication authentication) {
@@ -171,8 +127,6 @@ public class PostController {
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         model.addAttribute("postImage", "/files/" + post.getFilename());
-
-
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();

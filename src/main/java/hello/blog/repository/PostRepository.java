@@ -21,4 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllOrderByLikesDesc(); // 좋아요 수 정렬 내림차순
 
     List<Post> findByUserAndIsDraftTrue(User user); // 게시글 임시저장 상태
+
+    List<Post> findByUserIn(List<User> users); // 팔로우한 사용자 보이도록
+
+    List<Post> findByUserUserNameContaining(String user); // 작성자가 포함된 게시글 검색
 }

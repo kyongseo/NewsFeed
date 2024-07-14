@@ -33,12 +33,10 @@ public class PostService {
     // 글 작성
     @Transactional
     public Post createPost(String username, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
-        // 사용자 이름으로 사용자 조회
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
-            // Post 엔티티 생성 및 설정
             Post post = new Post();
             post.setTitle(title);
             post.setContent(content);
@@ -50,7 +48,7 @@ public class PostService {
                 uploadUserFile(post, file);
             }
 
-            return postRepository.save(post); // 저장
+            return postRepository.save(post);
         }
         throw new RuntimeException("작성 권한이 없습니다.");
     }
@@ -92,6 +90,7 @@ public class PostService {
     }
 
     // 게시글 수정
+    @Transactional
     public Post updatePost(Long postId, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
 
         Optional<Post> postOptional = postRepository.findById(postId);
@@ -120,15 +119,6 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    // 사용자별 게시글 조회
-//    public Set<Post> getPostsByUser(String username) {
-//        Optional<User> userOptional = userRepository.findByUserName(username);
-//        if (userOptional.isPresent()) {
-//            return userOptional.get().getPosts();
-//        }
-//        throw new RuntimeException("사용자를 찾을 수 없습니다.");
-//    }
-
     // 게시글 작성자 확인
     public boolean isPostOwner(Long postId, String username) {
         Optional<Post> postOptional = postRepository.findById(postId);
@@ -150,6 +140,11 @@ public class PostService {
         return postRepository.findByTitleContainingOrContentContaining(query, query);
     }
 
+    // 게시글 검색 -- 작성자
+    public List<Post> searchPostUser(String query) {
+        return postRepository.findByUserUserNameContaining(query);
+    }
+
 
     // 좋아요 순 정렬
     @Transactional(readOnly = true)
@@ -157,12 +152,16 @@ public class PostService {
         return postRepository.findAllOrderByLikesDesc();
     }
 
-
     /**
      * 관리자 - 게시글 삭제
      */
     @Transactional
-    public void deletePost(Long postId) {
+    public void deletePostAdmin(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    // 팔로우한 사람 목록
+    public List<Post> getPostByUsers(List<User> users) {
+        return postRepository.findByUserIn(users);
     }
 }
