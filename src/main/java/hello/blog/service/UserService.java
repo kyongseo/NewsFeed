@@ -96,6 +96,20 @@ public class UserService {
     }
 
     /**
+     * 사용자 - 회원 탈퇴
+     */
+    @Transactional
+    public void deleteUser(String username) {
+        // 사용자 삭제
+        Optional<User> userOptional = userRepository.findByUserName(username);
+        if (userOptional.isPresent()) {
+            userRepository.delete(userOptional.get());
+        } else {
+            throw new IllegalArgumentException("삭제할 사용자가 존재하지 않습니다.");
+        }
+    }
+
+    /**
      * 사용자 - 한줄 소개 업로드
      */
     @Transactional
@@ -139,18 +153,6 @@ public class UserService {
         }
     }
 
-    /**
-     * 관리자 -
-     */
-    @Transactional
-    public Set<Post> getUserPosts(String username) {
-        Optional<User> userOptional = userRepository.findByUserName(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get().getPosts();
-        }
-        throw new RuntimeException("작성 권한이 없습니다.");
-    }
-
 //    /**
 //     * 관리자 - 사용자 이름으로 된 게시글 삭제
 //     */
@@ -173,13 +175,12 @@ public class UserService {
     }
 
     /**
-     * 관리자 - 사용자 삭제
+     * 관리자 - 회원 강제 삭제
      */
     @Transactional
-    public void deleteUser(Long userId) {
+    public void deleteUserAdmin(Long userId) {
         userRepository.deleteById(userId);
     }
-
 
     // 회원가입 시 파일 업로드 처리 메서드
     private void uploadUserFile(User user, MultipartFile file) throws IOException {
@@ -228,10 +229,5 @@ public class UserService {
             return passwordEncoder.matches(password, user.getPassword());
         }
         return false;
-    }
-
-    @Transactional
-    public User findUserByUsername(String username) {
-        return userRepository.findByUserName(username).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 }

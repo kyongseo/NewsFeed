@@ -1,25 +1,13 @@
 package hello.blog.controller;
 
 import hello.blog.domain.*;
-import hello.blog.dto.UserLoginDto;
-import hello.blog.dto.UserLoginResponseDto;
-import hello.blog.security.jwt.util.JwtTokenizer;
 import hello.blog.service.FollowService;
 import hello.blog.service.PostService;
-import hello.blog.service.RefreshTokenService;
 import hello.blog.service.UserService;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -27,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,11 +23,6 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
     private final FollowService followService;
-
-    private final PasswordEncoder passwordEncoder;
-    private final JwtTokenizer jwtTokenizer;
-    private final RefreshTokenService refreshTokenService;
-
 
     /**
      * 회원가입
@@ -182,6 +164,21 @@ public class UserController {
             e.printStackTrace();
         }
         return "redirect:/" + username;
+    }
+
+    // 사용자 탈퇴 처리
+    @PostMapping("/mypage/delete")
+    public String deleteUser(Authentication authentication, RedirectAttributes redirectAttributes) {
+        String username = authentication.getName();
+
+        try {
+            userService.deleteUser(username);
+            redirectAttributes.addFlashAttribute("msg", "회원 탈퇴가 완료되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "회원 탈퇴 중 오류가 발생했습니다: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "redirect:/trending";
     }
 
     // 소개 페이지
