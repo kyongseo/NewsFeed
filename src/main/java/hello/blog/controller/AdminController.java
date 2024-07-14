@@ -37,14 +37,14 @@ public class AdminController {
     // 사용자 영구 삭제
     @PostMapping("/admin/users/{username}/delete")
     public String deleteUser(@PathVariable("username") Long username) {
-        userService.deleteUser(username);
+        userService.deleteUserAdmin(username);
         return "redirect:/admin/userboard";
     }
 
     // 게시글 영구 삭제
     @PostMapping("/admin/posts/{postId}/delete")
     public String deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+        postService.deletePostAdmin(postId);
         return "redirect:/admin/postboard";
     }
 
