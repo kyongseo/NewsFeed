@@ -65,11 +65,14 @@ public class Post {
     }
 
     @Column(name = "is_draft")
-    private boolean isDraft;
+    private boolean isDraft; // 임시저장
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "post_tags",
-//            joinColumns = @JoinColumn(name = "post_id"),
-//            inverseJoinColumns = @JoinColumn(name = "tag_id"))
-//    private Set<Tag> tags = new HashSet<>();
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> tags = new HashSet<>();
 }

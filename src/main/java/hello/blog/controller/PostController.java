@@ -7,6 +7,8 @@ import hello.blog.repository.LikeRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -125,10 +127,14 @@ public class PostController {
                               Model model,
                               Authentication authentication) {
 
+        postService.updateView(postId);
+
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
         List<Comment> comments = commentService.findByPostId(postId);
+
+        model.addAttribute("viewCount", post.getView());
 
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
@@ -166,6 +172,6 @@ public class PostController {
 
             postService.deletePostById(postId);
         }
-        return "redirect:/";
+        return "redirect:/trending";
     }
 }

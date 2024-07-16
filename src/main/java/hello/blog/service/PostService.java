@@ -7,6 +7,8 @@ import hello.blog.repository.PostRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -129,6 +131,12 @@ public class PostService {
         return false;
     }
 
+    // 조회수
+    @Transactional
+    public int updateView(Long id){
+        return postRepository.updateView(id);
+    }
+
     // 최신 글 정렬
     @Transactional(readOnly = true)
     public List<Post> getRecentPosts() {
@@ -136,8 +144,8 @@ public class PostService {
     }
 
     // 게시물 검색
-    public List<Post> searchPosts(String query) {
-        return postRepository.findByTitleContainingOrContentContaining(query, query);
+    public List<Post> searchPosts(String query, Pageable pageable) {
+        return postRepository.findByTitleContainingOrContentContaining(query, query, pageable);
     }
 
     // 게시글 검색 -- 작성자
@@ -149,6 +157,12 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<Post> getPostsOrderByLikes() {
         return postRepository.findAllOrderByLikesDesc();
+    }
+
+    // 페이지 처리
+    @Transactional
+    public Page<Post> getPostPageList(Pageable pageable){
+        return postRepository.findAll(pageable);
     }
 
     /**
