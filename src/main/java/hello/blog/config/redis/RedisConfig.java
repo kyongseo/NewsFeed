@@ -37,8 +37,8 @@ public class RedisConfig {
         // StringRedisSerializer -> 문자열 데이터를 직렬화
         // GenericJackson2JsonRedisSerializer -> JSON 형식으로 데이터를 직렬화
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        // redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        // redisTemplate.setHashValueSerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;

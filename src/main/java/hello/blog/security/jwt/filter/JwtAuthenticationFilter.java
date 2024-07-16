@@ -52,6 +52,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestPath = request.getRequestURI();
 
+
+
         // 인증이 필요 없는 경로인지 확인
         if (isPermitAllPath(requestPath)) {
             filterChain.doFilter(request, response);
@@ -70,6 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+
+        log.info("토큰 제대로?? : {}", token);
     }
 
     // 요청 경로가 인증 없이 접근 가능한지 확인하는 메서드

@@ -15,7 +15,7 @@ public class RedisMessagePublisher {
 
     // 주어진 메시지를 Redis 채널에 발행
     public void publish(String message) {
+        System.out.println("Redis에 메시지 발행: " + message);
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
-
 }

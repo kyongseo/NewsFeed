@@ -51,7 +51,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/userregform", "/loginform", "/login", "/css/**", "/js/**", "/files/**", "/", "/api/login", "/api/**").permitAll() // 이 주소로 시작되면 인증 필요 없음
-                        .requestMatchers("/posts/**", "/{username}", "/about/{username}").permitAll()
+                        .requestMatchers("/posts/**", "/{username}", "/about/{username}", "/ws","/chat").permitAll()
                 //        .requestMatchers("/oauth2/**", "/login/oauth2/code/github","/registerSocialUser","/saveSocialUser").permitAll()
                         .requestMatchers("/admin/**", "/admin").hasRole("ADMIN")
                         .requestMatchers("/comments/post/**", "/likes/post/**").authenticated()

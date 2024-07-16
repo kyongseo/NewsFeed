@@ -74,6 +74,6 @@ public class ReplyController {
             replyService.deleteReply(replyId);
             return "redirect:/posts/" + postId; // 삭제 후 댓글이 있는 게시글 페이지로 리다이렉트
         }
-        return "redirect:/"; // 예외 처리: 삭제할 대댓글이 없는 경우 메인 페이지로 리다이렉트
+        return "redirect:/trending"; // 예외 처리: 삭제할 대댓글이 없는 경우 메인 페이지로 리다이렉트
     }
 }

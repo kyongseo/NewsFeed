@@ -34,6 +34,7 @@ public class RedisMessageSubscriber implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         String msg = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
+        System.out.println("Redis에서 수신된 메시지: " + msg);
 
         // WebSocketHandle() 에서 사용하던 부분
         for (WebSocketSession session : sessions) {
