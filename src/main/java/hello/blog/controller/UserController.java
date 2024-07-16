@@ -3,9 +3,11 @@ package hello.blog.controller;
 import hello.blog.domain.*;
 import hello.blog.service.FollowService;
 import hello.blog.service.PostService;
+import hello.blog.service.SocialLoginInfoService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +27,8 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
     private final FollowService followService;
+    private final SocialLoginInfoService socialLoginInfoService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
@@ -181,6 +187,14 @@ public class UserController {
         return "redirect:/trending";
     }
 
+    /**
+     * chat
+     */
+    @GetMapping("/chat")
+    public String chat(){
+        return "/chat";
+    }
+
     // 소개 페이지
     @GetMapping("/about/{username}")
     public String aboutUser(@PathVariable("username") String username,
@@ -247,5 +261,48 @@ public class UserController {
             }
         }
         return "redirect:/loginform";
+    }
+
+    /**
+     * Oauth2 Login
+     */
+    @GetMapping("/registerSocialUser")
+    public String registerSocialUser(@RequestParam("provider") String provider,
+                                     @RequestParam("socialId") String socialId,
+                                     @RequestParam("uuid") String uuid,
+                                     @RequestParam("name") String name,
+                                     Model model){
+        model.addAttribute("provider", provider);
+        model.addAttribute("socialId", socialId);
+        model.addAttribute("uuid", uuid);
+        model.addAttribute("name", name);
+        return "users/registerSocialUser";
+    }
+
+    @PostMapping("/saveSocialUser")
+    public String saveSocialUser(@RequestParam("provider")  String provider,
+                                 @RequestParam("socialId") String socialId,
+                                 @RequestParam("name")  String name,
+                                 @RequestParam("username")  String username,
+                                 @RequestParam("email") String email,
+                                 @RequestParam("uuid")  String uuid,
+                                 Model model) {
+        Optional<SocialLoginInfo> socialLoginInfoOptional = socialLoginInfoService.findByProviderAndUuidAndSocialId(provider, uuid, socialId);
+
+        if (socialLoginInfoOptional.isPresent()) {
+            SocialLoginInfo socialLoginInfo = socialLoginInfoOptional.get();
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(socialLoginInfo.getCreatedAt(), now);
+
+            if (duration.toMinutes() > 20) {
+                return "redirect:/error"; // 20분 이상 경과한 경우 에러 페이지로 리다이렉트
+            }
+
+            // 유효한 경우 User 정보를 저장합니다.
+            userService.saveOauthUser(username, email, socialId, provider, passwordEncoder);
+            return "redirect:/";
+        } else {
+            return "redirect:/error"; // 해당 정보가 없는 경우 에러 페이지로 리다이렉트
+        }
     }
 }

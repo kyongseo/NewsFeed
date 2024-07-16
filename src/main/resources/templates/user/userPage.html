@@ -70,6 +70,7 @@
                 <a th:if="${user.userName == username}" th:href="@{'/' + ${user.userName} + '/followers'}">팔로워</a>
                 <a th:if="${user.userName == username}" th:href="@{'/' + ${user.userName} + '/followings'}">팔로잉</a>
             </div>
+            <a class="btn btn-outline-dark" th:href="@{/chat}">채팅하기</a>
         </div>
     </div>
 

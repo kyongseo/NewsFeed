@@ -77,6 +77,7 @@ public class HomeController {
     public String searchPosts(@RequestParam("query") String query,
                               Model model,
                               Authentication authentication) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
@@ -107,6 +108,7 @@ public class HomeController {
     @GetMapping("/trending")
     public String trendingPosts(Model model,
                                 Authentication authentication) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
@@ -124,9 +126,11 @@ public class HomeController {
         return "home";
     }
 
+    // 내가 팔로우한 상용자의 글만 보여주기 정렬 -- 피드 누르면 실행
     @GetMapping("/following")
     public String followingPosts(Model model,
                                  Authentication authentication) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);

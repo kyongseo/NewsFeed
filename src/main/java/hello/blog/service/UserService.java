@@ -1,7 +1,6 @@
 package hello.blog.service;
 
 import hello.blog.config.exception.UserNotFoundException;
-import hello.blog.domain.Post;
 import hello.blog.domain.Role;
 import hello.blog.domain.RoleName;
 import hello.blog.domain.User;
@@ -9,6 +8,7 @@ import hello.blog.repository.PostRepository;
 import hello.blog.repository.RoleRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +29,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+   // @Lazy
     private final PasswordEncoder passwordEncoder;
-    private final PostRepository postRepository;
 
     // 파일 업로드 디렉토리 경로
     @Value("${file.upload-dir}")
@@ -74,10 +75,10 @@ public class UserService {
         // 관리자가 아니면 user 역할의 새로운 사용자 객체 생성
         User user = new User();
         user.setRole(Collections.singleton(role));  // singleton -- 단일 역할 설정
-        user.setUserName(username);  // 사용자 이름 설정
-        user.setEmail(email);  // 이메일 설정
-        user.setPassword(passwordEncoder.encode(password)); // 비밀번호 암호화 및 설정
-        user.setUserNick(usernick); // 사용자 닉네임 설정
+        user.setUserName(username);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setUserNick(usernick);
 
         // 파일 업로드 처리
         if (!file.isEmpty()) {
@@ -91,7 +92,6 @@ public class UserService {
             user.setFilepath(defaultFilepath);
         }
 
-        // 사용자 저장
         userRepository.save(user);
     }
 
@@ -115,6 +115,19 @@ public class UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    /**
+     * Oauth2
+     */
+    public User saveOauthUser(String username, String email, String socialId, String provider, PasswordEncoder passwordEncoder){
+        User user = new User();
+        user.setUserName(username);
+        user.setEmail(email);
+        user.setSocialId(socialId);
+        user.setProvider(provider);
+        user.setPassword(passwordEncoder.encode(""));
+        return userRepository.save(user);
     }
 
     /**
@@ -153,19 +166,6 @@ public class UserService {
         }
     }
 
-//    /**
-//     * 관리자 - 사용자 이름으로 된 게시글 삭제
-//     */
-//    @Transactional
-//    public void deletePost(Long postId) {
-//        Optional<Post> postOptional = postRepository.findById(postId);
-//        if (postOptional.isPresent()) {
-//            postRepository.delete(postOptional.get());
-//        } else {
-//            throw new RuntimeException("게시글을 찾을 수 없습니다.");
-//        }
-//    }
-
     /**
      * 관리자 - 회원가입한 전체 사용자 조회
      */
@@ -197,7 +197,7 @@ public class UserService {
     }
 
     /**
-     * jwt 토큰 사용시 메서드.... 보류
+     * jwt 토큰 사용시 메서드
      */
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
@@ -217,7 +217,7 @@ public class UserService {
         user.setEmail(email);
         user.setSocialId(socialId);
         user.setProvider(provider);
-        user.setPassword(passwordEncoder.encode("")); // 비밀번호는 소셜 로그인 사용자의 경우 비워둡니다.
+        user.setPassword(passwordEncoder.encode(""));
         return userRepository.save(user);
     }
 
