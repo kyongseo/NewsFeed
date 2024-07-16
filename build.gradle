@@ -27,6 +27,12 @@ dependencies {
     // OAuth2 Client
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // Spring Data redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'

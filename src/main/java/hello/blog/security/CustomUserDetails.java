@@ -13,10 +13,13 @@ public class CustomUserDetails implements UserDetails {
     private final String password;
     private final List<GrantedAuthority> authorities;
 
-    public CustomUserDetails(String userName, String password,List<String> roles){
+    public CustomUserDetails(String userName, String password, List<String> roles){
         this.userName = userName;
         this.password = password;
-        this.authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        //this.authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        this.authorities = roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
