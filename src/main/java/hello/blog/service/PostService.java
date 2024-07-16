@@ -124,7 +124,7 @@ public class PostService {
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
             Post post = postOptional.get();
-            return post.getUser().getUserName().equals(username);
+            return post.getUser().getUserName().equals(username); // 게시글 작성자와 로그인한 유저가 같다면
         }
         return false;
     }
@@ -132,7 +132,7 @@ public class PostService {
     // 최신 글 정렬
     @Transactional(readOnly = true)
     public List<Post> getRecentPosts() {
-        return postRepository.findTopByOrderByCreatedAtDesc(); // 최신 글 10개만 조회
+        return postRepository.findTopByOrderByCreatedAtDesc(); // 최신 글 조회
     }
 
     // 게시물 검색
@@ -144,7 +144,6 @@ public class PostService {
     public List<Post> searchPostUser(String query) {
         return postRepository.findByUserUserNameContaining(query);
     }
-
 
     // 좋아요 순 정렬
     @Transactional(readOnly = true)

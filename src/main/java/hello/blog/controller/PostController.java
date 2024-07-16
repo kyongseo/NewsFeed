@@ -33,6 +33,7 @@ public class PostController {
      */
     @GetMapping("/create")
     public String showCreatePost(Model model) {
+
         model.addAttribute("post", new Post());
         return "/post/createPost";
     }
@@ -48,7 +49,7 @@ public class PostController {
             String username = authentication.getName();
             Post post = postService.createPost(username, title, content, file, isDraft);
 
-            // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트
+            // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트 // 디폴트가 false 고 얘는 출간 상태임, true 는 임시저장 상태임
             if (isDraft) {
                 return "redirect:/posts/drafts";
             } else {
@@ -63,7 +64,9 @@ public class PostController {
      * 임시저장 목록 보여주기
      */
     @GetMapping("/drafts")
-    public String getDraftPosts(Model model, Authentication authentication) {
+    public String getDraftPosts(Model model,
+                                Authentication authentication) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             List<Post> draftPosts = postService.getDraftPostsByUser(username);
@@ -80,6 +83,7 @@ public class PostController {
     public String showEditPost(@PathVariable("postId") Long postId,
                                Model model,
                                Authentication authentication) {
+
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("게시글이 존재하지 않습니다."));
 
@@ -98,6 +102,7 @@ public class PostController {
                            @RequestParam("image") MultipartFile file,
                            @RequestParam(value = "isDraft", defaultValue = "false") boolean isDraft,
                            Authentication authentication) throws IOException {
+
         if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName())) {
             postService.updatePost(postId, title, content, file, isDraft);
 
@@ -116,7 +121,8 @@ public class PostController {
      * 시큐리티에서 인증된 사용자를 확인
      */
     @GetMapping("/{postId}")
-    public String getPostById(@PathVariable("postId") Long postId, Model model,
+    public String getPostById(@PathVariable("postId") Long postId,
+                              Model model,
                               Authentication authentication) {
 
         Post post = postService.getPostById(postId)
@@ -153,7 +159,11 @@ public class PostController {
     public String deletePost(@PathVariable("postId") Long postId,
                              @RequestParam("_method") String method,
                              Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName()) && "delete".equalsIgnoreCase(method)) {
+
+        if (authentication != null && authentication.isAuthenticated()
+                                    && postService.isPostOwner(postId, authentication.getName())
+                                    && "delete".equalsIgnoreCase(method)) {
+
             postService.deletePostById(postId);
         }
         return "redirect:/";

@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -18,22 +19,35 @@ public class CommentController {
     private final PostService postService;
     private final CommentService commentService;
 
+//    @PostMapping("/post/{postId}/comments")
+//    public String addComment(@PathVariable("postId") Long postId,
+//                             @RequestParam String content,
+//                             Authentication authentication,
+//                             Model model) {
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            commentService.addComment(postId, content);
+//            Optional<Post> post = postService.getPostById(postId);
+//
+//            model.addAttribute("postId", postId);
+//
+//            return "redirect:/posts/{postId}";
+//        } else {
+//            return "redirect:/loginform";
+//        }
+//    }
+
     @PostMapping("/post/{postId}/comments")
     public String addComment(@PathVariable("postId") Long postId,
                              @RequestParam String content,
-                             Authentication authentication,
-                             Model model) {
+                             Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             commentService.addComment(postId, content);
-            Optional<Post> post = postService.getPostById(postId);
-
-            model.addAttribute("postId", postId);
-
-            return "redirect:/posts/{postId}";
+            return "redirect:/posts/" + postId;
         } else {
             return "redirect:/loginform";
         }
     }
+
 
     // 댓글 수ㅠ정
     @PostMapping("/comment/{commentId}/update")
@@ -55,4 +69,20 @@ public class CommentController {
         // 삭제 후 해당 포스트 페이지로 리다이렉트
         return "redirect:/posts/" + postId;
     }
+
+//    // 대댓글 작성
+//    @PostMapping("/comment/{parentCommentId}/reply")
+//    public String addReply(@PathVariable("parentCommentId") Long parentCommentId,
+//                           @RequestParam String content,
+//                           Authentication authentication,
+//                           RedirectAttributes attributes) {
+//        if (authentication != null && authentication.isAuthenticated()) {
+//            commentService.addReply(parentCommentId, content);
+//            Long postId = commentService.getPostIdByCommentId(parentCommentId);
+//            attributes.addAttribute("postId", postId); // 포스트 ID를 리다이렉트 파라미터로 추가
+//            return "redirect:/posts/{postId}";
+//        } else {
+//            return "redirect:/loginform";
+//        }
+//    }
 }

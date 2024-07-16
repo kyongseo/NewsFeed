@@ -19,11 +19,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 댓글 작성자는 반드시 로그인된 사용자여야 한ㅁ
 
@@ -34,7 +34,11 @@ public class Comment {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdA = LocalDateTime.now();
 
-    // 대댓글
+    // 대댓글 엔티티를 하나 만들어서 연관관계 설정
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Reply> replies = new ArrayList<>();
+
+    // 대댓글.. 트리구조
     // 대댓글이 달릴 댓글 부모
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "parent_comment_id")
