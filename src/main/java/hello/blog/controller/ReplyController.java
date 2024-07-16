@@ -1,24 +1,18 @@
 package hello.blog.controller;
 
-import hello.blog.domain.Comment;
 import hello.blog.domain.Reply;
 import hello.blog.domain.User;
 import hello.blog.repository.UserRepository;
 import hello.blog.service.CommentService;
 import hello.blog.service.ReplyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Controller
-@RequestMapping("/replies")
 @RequiredArgsConstructor
 public class ReplyController {
 
@@ -27,7 +21,7 @@ public class ReplyController {
     private final UserRepository userRepository;
 
     // 대댓글 생성 처리
-    @PostMapping("/create/{commentId}")
+    @PostMapping("/replies/create/{commentId}")
     public String createReply(@PathVariable Long commentId,
                               @RequestParam("content") String content,
                               Authentication authentication) {
@@ -58,7 +52,7 @@ public class ReplyController {
     }
 
     // 대댓글 수정 처리
-    @PostMapping("/edit/{replyId}")
+    @PostMapping("/replies/edit/{replyId}")
     public String updateReply(@PathVariable Long replyId, @RequestParam("content") String content) {
         Reply existingReply = replyService.getReplyById(replyId);
         if (existingReply != null) {
@@ -72,7 +66,7 @@ public class ReplyController {
     }
 
     // 대댓글 삭제 처리
-    @PostMapping("/delete/{replyId}")
+    @PostMapping("/replies/delete/{replyId}")
     public String deleteReply(@PathVariable Long replyId) {
         Reply reply = replyService.getReplyById(replyId);
         if (reply != null) {
