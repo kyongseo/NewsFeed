@@ -7,6 +7,9 @@ import hello.blog.service.FollowService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +24,6 @@ public class HomeController {
 
     private final UserService userService;
     private final PostService postService;
-    private final LikeRepository likeRepository;
     private final FollowService followService;
 
     // 메인 홈 화면
@@ -42,6 +44,7 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
+
 
         List<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
@@ -75,7 +78,8 @@ public class HomeController {
     @GetMapping("/search")
     public String searchPosts(@RequestParam("query") String query,
                               Model model,
-                              Authentication authentication) {
+                              Authentication authentication,
+                              @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC)Pageable pageable) {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
@@ -89,7 +93,7 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
-        List<Post> searchResults = postService.searchPosts(query); // 제목, 내용 검색
+        List<Post> searchResults = postService.searchPosts(query, pageable); // 제목, 내용 검색
         List<Post> searchUsersResults = postService.searchPostUser(query); // 작성자 검색
 
         // 두개를 따로따로 검색했는데 코드가 더러워서.... 하나로 합치기
