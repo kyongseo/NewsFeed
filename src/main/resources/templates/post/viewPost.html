@@ -74,7 +74,7 @@
             </div>
         </div>
     </div>
-    <!-- 좋아요 폼 -->
+    <!-- 좋아요 -->
     <p id="likeCount">❤️ <span th:text="${likeCount}">0</span></p>
     <form th:action="@{/posts/{postId}/like(postId=${post.id})}" method="post" id="likeForm">
         <button th:if="${username != null and username != ''}" type="submit" id="likeButton" class="btn btn-outline-dark">
@@ -85,6 +85,8 @@
     <p th:if="${#authorization.expression('!isAuthenticated()')}">
         <a th:href="@{/loginform}">로그인 후 좋아요 누를 수 있습니다.</a>
     </p>
+    <!-- 조회수 -->
+    <small> <a id="viewCount">👀 <span th:text="${viewCount}">0</span></a> </small>
     <!-- 댓글 영역 -->
     <div class="container my-5">
         <div class="card">
