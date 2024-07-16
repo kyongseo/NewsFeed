@@ -4,7 +4,6 @@ import hello.blog.domain.Post;
 import hello.blog.domain.User;
 import hello.blog.repository.LikeRepository;
 import hello.blog.service.FollowService;
-import hello.blog.service.LikeService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
 import lombok.RequiredArgsConstructor;

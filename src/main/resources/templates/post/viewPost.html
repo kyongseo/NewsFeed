@@ -90,7 +90,7 @@
         <div class="card">
             <div class="card-body">
                 <!-- 댓글 작성 폼 -->
-                <form th:action="@{/posts/{postId}/comments(postId=${postId})}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
+                <form th:action="@{/post/{postId}/comments(postId=${postId})}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
                     <div class="mb-3">
                         <label for="content" class="form-label">댓글</label>
                         <textarea class="form-control" id="content" name="content" rows="3" placeholder="댓글을 작성하세요" required></textarea>
@@ -113,22 +113,21 @@
                                 </a>
                             </small>
                             <div th:if="${comment.user.userName == username}">
-                                <!-- 댓글 수정 폼 -->
+                                <!-- 댓글 수정 -->
                                 <button class="btn btn-outline-dark" onclick="document.getElementById('commentEdit-${comment.id}').style.display='block'; this.style.display='none';">수정</button>
-                                <form th:if="${comment.user.userName == username}" id="commentEdit-${comment.id}" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post" style="display: none;">
+                                <form id="commentEdit-${comment.id}" th:action="@{/comment/{commentId}/update(commentId=${comment.id})}" method="post" style="display: none;">
                                     <div class="mb-3">
                                         <label for="commentEditNew-${comment.id}" class="form-label">수정</label>
                                         <textarea id="commentEditNew-${comment.id}" th:text="${comment.content}" name="content" class="form-control"></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-outline-light me-3">수정</button>
                                 </form>
-                                <!-- 댓글 삭제 폼 -->
-                                <form class="action-links" th:if="${comment.user.userName == username}" th:action="@{/comment/{commentId}/delete(commentId=${comment.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                                    <input type="hidden" name="_method" value="delete">
+                                <!-- 댓글 삭제 -->
+                                <form class="action-links" th:action="@{/comment/{commentId}/delete(commentId=${comment.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
                                     <button type="submit" class="btn btn-outline-danger mt-1">삭제</button>
                                 </form>
                             </div>
-                            <!-- 대댓글 작성 폼 -->
+                            <!-- 대댓글 작성 -->
                             <div class="ml-4">
                                 <form th:action="@{/replies/create/{commentId}(commentId=${comment.id})}" method="post" th:if="${#authorization.expression('isAuthenticated()')}">
                                     <div class="mb-3">
@@ -152,11 +151,21 @@
                                                         <span th:text="${reply.user.userName}"></span>
                                                     </a>
                                                 </small>
-                                                <!-- 대댓글 삭제 폼 -->
-                                                <form class="action-links" th:if="${reply.user.userName == username}" th:action="@{/replies/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                                                    <input type="hidden" name="_method" value="delete">
-                                                    <button type="submit" class="btn btn-outline-danger mt-1">삭제</button>
-                                                </form>
+                                                <div th:if="${reply.user.userName == username}">
+                                                    <!-- 대댓글 수정 -->
+                                                    <button class="btn btn-outline-dark" onclick="document.getElementById('replyEdit-${reply.id}').style.display='block'; this.style.display='none';">수정</button>
+                                                    <form id="replyEdit-${reply.id}" th:action="@{/replies/edit/{replyId}(replyId=${reply.id})}" method="post" style="display: none;">
+                                                        <div class="mb-3">
+                                                            <label for="replyEditNew-${reply.id}" class="form-label">수정</label>
+                                                            <textarea id="replyEditNew-${reply.id}" th:text="${reply.content}" name="content" class="form-control"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-outline-light me-3">수정</button>
+                                                    </form>
+                                                    <!-- 대댓글 삭제 -->
+                                                    <form class="action-links" th:action="@{/replies/delete/{replyId}(replyId=${reply.id})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                                                        <button type="submit" class="btn btn-outline-danger mt-1">삭제</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

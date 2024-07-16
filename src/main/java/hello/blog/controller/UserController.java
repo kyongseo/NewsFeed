@@ -187,14 +187,6 @@ public class UserController {
         return "redirect:/trending";
     }
 
-    /**
-     * chat
-     */
-    @GetMapping("/chat")
-    public String chat(){
-        return "/chat";
-    }
-
     // 소개 페이지
     @GetMapping("/about/{username}")
     public String aboutUser(@PathVariable("username") String username,

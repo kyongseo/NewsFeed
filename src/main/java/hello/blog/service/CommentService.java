@@ -27,10 +27,7 @@ public class CommentService {
     private final UserRepository userRepository;
 
     /**
-     * 댓글 추가 기능
-     * 댓글이 작성될 게시물의 ID
-     * @param content  댓글 내용
-     * @return 추가된 Comment 객체
+     * 댓글 추가
      */
     @Transactional
     public Comment addComment(Long postId, String content) {
@@ -55,9 +52,6 @@ public class CommentService {
 
     /**
      * 게시물 ID로 해당 게시물의 모든 댓글 조회
-     *
-     * @param postId 게시물 ID
-     * @return 조회된 Comment 리스트
      */
     @Transactional
     public List<Comment> findByPostId(Long postId) {
@@ -66,8 +60,6 @@ public class CommentService {
 
     /**
      * 현재 인증된 사용자의 이름 가져오기
-     *
-     * @return 현재 인증된 사용자 이름
      */
     private String getCurrentUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -78,11 +70,7 @@ public class CommentService {
     }
 
     /**
-     * 댓글 수정 기능
-     *
-     * @param commentId   수정할 댓글의 ID
-     * @param newContent  수정할 내용
-     * @return 수정된 Comment 객체
+     * 댓글 수정
      */
     @Transactional
     public Comment updateComment(Long commentId, String newContent) {
@@ -95,9 +83,6 @@ public class CommentService {
 
     /**
      * 댓글의 게시물 ID 조회
-     *
-     * @param commentId 댓글의 ID
-     * @return 댓글이 속한 게시물의 ID
      */
     @Transactional(readOnly = true)
     public Long getPostIdByCommentId(Long commentId) {
@@ -106,10 +91,9 @@ public class CommentService {
 
         return comment.getPost().getId();
     }
+
     /**
-     * 댓글 삭제 기능
-     *
-     * @param commentId 삭제할 댓글의 ID
+     * 댓글 삭제
      */
     @Transactional
     public void deleteComment(Long commentId) {
