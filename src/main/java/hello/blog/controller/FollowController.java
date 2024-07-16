@@ -50,7 +50,7 @@ public class FollowController {
             model.addAttribute("followings", followings);
             return "/user/followingList";
         }
-        return "redirect:/";
+        return "redirect:/trending";
     }
 
     // 나를 팔로우한 사람 목록 보기
@@ -66,6 +66,6 @@ public class FollowController {
             model.addAttribute("followers", followers);
             return "/user/followerList";
         }
-        return "redirect:/";
+        return "redirect:/trending";
     }
 }
