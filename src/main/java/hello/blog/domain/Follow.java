@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 팔로우, 팔로잉 엔티티
+ */
 @Entity
 @Table(name = "follows")
 @Getter @Setter
