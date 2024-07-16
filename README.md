@@ -35,8 +35,7 @@
 
 
 # 프로젝트 설계 및 일정 관리
-[Notion link](https://www.notion.so/0618-0719-Project-17e41a3c59d348fa98077352f4a94252?pvs=4
-)
+[Notion link](https://great-product-fd5.notion.site/0618-0719-Project-17e41a3c59d348fa98077352f4a94252?pvs=4)
 
 <br/>
 
