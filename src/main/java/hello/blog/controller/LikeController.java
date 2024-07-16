@@ -25,7 +25,9 @@ public class LikeController {
 
     // 좋아요 버튼을 눌렀을 때
     @PostMapping("/posts/{postId}/like")
-    public String like(@PathVariable("postId") Long postId, Authentication authentication) {
+    public String like(@PathVariable("postId") Long postId,
+                       Authentication authentication) {
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
             Optional<User> userOptional = userService.findByUserName(username);
