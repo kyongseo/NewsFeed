@@ -1,8 +1,10 @@
 package hello.blog.service;
 
 import hello.blog.domain.Post;
+import hello.blog.domain.Tag;
 import hello.blog.domain.User;
 import hello.blog.repository.PostRepository;
+import hello.blog.repository.TagRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,13 +29,14 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
 
     // 글 작성
     @Transactional
-    public Post createPost(String username, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
+    public Post createPost(String username, String title, String content, MultipartFile file, boolean isDraft, List<String> tagList) throws IOException {
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -47,6 +51,17 @@ public class PostService {
             if (!file.isEmpty()) {
                 uploadUserFile(post, file);
             }
+
+            Set<Tag> tags = new HashSet<>();
+            for (String tagName : tagList) {
+                Tag tag = tagRepository.findByName(tagName).orElseGet(() -> {
+                    Tag newTag = new Tag(tagName);
+                    tagRepository.save(newTag); // 새로운 태그를 저장
+                    return newTag;
+                });
+                tags.add(tag);
+            }
+            post.setTags(new ArrayList<>(tags));
 
             return postRepository.save(post);
         }
