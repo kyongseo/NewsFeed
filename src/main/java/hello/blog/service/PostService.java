@@ -2,7 +2,6 @@ package hello.blog.service;
 
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
-import hello.blog.repository.LikeRepository;
 import hello.blog.repository.PostRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,6 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final LikeRepository likeRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -66,6 +64,7 @@ public class PostService {
         throw new RuntimeException("사용자를 찾을 수 없습니다.");
     }
 
+    // 파일 생성 메서드
     private void uploadUserFile(Post post, MultipartFile file) throws IOException {
         Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();
         if (!Files.exists(uploadPath)) {

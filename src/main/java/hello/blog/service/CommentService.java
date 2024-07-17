@@ -102,5 +102,4 @@ public class CommentService {
 
         commentRepository.deleteById(commentId);
     }
-
 }
