@@ -22,7 +22,7 @@ public class ReplyController {
 
     // 대댓글 생성 처리
     @PostMapping("/replies/create/{commentId}")
-    public String createReply(@PathVariable Long commentId,
+    public String createReply(@PathVariable("commentId") Long commentId,
                               @RequestParam("content") String content,
                               Authentication authentication) {
 
@@ -53,7 +53,8 @@ public class ReplyController {
 
     // 대댓글 수정 처리
     @PostMapping("/replies/edit/{replyId}")
-    public String updateReply(@PathVariable Long replyId, @RequestParam("content") String content) {
+    public String updateReply(@PathVariable("replyId") Long replyId,
+                              @RequestParam("content") String content) {
         Reply existingReply = replyService.getReplyById(replyId);
         if (existingReply != null) {
             existingReply.setContent(content);
@@ -67,7 +68,7 @@ public class ReplyController {
 
     // 대댓글 삭제 처리
     @PostMapping("/replies/delete/{replyId}")
-    public String deleteReply(@PathVariable Long replyId) {
+    public String deleteReply(@PathVariable("replyId") Long replyId) {
         Reply reply = replyService.getReplyById(replyId);
         if (reply != null) {
             Long postId = reply.getComment().getPost().getId();
