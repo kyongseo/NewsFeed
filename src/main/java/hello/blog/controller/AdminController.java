@@ -43,7 +43,7 @@ public class AdminController {
 
     // 게시글 영구 삭제
     @PostMapping("/admin/posts/{postId}/delete")
-    public String deletePost(@PathVariable Long postId) {
+    public String deletePost(@PathVariable("postId") Long postId) {
         postService.deletePostAdmin(postId);
         return "redirect:/admin/postboard";
     }
