@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +45,14 @@ public class PostController {
     public String createPost(@RequestParam("title") String title,
                              @RequestParam("content") String content,
                              @RequestParam("image") MultipartFile file,
+                             @RequestParam("tags") String tags,
                              @RequestParam(value = "isDraft", defaultValue = "false") boolean isDraft,
                              Authentication authentication) throws IOException {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            Post post = postService.createPost(username, title, content, file, isDraft);
+            List<String> tagList = Arrays.asList(tags.split("\\s*,\\s*"));
+            Post post = postService.createPost(username, title, content, file, isDraft, tagList);
 
             // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트 // 디폴트가 false 고 얘는 출간 상태임, true 는 임시저장 상태임
             if (isDraft) {

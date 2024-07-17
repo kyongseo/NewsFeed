@@ -174,7 +174,8 @@ public class UserController {
 
     // 사용자 탈퇴 처리
     @PostMapping("/mypage/delete")
-    public String deleteUser(Authentication authentication, RedirectAttributes redirectAttributes) {
+    public String deleteUser(Authentication authentication,
+                             RedirectAttributes redirectAttributes) {
         String username = authentication.getName();
 
         try {

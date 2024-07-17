@@ -71,6 +71,12 @@
                 <div th:if="${post.filename != null}">
                     <img th:src="@{/files/{filename}(filename=${post.filename})}" class="card-img" alt="Post Image"/>
                 </div>
+                <!-- 태그 목록 -->
+                <div class="tags">
+                    <span th:each="tag : ${post.tags}" class="badge bg-secondary me-1">
+                        <a th:href="@{/tags/{tagName}(tagName=${tag.name})}" th:text="${tag.name}"></a>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
