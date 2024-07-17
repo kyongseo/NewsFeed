@@ -12,7 +12,7 @@ public class Like {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne // FetchType.EAGER
     @JoinColumn(name = "post_id", nullable = false)
     private Post post; // 한개의 포스트에 좋아요 여러개
 
