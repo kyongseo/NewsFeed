@@ -63,5 +63,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 //                .collect(Collectors.toSet());
 //
 //        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
+//        return new CustomUserDetails(user.getUserName(), user.getPassword(), roles);
 //    }
 //}
+// CustomUserDetails userDetails = new CustomUserDetails(
+//            user.get().getUserName(),
+//            user.get().getPassword(),
+//            user.get().getRole().stream()
+//                    .map(role -> role.getRoleName().name().substring(5))
+//                    .collect(Collectors.toList())
+//    );

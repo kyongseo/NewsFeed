@@ -64,13 +64,14 @@
         <div class="card-body">
             <h5 class="card-title">유저 정보</h5>
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
+            <p class="card-text"><strong>닉네임 :</strong> <span th:text="${user.userNick}">userNick</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd')}">2024-06-19</span></p>
             <div class="action-links">
                 <a th:if="${user.userName == username}" th:href="@{'/' + ${user.userName} + '/followers'}">팔로워</a>
                 <a th:if="${user.userName == username}" th:href="@{'/' + ${user.userName} + '/followings'}">팔로잉</a>
             </div>
-            <a class="btn btn-outline-dark" th:href="@{/chat}">채팅하기</a>
+            <a th:if="${user.userName != username}" class="btn btn-outline-dark" th:href="@{/chat}">채팅하기</a>
         </div>
     </div>
 
@@ -79,7 +80,7 @@
             <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">글</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-outline-dark" th:href="@{/}">시리즈</a>
+            <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">시리즈</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:href="@{'/about' + '/' + ${user.userName}}">소개</a>

@@ -83,3 +83,26 @@ body {
 .space-between {
     margin-right: 280px;
 }
+.card {
+    height: 400px; /* 고정 높이 설정 */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.card-body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.card-text {
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+.card-footer {
+    margin-top: auto;
+}

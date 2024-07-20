@@ -24,10 +24,10 @@
             <div th:if="${#lists.isEmpty(followers)}">
                 <p class="text-col">팔로우한 사용자가 없습니다.</p>
             </div>
+            <a th:href="@{/trending}" class="btn btn-outline-secondary mt-3">뒤로가기</a>
         </div>
     </div>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -54,11 +54,11 @@
                 <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
                 <div class="mb-3">
                     <label class="form-label">이메일</label>
-                    <input type="email" name="email" th:placeholder="${user.email}" class="form-control" required>
+                    <input type="email" name="email" th:placeholder="${user.email}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">닉네임</label>
-                    <input type="text" name="usernick" th:placeholder="${user.userNick}" class="form-control" required>
+                    <input type="text" name="usernick" th:placeholder="${user.userNick}" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">프로필 이미지</label>
@@ -73,7 +73,7 @@
         <div class="card-body">
             <h5 class="card-title">회원 탈퇴</h5>
             <p class="card-text">회원 탈퇴 시 모든 데이터가 삭제됩니다. 정말로 탈퇴하시겠습니까?</p>
-            <form th:action="@{/mypage/delete}" method="post">
+            <form th:action="@{/mypage/delete}" method="post" onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
                 <button type="submit" class="btn btn-danger">회원 탈퇴</button>
             </form>
         </div>

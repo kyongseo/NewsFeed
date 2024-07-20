@@ -80,7 +80,7 @@
             <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">글</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-outline-dark" th:href="@{/}">시리즈</a>
+            <a class="btn btn-outline-dark" th:href="@{'/' + ${user.userName}}">시리즈</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:if="${username != ''}" th:href="@{'/about' + '/' + ${user.userName}}">소개</a>
@@ -108,7 +108,7 @@
         <p th:text="${user.about}">소개글이 없습니다.</p>
         <!-- 로그인 한 경우에만 보이는 부분 -->
         <div th:if="${username}">
-            <button class="btn btn-outline-light me-3" onclick="document.getElementById('aboutEditForm').style.display='block'; this.style.display='none';">소개글 수정하기</button>
+            <button th:if="${user.userName == username}" class="btn btn-outline-light me-3" onclick="document.getElementById('aboutEditForm').style.display='block'; this.style.display='none';">소개글 수정하기</button>
             <form id="aboutEditForm" th:action="@{/about/{username}(username=${user.userName})}" method="post" style="display: none;">
                 <div class="mb-3">
                     <label for="aboutUpdate" class="form-label">소개글</label>

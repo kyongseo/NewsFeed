@@ -64,9 +64,8 @@
     <div class="profile-info">
         <img th:src="@{${profileImage}}" alt="Profile Image" />
         <div>
-            <div class="username" th:text="${user.userName}">nickname</div>
-            <div class="greeting" th:text="'안녕하세요, ' + ${user.userName} + '입니다.'">안녕하세요, nickname 입니다.</div>
-
+            <div class="username" th:text="${user.userNick}">nickname</div>
+            <div class="greeting" th:text="'안녕하세요, ' + ${user.userNick} + '입니다.'">안녕하세요, nickname 입니다.</div>
             <div class="action-links" th:if="${user == user.userName}">
                 <a th:href="@{/mypage}">수정</a>
             </div>
@@ -76,6 +75,7 @@
         <div class="card-body">
             <h5 class="card-title">유저 정보</h5>
             <p class="card-text"><strong>유저 아이디 :</strong> <span th:text="${user.userName}">username</span></p>
+            <p class="card-text"><strong>닉네임 :</strong> <span th:text="${user.userNick}">userNick</span></p>
             <p class="card-text"><strong>이메일 :</strong> <span th:text="${user.email}">email@example.com</span></p>
             <p class="card-text"><strong>가입일 :</strong> <span th:text="${#temporals.format(user.registrationDate,'yyyy/MM/dd')}">2024-06-19</span></p>
             <!-- 팔로워, 팔로잉 목록-->
@@ -87,10 +87,10 @@
     </div>
     <ul class="nav nav-tabs mt-5 mb-4">
         <li class="nav-item">
-            <a class="btn btn-outline-dark" th:href="@{/}">글</a>
+            <a class="btn btn-outline-dark" th:href="@{/mypage}">글</a>
         </li>
         <li class="nav-item">
-            <a class="btn btn-outline-dark" th:href="@{/}">시리즈</a>
+            <a class="btn btn-outline-dark" th:href="@{/mypage}">시리즈</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-outline-dark" th:href="@{'/about' + '/' + ${user.userName}}">소개</a>
