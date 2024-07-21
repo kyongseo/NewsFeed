@@ -24,7 +24,7 @@
             <div th:if="${#lists.isEmpty(followers)}">
                 <p class="text-col">팔로우한 사용자가 없습니다.</p>
             </div>
-            <a th:href="@{/trending}" class="btn btn-outline-secondary mt-3">뒤로가기</a>
+            <a th:href="@{'/' + ${user.userName}}" class="btn btn-outline-secondary mt-3">뒤로가기</a>
         </div>
     </div>
 </div>
