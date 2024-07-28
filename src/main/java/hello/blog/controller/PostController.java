@@ -10,6 +10,7 @@ import hello.blog.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/posts")
 @RequiredArgsConstructor
+@Slf4j
 public class PostController {
 
     private final PostService postService;
@@ -51,8 +53,11 @@ public class PostController {
 
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
+            // tag --> 띄어쓰기로 구분
             List<String> tagList = Arrays.asList(tags.split("\\s*,\\s*"));
             Post post = postService.createPost(username, title, content, file, isDraft, tagList);
+
+            log.info("게시글 생성 Id : {}", post.getId());
 
             // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트 // 디폴트가 false 고 얘는 출간 상태임, true 는 임시저장 상태임
             if (isDraft) {
@@ -105,11 +110,13 @@ public class PostController {
                            @RequestParam("title") String title,
                            @RequestParam("content") String content,
                            @RequestParam("image") MultipartFile file,
+                           @RequestParam("tags") String tags,
                            @RequestParam(value = "isDraft", defaultValue = "false") boolean isDraft,
                            Authentication authentication) throws IOException {
 
         if (authentication != null && authentication.isAuthenticated() && postService.isPostOwner(postId, authentication.getName())) {
-            postService.updatePost(postId, title, content, file, isDraft);
+            List<String> tagList = Arrays.asList(tags.split("\\s*,\\s*"));
+            postService.updatePost(postId, title, content, file, isDraft, tagList);
 
             if (isDraft) {
                 return "redirect:/posts/drafts";
@@ -138,7 +145,6 @@ public class PostController {
         List<Comment> comments = commentService.findByPostId(postId);
 
         model.addAttribute("viewCount", post.getView());
-
         model.addAttribute("post", post);
         model.addAttribute("comments", comments);
         model.addAttribute("postImage", "/files/" + post.getFilename());

@@ -13,15 +13,33 @@ import java.util.Optional;
 public class LikeService {
     private final LikeRepository likeRepository;
 
-    public void like(Post post, User user) {
-        Optional<Like> existingLike = likeRepository.findByPostAndUser(post, user);
-        if (existingLike.isPresent()) {
-            likeRepository.delete(existingLike.get());
+//    public void like(Post post, User user) {
+//        Optional<Like> existingLike = likeRepository.findByPostAndUser(post, user);
+//        if (existingLike.isPresent()) {
+//            likeRepository.delete(existingLike.get());
+//        } else {
+//            Like like = new Like();
+//            like.setPost(post);
+//            like.setUser(user);
+//            likeRepository.save(like);
+//        }
+//    }
+
+    public boolean like(Post post, User user) {
+        Optional<Like> likeOptional = likeRepository.findByPostAndUser(post, user);
+        if (likeOptional.isPresent()) {
+            likeRepository.delete(likeOptional.get());
+            return false;
         } else {
             Like like = new Like();
             like.setPost(post);
             like.setUser(user);
             likeRepository.save(like);
+            return true;
         }
+    }
+
+    public Long countByPostId(Long postId) {
+        return likeRepository.countByPostId(postId);
     }
 }

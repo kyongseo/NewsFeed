@@ -7,6 +7,7 @@ import hello.blog.repository.PostRepository;
 import hello.blog.repository.TagRepository;
 import hello.blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostRepository postRepository;
@@ -107,7 +109,7 @@ public class PostService {
 
     // 게시글 수정
     @Transactional
-    public Post updatePost(Long postId, String title, String content, MultipartFile file, boolean isDraft) throws IOException {
+    public Post updatePost(Long postId, String title, String content, MultipartFile file, boolean isDraft, List<String> tagList) throws IOException {
 
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
@@ -133,6 +135,7 @@ public class PostService {
     @Transactional
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
+        log.info("게시글 삭제 Id : {}", postId);
     }
 
     // 게시글 작성자 확인
