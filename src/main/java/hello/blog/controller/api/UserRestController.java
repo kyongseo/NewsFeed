@@ -75,6 +75,7 @@ public class UserRestController {
                 user.get().getUserId(), user.get().getEmail(), user.get().getUserName(), roles);
         String refreshToken = jwtTokenizer.createRefreshToken(
                 user.get().getUserId(), user.get().getEmail(), user.get().getUserName(), roles);
+
         //리프레시토큰을 디비에 저장.
         RefreshToken refreshTokenEntity = new RefreshToken();
         refreshTokenEntity.setValue(refreshToken);
@@ -165,7 +166,9 @@ public class UserRestController {
     }
 
     @GetMapping("/logout")
-    public void logout(@CookieValue(name = "accessToken", required = false) String accessToken, @CookieValue(name = "refreshToken", required = false) String refreshToken, HttpServletResponse response) {
+    public void logout(@CookieValue(name = "accessToken", required = false) String accessToken,
+                       @CookieValue(name = "refreshToken", required = false) String refreshToken,
+                       HttpServletResponse response) {
         System.out.println("로그아웃 들어왔나");
         if (accessToken == null) {
             // accessToken이 존재하지 않으면 로그인되지 않은 상태로 간주하고 처리할 수 있습니다.
@@ -180,7 +183,7 @@ public class UserRestController {
 
         //JWT 토큰 추출
         String jwt = accessToken;
-        System.out.println("jwt: " + jwt);
+        System.out.println("accessToken: " + jwt);
 
         // 토큰의 만료 시간 추출
         Date expirationTime = Jwts.parser()

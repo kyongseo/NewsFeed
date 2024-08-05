@@ -16,7 +16,6 @@ public class CustomUserDetails implements UserDetails {
     public CustomUserDetails(String userName, String password, List<String> roles){
         this.userName = userName;
         this.password = password;
-        //this.authorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         this.authorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
