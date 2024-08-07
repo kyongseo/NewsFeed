@@ -40,9 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> PERMIT_ALL_PATHS = List.of(
             "/", "/css/.*", "/api/login", "/api/.*",
-            "/userregform", "/css/.*", "/files/.*", "/loginform"
-         //   "/oauth2/**", "/login/oauth2/code/github","/registerSocialUser","/saveSocialUser"
-            // 추가적으로 permitAll 경로들을 여기에 추가
+            "/userregform", "/css/.*", "/files/.*", "/loginform",
+            "/oauth2/**", "/login/oauth2/**"
     );
 
     @Override

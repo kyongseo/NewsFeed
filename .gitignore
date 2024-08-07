@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### .yml ###
+/src/main/resources/application.yml
+
+### 관리자 ###
+/src/main/java/hello/blog/config/DataInitializer.java
