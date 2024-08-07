@@ -15,37 +15,37 @@ import java.util.Set;
 
 // 메시지를 수신(Subscribe)하고 처리하는 역할을 하는 컴포넌트
 // security.package 에서의 MyWebSocketHandler 역할
-@Component
-public class RedisMessageSubscriber implements MessageListener {
-
-    private static final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
-
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
-    public static void addSession(WebSocketSession session) {
-        sessions.add(session);
-    }
-
-    public static void removeSession(WebSocketSession session) {
-        sessions.remove(session);
-    }
-
-    @Override
-    public void onMessage(Message message, byte[] pattern) {
-        String msg = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
-        System.out.println("Redis에서 수신된 메시지: " + msg);
-
-        // WebSocketHandle() 에서 사용하던 부분
-        for (WebSocketSession session : sessions) {
-            if (session.isOpen()) {
-                try {
-                    session.sendMessage(new TextMessage(msg));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
-        }
-    }
-}
+//@Component
+//public class RedisMessageSubscriber implements MessageListener {
+//
+//    private static final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
+//
+//    @Autowired
+//    private RedisTemplate<String, Object> redisTemplate;
+//
+//    public static void addSession(WebSocketSession session) {
+//        sessions.add(session);
+//    }
+//
+//    public static void removeSession(WebSocketSession session) {
+//        sessions.remove(session);
+//    }
+//
+//    @Override
+//    public void onMessage(Message message, byte[] pattern) {
+//        String msg = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
+//        System.out.println("Redis에서 수신된 메시지: " + msg);
+//
+//        // WebSocketHandle() 에서 사용하던 부분
+//        for (WebSocketSession session : sessions) {
+//            if (session.isOpen()) {
+//                try {
+//                    session.sendMessage(new TextMessage(msg));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
+//
+//            }
+//        }
+//    }
+//}

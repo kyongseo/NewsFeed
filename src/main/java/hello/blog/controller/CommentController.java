@@ -27,7 +27,7 @@ public class CommentController {
         }
     }
 
-    // 댓글 수ㅠ정
+    // 댓글 수정
     @PostMapping("/comment/{commentId}/update")
     public String updateComment(@PathVariable("commentId") Long commentId,
                                 @RequestParam("content") String content) {
