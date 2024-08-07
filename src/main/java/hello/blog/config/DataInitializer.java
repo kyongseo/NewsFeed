@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 관리자 계정 생성
- * @Bean 메서드가 붙은 메서드만 등록
  */
 @Configuration
 @RequiredArgsConstructor
