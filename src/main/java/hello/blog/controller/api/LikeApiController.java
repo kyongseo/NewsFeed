@@ -1,9 +1,7 @@
-package hello.blog.controller;
+package hello.blog.controller.api;
 
-import hello.blog.domain.Like;
 import hello.blog.domain.Post;
 import hello.blog.domain.User;
-import hello.blog.repository.LikeRepository;
 import hello.blog.service.LikeService;
 import hello.blog.service.PostService;
 import hello.blog.service.UserService;
@@ -13,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,7 +48,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-public class LikeController {
+public class LikeApiController {
 
     private final LikeService likeService;
     private final PostService postService;
