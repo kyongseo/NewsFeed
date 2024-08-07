@@ -1,7 +1,7 @@
 package hello.blog.websocket;
 
-import hello.blog.redis.RedisMessagePublisher;
-import hello.blog.redis.RedisMessageSubscriber;
+//import hello.blog.redis.RedisMessagePublisher;
+//import hello.blog.redis.RedisMessageSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -7,7 +7,7 @@ import hello.blog.security.jwt.util.JwtTokenizer;
 //import hello.blog.security.oauth.CustomOAuth2AuthenticationSuccessHandler;
 //import hello.blog.security.oauth.CustomOAuth2AuthenticationSuccessHandler;
 //import hello.blog.security.oauth.CustomOAuth2AuthenticationSuccessHandler;
-import hello.blog.security.oauth.CustomOAuth2AuthenticationSuccessHandler;
+//import hello.blog.security.oauth.CustomOAuth2AuthenticationSuccessHandler;
 import hello.blog.service.JwtBlacklistService;
 import hello.blog.service.RefreshTokenService;
 import hello.blog.service.SocialUserService;
@@ -41,7 +41,7 @@ public class SecurityConfig {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtBlacklistService jwtBlacklistService;
     private final RefreshTokenService refreshTokenService;
-    private final CustomOAuth2AuthenticationSuccessHandler customOAuth2AuthenticationSuccessHandler;
+    //private final CustomOAuth2AuthenticationSuccessHandler customOAuth2AuthenticationSuccessHandler;
     private final SocialUserService socialUserService;
 
     @Bean
@@ -50,7 +50,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         .requestMatchers("/userregform", "/loginform", "/login", "/css/**", "/js/**", "/files/**", "/", "/api/login", "/api/**").permitAll() // 이 주소로 시작되면 인증 필요 없음
                         .requestMatchers("/posts/**", "/{username}", "/about/{username}", "/ws","/chat").permitAll()
-                        .requestMatchers("/oauth2/**", "/login/oauth2/code/github","/registerSocialUser","/saveSocialUser").permitAll()
+                        //.requestMatchers("/oauth2/**", "/login/oauth2/code/github","/registerSocialUser","/saveSocialUser").permitAll()
                         .requestMatchers("/admin/**", "/admin").hasRole("ADMIN")
                         .requestMatchers("/comments/post/**", "/likes/post/**").authenticated()
                         .anyRequest().authenticated()
@@ -69,15 +69,15 @@ public class SecurityConfig {
                 // 사용자 정의 인증 진입 지점을 처리하기 위한 예외 처리를 구성합니다.
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/loginform")
-                        .failureUrl("/trending")
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(this.oauth2UserService())
-                        )
-                        .successHandler(customOAuth2AuthenticationSuccessHandler)
                 );
+//                .oauth2Login(oauth2 -> oauth2
+//                        .loginPage("/loginform")
+//                        .failureUrl("/trending")
+//                        .userInfoEndpoint(userInfo -> userInfo
+//                                .userService(this.oauth2UserService())
+//                        )
+//                        .successHandler(customOAuth2AuthenticationSuccessHandler)
+//                );
 
         return http.build();
     }
@@ -105,24 +105,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
-        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
-        return oauth2UserRequest -> {
-            OAuth2User oauth2User = delegate.loadUser(oauth2UserRequest);
-
-            String token = oauth2UserRequest.getAccessToken().getTokenValue();
-
-            // Save or update the user in the database
-            String provider = oauth2UserRequest.getClientRegistration().getRegistrationId();
-            String socialId = String.valueOf(oauth2User.getAttributes().get("id"));
-            String username = (String) oauth2User.getAttributes().get("login");
-            String email = (String) oauth2User.getAttributes().get("email");
-            String avatarUrl = (String) oauth2User.getAttributes().get("avatar_url");
-
-            socialUserService.saveOrUpdateUser(socialId, provider, username, email, avatarUrl);
-
-            return oauth2User;
-        };
-    }
+//    @Bean
+//    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
+//        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
+//        return oauth2UserRequest -> {
+//            OAuth2User oauth2User = delegate.loadUser(oauth2UserRequest);
+//
+//            String token = oauth2UserRequest.getAccessToken().getTokenValue();
+//
+//            // Save or update the user in the database
+//            String provider = oauth2UserRequest.getClientRegistration().getRegistrationId();
+//            String socialId = String.valueOf(oauth2User.getAttributes().get("id"));
+//            String username = (String) oauth2User.getAttributes().get("login");
+//            String email = (String) oauth2User.getAttributes().get("email");
+//            String avatarUrl = (String) oauth2User.getAttributes().get("avatar_url");
+//
+//            socialUserService.saveOrUpdateUser(socialId, provider, username, email, avatarUrl);
+//
+//            return oauth2User;
+//        };
+//    }
 }
