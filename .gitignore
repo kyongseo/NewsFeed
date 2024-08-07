@@ -39,5 +39,6 @@ out/
 # Spring Boot application configuration file
 src/main/resources/application.yml
 
+src/main/resources/static/files
 ### 관리자 ###
 /src/main/java/hello/blog/config/DataInitializer.java
