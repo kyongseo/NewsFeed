@@ -1,5 +1,4 @@
-package hello.blog.domain;
-
+package hello.blog.feature.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,14 +36,4 @@ public class Comment {
     // 대댓글 엔티티를 하나 만들어서 연관관계 설정
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Reply> replies = new ArrayList<>();
-
-    // 대댓글.. 트리구조
-    // 대댓글이 달릴 댓글 부모
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "parent_comment_id")
-//    private Comment parentComment;
-//
-//    // 자식 댓글들, 부모가 삭제되면 자식 댓글들더 삭재ㅔ
-//    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Comment> replies = new ArrayList<>();
 }

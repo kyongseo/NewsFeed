@@ -1,6 +1,6 @@
-package hello.blog.repository;
+package hello.blog.feature.repository;
 
-import hello.blog.domain.Comment;
+import hello.blog.feature.domain.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

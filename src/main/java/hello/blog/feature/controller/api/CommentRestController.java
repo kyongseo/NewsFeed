@@ -1,14 +1,11 @@
-package hello.blog.controller.api;
+package hello.blog.feature.controller.api;
 
-import hello.blog.domain.Comment;
-import hello.blog.service.CommentService;
-import hello.blog.service.PostService;
+import hello.blog.feature.domain.Comment;
+import hello.blog.feature.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

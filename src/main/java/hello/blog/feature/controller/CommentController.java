@@ -1,7 +1,7 @@
-package hello.blog.controller;
-import hello.blog.domain.Comment;
-import hello.blog.service.CommentService;
-import hello.blog.service.PostService;
+package hello.blog.feature.controller;
+
+import hello.blog.feature.domain.Comment;
+import hello.blog.feature.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

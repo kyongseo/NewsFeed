@@ -1,14 +1,13 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.config.exception.CommentNotFoundException;
-import hello.blog.config.exception.PostNotFoundException;
-import hello.blog.config.exception.UserNotFoundException;
-import hello.blog.domain.Comment;
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.CommentRepository;
-import hello.blog.repository.PostRepository;
-import hello.blog.repository.UserRepository;
+import hello.blog.global.config.exception.PostNotFoundException;
+import hello.blog.global.config.exception.UserNotFoundException;
+import hello.blog.feature.domain.Comment;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.CommentRepository;
+import hello.blog.feature.repository.PostRepository;
+import hello.blog.feature.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
