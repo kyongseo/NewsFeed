@@ -1,16 +1,15 @@
-package hello.blog.controller;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.Reply;
-import hello.blog.domain.User;
-import hello.blog.repository.UserRepository;
-import hello.blog.service.CommentService;
-import hello.blog.service.ReplyService;
+import hello.blog.feature.domain.Reply;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.UserRepository;
+import hello.blog.feature.service.CommentService;
+import hello.blog.feature.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 
 @Controller
 @RequiredArgsConstructor

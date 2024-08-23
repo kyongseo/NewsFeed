@@ -1,16 +1,12 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.Comment;
-import hello.blog.domain.Reply;
-import hello.blog.repository.CommentRepository;
-import hello.blog.repository.ReplyRepository;
+import hello.blog.feature.domain.Comment;
+import hello.blog.feature.domain.Reply;
+import hello.blog.feature.repository.CommentRepository;
+import hello.blog.feature.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
