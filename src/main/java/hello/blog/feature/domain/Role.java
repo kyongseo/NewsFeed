@@ -1,7 +1,9 @@
-package hello.blog.domain;
+package hello.blog.feature.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -11,6 +13,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "roles")
 @Getter@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +24,7 @@ public class Role {
 //    @Column(nullable = false, unique = true, length = 50)
     private RoleName roleName;
 
+    public Role(RoleName roleName) {
+        this.roleName = roleName;
+    }
 }

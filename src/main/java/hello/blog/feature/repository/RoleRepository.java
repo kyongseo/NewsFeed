@@ -1,8 +1,7 @@
-package hello.blog.repository;
+package hello.blog.feature.repository;
 
-
-import hello.blog.domain.Role;
-import hello.blog.domain.RoleName;
+import hello.blog.feature.domain.Role;
+import hello.blog.feature.domain.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

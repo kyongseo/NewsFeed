@@ -1,4 +1,4 @@
-package hello.blog.domain;
+package hello.blog.feature.domain;
 
 public enum RoleName {
     ROLE_ADMIN,
