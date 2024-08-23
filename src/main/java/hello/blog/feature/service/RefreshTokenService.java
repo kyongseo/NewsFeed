@@ -1,7 +1,7 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.RefreshToken;
-import hello.blog.repository.RefreshTokenRepository;
+import hello.blog.feature.domain.RefreshToken;
+import hello.blog.feature.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,6 +1,6 @@
-package hello.blog.repository;
+package hello.blog.feature.repository;
 
-import hello.blog.domain.RefreshToken;
+import hello.blog.feature.domain.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
