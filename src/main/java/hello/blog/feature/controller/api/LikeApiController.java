@@ -1,10 +1,10 @@
-package hello.blog.controller.api;
+package hello.blog.feature.controller.api;
 
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.service.LikeService;
-import hello.blog.service.PostService;
-import hello.blog.service.UserService;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.service.LikeService;
+import hello.blog.feature.service.PostService;
+import hello.blog.feature.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

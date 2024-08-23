@@ -1,9 +1,9 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.Like;
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.LikeRepository;
+import hello.blog.feature.domain.Like;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -12,18 +12,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
-
-//    public void like(Post post, User user) {
-//        Optional<Like> existingLike = likeRepository.findByPostAndUser(post, user);
-//        if (existingLike.isPresent()) {
-//            likeRepository.delete(existingLike.get());
-//        } else {
-//            Like like = new Like();
-//            like.setPost(post);
-//            like.setUser(user);
-//            likeRepository.save(like);
-//        }
-//    }
 
     public boolean like(Post post, User user) {
         Optional<Like> likeOptional = likeRepository.findByPostAndUser(post, user);
