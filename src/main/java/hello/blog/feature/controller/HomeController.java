@@ -96,14 +96,11 @@ public class HomeController {
         List<Post> searchResults = postService.searchPosts(query, pageable); // 제목, 내용 검색
         List<Post> searchUsersResults = postService.searchPostUser(query); // 작성자 검색
 
-        // 두개를 따로따로 검색했는데 코드가 더러워서.... 하나로 합치기
         List<Post> comSearchResults  = new ArrayList<>(searchResults);
         comSearchResults .addAll(searchUsersResults);
 
         model.addAttribute("blogPosts", comSearchResults);
 
-//        model.addAttribute("blogPosts", searchResults);
-//        model.addAttribute("searchUsersResults", searchUsersResults);
         return "home";
     }
 
