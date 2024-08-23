@@ -1,8 +1,8 @@
-package hello.blog.controller;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.Post;
-import hello.blog.service.PostService;
-import hello.blog.service.UserService;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.service.PostService;
+import hello.blog.feature.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

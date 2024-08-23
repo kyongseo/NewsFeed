@@ -1,11 +1,11 @@
-package hello.blog.controller;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.LikeRepository;
-import hello.blog.service.FollowService;
-import hello.blog.service.PostService;
-import hello.blog.service.UserService;
+
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.service.FollowService;
+import hello.blog.feature.service.PostService;
+import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
