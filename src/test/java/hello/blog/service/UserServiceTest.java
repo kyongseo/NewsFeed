@@ -2,11 +2,12 @@ package hello.blog.service;
 
 import static org.mockito.Mockito.*;
 
-import hello.blog.domain.Role;
-import hello.blog.domain.RoleName;
-import hello.blog.domain.User;
-import hello.blog.repository.RoleRepository;
-import hello.blog.repository.UserRepository;
+import hello.blog.feature.domain.Role;
+import hello.blog.feature.domain.RoleName;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.RoleRepository;
+import hello.blog.feature.repository.UserRepository;
+import hello.blog.feature.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

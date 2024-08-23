@@ -1,14 +1,12 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.config.exception.UserNotFoundException;
-import hello.blog.domain.Role;
-import hello.blog.domain.RoleName;
-import hello.blog.domain.User;
-import hello.blog.repository.PostRepository;
-import hello.blog.repository.RoleRepository;
-import hello.blog.repository.UserRepository;
+import hello.blog.feature.domain.Role;
+import hello.blog.feature.domain.RoleName;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.RoleRepository;
+import hello.blog.feature.repository.UserRepository;
+import hello.blog.global.config.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +27,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-   // @Lazy
     private final PasswordEncoder passwordEncoder;
 
     // 파일 업로드 디렉토리 경로
@@ -201,33 +197,5 @@ public class UserService {
      */
     public Optional<User> getUser(Long id){
         return userRepository.findById(id);
-    }
-
-    /**
-     * oauth 사용 시 메서드들....
-     */
-    public Optional<User> findByProviderAndSocialId(String provider, String socialId) {
-        return userRepository.findByProviderAndSocialId(provider, socialId);
-    }
-
-    @Transactional(readOnly = false)
-    public User saveUser(String username, String email, String socialId, String provider, PasswordEncoder passwordEncoder){
-        User user = new User();
-        user.setUserName(username);
-        user.setEmail(email);
-        user.setSocialId(socialId);
-        user.setProvider(provider);
-        user.setPassword(passwordEncoder.encode(""));
-        return userRepository.save(user);
-    }
-
-    @Transactional
-    public boolean authenticateByEmail(String email, String password) {
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return passwordEncoder.matches(password, user.getPassword());
-        }
-        return false;
     }
 }

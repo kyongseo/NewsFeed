@@ -1,12 +1,9 @@
-package hello.blog.domain;
-
+package hello.blog.feature.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,8 +14,11 @@ import java.util.Set;
  * 사용자 도메인
  */
 @Entity
-@Getter@Setter
+@Getter @Setter
+@Builder
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
