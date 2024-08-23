@@ -1,14 +1,12 @@
-package hello.blog.controller;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.Comment;
-import hello.blog.domain.Post;
-import hello.blog.domain.User;
-import hello.blog.repository.LikeRepository;
-import hello.blog.service.CommentService;
-import hello.blog.service.PostService;
-import hello.blog.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import hello.blog.feature.domain.Comment;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.LikeRepository;
+import hello.blog.feature.service.CommentService;
+import hello.blog.feature.service.PostService;
+import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

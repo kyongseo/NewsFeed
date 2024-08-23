@@ -1,11 +1,11 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.Post;
-import hello.blog.domain.Tag;
-import hello.blog.domain.User;
-import hello.blog.repository.PostRepository;
-import hello.blog.repository.TagRepository;
-import hello.blog.repository.UserRepository;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.domain.Tag;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.PostRepository;
+import hello.blog.feature.repository.TagRepository;
+import hello.blog.feature.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
