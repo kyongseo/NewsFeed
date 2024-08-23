@@ -1,8 +1,8 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.Follow;
-import hello.blog.domain.User;
-import hello.blog.repository.FollowRepository;
+import hello.blog.feature.domain.Follow;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,6 @@ public class FollowService {
     // 팔로잉 중인 사용자 목록 조회
     public List<User> getFollowings(User user) {
         List<Follow> followings = followRepository.findByUser(user);
-        // followings.forEach(f -> System.out.println("Following: " + f.getFollowee().getUserName()));
         return followings.stream()
                 .map(Follow::getFollowee)
                 .collect(Collectors.toList());

@@ -1,28 +1,29 @@
-package hello.blog.controller.api;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.User;
-import hello.blog.service.FollowService;
-import hello.blog.service.UserService;
+import hello.blog.feature.domain.User;
+import hello.blog.feature.service.FollowService;
+import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/follows")
-public class FollowRestController {
+public class FollowController {
 
     private final FollowService followService;
     private final UserService userService;
 
-    @PostMapping("/{username}")
-    public ResponseEntity<String> toggleFollow(@PathVariable("username") String followeeUsername,
-                                               Authentication authentication) {
+    // 팔로우 버튼을 눌렀울 때
+    @PostMapping("/follows/{username}")
+    public String toggleFollow(@PathVariable("username") String followeeUsername,
+                               Authentication authentication,
+                               Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
             String loggedInUsername = authentication.getName();
             Optional<User> loggedInUser = userService.findByUserName(loggedInUsername);
@@ -30,35 +31,41 @@ public class FollowRestController {
 
             if (loggedInUser.isPresent() && followeeUser.isPresent()) {
                 boolean isFollowing = followService.toggleFollow(loggedInUser.get(), followeeUser.get());
-                return ResponseEntity.ok(isFollowing ? "Followed" : "Unfollowed");
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+                model.addAttribute("isFollowing", isFollowing);
             }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("노권한");
+        return "redirect:/{username}";
     }
 
     // 내가 팔로우한 사람 목록 보기
     @GetMapping("/{username}/followings")
-    public ResponseEntity<?> followingList(@PathVariable("username") String username) {
+    public String followingList(@PathVariable("username") String username,
+                                Model model) {
+
         Optional<User> userOptional = userService.findByUserName(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<User> followings = followService.getFollowings(user);
-            return ResponseEntity.ok(followings);
+            model.addAttribute("user", user);
+            model.addAttribute("followings", followings);
+            return "/user/followingList";
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        return "redirect:/trending";
     }
 
     // 나를 팔로우한 사람 목록 보기
-    @GetMapping("/{username}/followers")
-    public ResponseEntity<?> followersList(@PathVariable("username") String username) {
+    @GetMapping("{username}/followers")
+    public String followersList(@PathVariable("username") String username,
+                                Model model) {
+
         Optional<User> userOptional = userService.findByUserName(username);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             List<User> followers = followService.getFollowers(user);
-            return ResponseEntity.ok(followers);
+            model.addAttribute("user", user);
+            model.addAttribute("followers", followers);
+            return "/user/followerList";
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        return "redirect:/trending";
     }
 }
