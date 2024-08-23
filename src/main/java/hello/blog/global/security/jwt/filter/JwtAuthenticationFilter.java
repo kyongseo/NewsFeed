@@ -1,12 +1,11 @@
-package hello.blog.security.jwt.filter;
+package hello.blog.global.security.jwt.filter;
 
-
-import hello.blog.security.CustomUserDetails;
-import hello.blog.security.jwt.exception.JwtExceptionCode;
-import hello.blog.security.jwt.token.JwtAuthenticationToken;
-import hello.blog.security.jwt.util.JwtTokenizer;
-import hello.blog.service.JwtBlacklistService;
-import hello.blog.service.RefreshTokenService;
+import hello.blog.global.security.user.CustomUserDetails;
+import hello.blog.global.security.jwt.exception.JwtExceptionCode;
+import hello.blog.global.security.jwt.token.JwtAuthenticationToken;
+import hello.blog.global.security.jwt.util.JwtTokenizer;
+import hello.blog.feature.service.JwtBlacklistService;
+import hello.blog.feature.service.RefreshTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;

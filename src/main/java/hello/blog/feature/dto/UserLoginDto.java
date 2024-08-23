@@ -1,4 +1,4 @@
-package hello.blog.dto;
+package hello.blog.feature.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

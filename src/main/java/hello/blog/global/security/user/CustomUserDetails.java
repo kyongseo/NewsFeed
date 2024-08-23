@@ -1,4 +1,4 @@
-package hello.blog.security;
+package hello.blog.global.security.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

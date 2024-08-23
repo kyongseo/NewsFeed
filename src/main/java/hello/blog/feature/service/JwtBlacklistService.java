@@ -1,7 +1,7 @@
-package hello.blog.service;
+package hello.blog.feature.service;
 
-import hello.blog.domain.JwtBlacklist;
-import hello.blog.repository.JwtBlacklistRepository;
+import hello.blog.feature.domain.JwtBlacklist;
+import hello.blog.feature.repository.JwtBlacklistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

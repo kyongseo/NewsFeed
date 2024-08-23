@@ -1,4 +1,4 @@
-package hello.blog.config.exception;
+package hello.blog.global.config.exception;
 
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String message) {
