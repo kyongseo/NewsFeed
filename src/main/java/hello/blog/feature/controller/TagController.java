@@ -1,9 +1,7 @@
-package hello.blog.controller;
+package hello.blog.feature.controller;
 
-import hello.blog.domain.Post;
-import hello.blog.service.PostService;
-import hello.blog.service.TagService;
-import lombok.Getter;
+import hello.blog.feature.domain.Post;
+import hello.blog.feature.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
