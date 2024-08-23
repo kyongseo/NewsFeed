@@ -39,8 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> PERMIT_ALL_PATHS = List.of(
             "/", "/css/.*", "/api/login", "/api/.*",
-            "/userregform", "/css/.*", "/files/.*", "/loginform",
-            "/oauth2/**", "/login/oauth2/**"
+            "/userregform", "/css/.*", "/files/.*", "/loginform"
     );
 
     @Override

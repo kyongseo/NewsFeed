@@ -10,21 +10,21 @@
 </head>
 <body>
 <div class="container mt-4">
-    <div class="card shadow-sm">
+    <div class="card">
         <div class="card-body">
             <h2 class="card-title mb-4" th:text="${user.userName} + '님의 팔로우 목록'"></h2>
             <div th:if="${not #lists.isEmpty(followers)}">
                 <ul class="list-group list-group-flush">
                     <li th:each="follower : ${followers}" class="list-group-item">
                         <img class="profile-image" th:src="@{/files/{filename}(filename=${follower.filename})}" alt="Profile Image" />
-                        <a th:href="@{/{username}(username=${follower.userName})}" th:text="${follower.userName}"></a>
+                        <a th:href="@{/{username}(username=${follower.userName})}" class="profile-link" th:text="${follower.userName}"></a>
                     </li>
                 </ul>
             </div>
             <div th:if="${#lists.isEmpty(followers)}">
                 <p class="text-col">팔로우한 사용자가 없습니다.</p>
             </div>
-            <a th:href="@{'/' + ${user.userName}}" class="btn btn-outline-secondary mt-3">뒤로가기</a>
+            <a th:href="@{'/' + ${user.userName}}" class="btn btn-outline-dark mt-3">뒤로가기</a>
         </div>
     </div>
 </div>
