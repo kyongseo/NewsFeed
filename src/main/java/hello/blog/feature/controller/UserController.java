@@ -7,7 +7,6 @@ import hello.blog.feature.service.PostService;
 import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,6 @@ public class UserController {
     private final UserService userService;
     private final PostService postService;
     private final FollowService followService;
-    private final SocialLoginInfoService socialLoginInfoService;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
