@@ -6,6 +6,7 @@ import hello.blog.feature.domain.User;
 import hello.blog.feature.repository.PostRepository;
 import hello.blog.feature.repository.TagRepository;
 import hello.blog.feature.repository.UserRepository;
+import hello.blog.global.config.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +68,13 @@ public class PostService {
             return postRepository.save(post);
         }
         throw new RuntimeException("작성 권한이 없습니다.");
+    }
+
+    @Transactional(readOnly = true)
+    public String getPostOwnerUsername(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글을 찾을 수 없습니다."));
+        return post.getUser().getUserName();
     }
 
     // 임시저장

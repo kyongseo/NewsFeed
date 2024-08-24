@@ -1,5 +1,6 @@
 package hello.blog.feature.controller.api;
 
+import hello.blog.feature.service.NotificationService;
 import hello.blog.feature.domain.Comment;
 import hello.blog.feature.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class CommentRestController {
 
     private final CommentService commentService;
+    private final NotificationService notificationService;
+
+
 
     @PostMapping("/post/{postId}")
     public ResponseEntity<String> addComment(@PathVariable("postId") Long postId,
@@ -21,14 +25,16 @@ public class CommentRestController {
                                              Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
-            // 추가 로그로 사용자 정보 확인
             System.out.println("Authenticated user: " + username);
             commentService.addComment(postId, commentRequest.getContent());
+
+            // 댓글 작성 후 알림 전송
             return ResponseEntity.ok("댓글 생성 완료");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("노권한");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한 없음");
         }
     }
+
     public static class CommentRequest {
         private String content;
 

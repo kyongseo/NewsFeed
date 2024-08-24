@@ -1,5 +1,6 @@
 package hello.blog.feature.controller;
 
+import hello.blog.feature.service.NotificationService;
 import hello.blog.feature.domain.Comment;
 import hello.blog.feature.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final NotificationService notificationService; // 알림 서비스 추가
 
     @PostMapping("/post/{postId}/comments")
     public String addComment(@PathVariable("postId") Long postId,
@@ -20,7 +22,15 @@ public class CommentController {
                              Authentication authentication,
                              Model model) {
         if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            // 댓글을 추가합니다.
             commentService.addComment(postId, content);
+
+            // 게시글 작성자에게 알림
+            String postOwnerUsername = commentService.getPostOwnerUsername(postId);
+            if (!username.equals(postOwnerUsername)) {
+                notificationService.createNotification(postOwnerUsername, username + "님이 댓글을 달았습니다.");
+            }
             return "redirect:/posts/" + postId;
         } else {
             return "redirect:/loginform";

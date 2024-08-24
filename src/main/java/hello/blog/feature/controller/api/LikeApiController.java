@@ -1,5 +1,6 @@
 package hello.blog.feature.controller.api;
 
+import hello.blog.feature.service.NotificationService;
 import hello.blog.feature.domain.Post;
 import hello.blog.feature.domain.User;
 import hello.blog.feature.service.LikeService;
@@ -24,6 +25,8 @@ public class LikeApiController {
     private final LikeService likeService;
     private final PostService postService;
     private final UserService userService;
+    private final NotificationService notificationService;
+
 
     // 좋아요 버튼을 눌렀을 때
     @PostMapping("/posts/{postId}/like")
@@ -42,6 +45,12 @@ public class LikeApiController {
                     Post post = postOptional.get();
                     boolean liked = likeService.like(post, user);
                     Long likeCount = likeService.countByPostId(postId);
+
+                    String postOwnerUsername = postService.getPostOwnerUsername(postId);
+                    if (!username.equals(postOwnerUsername)) {
+                        notificationService.createNotification(postOwnerUsername, username + "님이 게시글에 좋아요를 눌렀습니다.");
+                    }
+
                     return ResponseEntity.ok().body(new LikeResponse(liked, likeCount));
                 }
             }

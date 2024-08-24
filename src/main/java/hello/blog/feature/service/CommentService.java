@@ -23,6 +23,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     /**
      * 댓글 추가
@@ -45,7 +46,39 @@ public class CommentService {
         comment.setUser(user);
         comment.setContent(content);
 
-        return commentRepository.save(comment);
+        // 댓글을 데이터베이스에 저장
+        Comment savedComment = commentRepository.save(comment);
+
+        // 댓글 작성 후 알림 전송
+        sendCommentNotification(post, user, content);
+
+        return savedComment;
+    }
+
+    /**
+     * 댓글 작성 시 알림 전송
+     */
+    private void sendCommentNotification(Post post, User commenter, String content) {
+        // 게시글 작성자 정보 가져오기
+        User postAuthor = post.getUser();
+
+        // 댓글을 작성한 사용자와 게시글 작성자가 동일하지 않을 때만 알림을 보냄
+        if (!commenter.getUserId().equals(postAuthor.getUserId())) {
+            notificationService.createNotification(
+                    postAuthor.getUserName(),
+                    commenter.getUserName() + "님이 댓글을 달았습니다: " + content
+            );
+        }
+    }
+
+    /**
+     * 게시글 ID로 해당 게시물 작성자의 사용자 이름 가져오기
+     */
+    @Transactional(readOnly = true)
+    public String getPostOwnerUsername(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("해당 게시글을 찾을 수 없습니다."));
+        return post.getUser().getUserName();
     }
 
     /**
