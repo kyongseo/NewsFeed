@@ -67,6 +67,13 @@ public class User {
     private String filename;
     private String filepath;
 
+
+
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
+
+
     /**
      * 기존 User에 소셜로그인 정보 추가
      */

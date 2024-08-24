@@ -11,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.beans.factory.annotation.Value;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -111,19 +109,6 @@ public class UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
-    }
-
-    /**
-     * Oauth2
-     */
-    public User saveOauthUser(String username, String email, String socialId, String provider, PasswordEncoder passwordEncoder){
-        User user = new User();
-        user.setUserName(username);
-        user.setEmail(email);
-        user.setSocialId(socialId);
-        user.setProvider(provider);
-        user.setPassword(passwordEncoder.encode(""));
-        return userRepository.save(user);
     }
 
     /**

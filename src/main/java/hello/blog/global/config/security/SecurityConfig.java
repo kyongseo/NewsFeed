@@ -31,53 +31,53 @@ public class SecurityConfig {
     private final JwtBlacklistService jwtBlacklistService;
     private final RefreshTokenService refreshTokenService;
 
+    String[] allAllowPage = new String[] {
+            "/userregform", "/loginform", "/login", "/api/login",
+            "/css/**", "/js/**", "/files/**",
+            "/", "/posts/**", "/{username}", "/about/{username}"
+    };
+
+    String[] adminAllowPage = new String[] {
+            "/admin",
+            "/admin/**"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests(authorize -> authorize
-                        .requestMatchers("/userregform", "/loginform", "/login", "/css/**", "/js/**", "/files/**", "/", "/api/login", "/api/**").permitAll() // 이 주소로 시작되면 인증 필요 없음
-                        .requestMatchers("/posts/**", "/{username}", "/about/{username}", "/ws","/chat").permitAll()
-                        .requestMatchers("/oauth2/**", "/login/oauth2/**").permitAll()
-                        .requestMatchers("/admin/**", "/admin").hasRole("ADMIN")
-                        .requestMatchers("/comments/post/**", "/likes/post/**").authenticated()
+                        .requestMatchers(allAllowPage).permitAll()
+                        .requestMatchers(adminAllowPage).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                // UsernamePasswordAuthenticationFilter 앞에 JWT 인증 필터를 추가합니다.
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer, jwtBlacklistService, refreshTokenService), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(form -> form.disable())
-                .sessionManagement(sessionManagement -> sessionManagement
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // CSRF 보호를 비활성화합니다.
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .csrf(csrf -> csrf.disable())
-                // HTTP 기본 인증을 비활성화합니다.
                 .httpBasic(httpBasic -> httpBasic.disable())
-                // CORS (Cross-Origin Resource Sharing)를 구성합니다.
                 .cors(cors -> cors.configurationSource(configurationSource()))
-                // 사용자 정의 인증 진입 지점을 처리하기 위한 예외 처리를 구성합니다.
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint)
                 );
         return http.build();
     }
 
-    /**
-     * 모든 origin, header, method를 허용하는 CORS 구성 소스를 정의합니다.
-     */
     @Bean
     public CorsConfigurationSource configurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); //모든 도메인 허용
-        config.addAllowedHeader("*"); //모든 HTTP 메서드 허용
+        config.setAllowedOrigins(List.of("http://localhost:8080"));
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // 허용할 헤더 설정
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드 설정
+        config.setAllowCredentials(true); // 인증 정보를 허용하려면 true로 설정
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        config.setAllowedMethods(List.of("GET", "POST", "DELETE")); // 명시적으로 GET, POST, DELETE 메서드 허용
+        //config.setAllowedMethods(List.of("GET", "POST", "DELETE"));
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 
-    /**
-     * BCryptPasswordEncoder 빈을 정의합니다.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

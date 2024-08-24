@@ -26,3 +26,9 @@ Cookie: refreshToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJxcXFxQG5hdmVyLmNvbSIsInVzZX
 ###
 GET http://localhost:80/api/logout
 Cookie: accessToken=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpYW1AbmF2ZXIuY29tIiwidXNlcklkIjoyOCwidXNlcm5hbWUiOiJpYW0iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzIwNzcxMDI2LCJleHAiOjE3MjA3NzI4MjZ9.kTzP6ARrom-ALnWWCWHT2fdrG3KuT8gCV615EsfCCO8
+
+###
+GET http://localhost:8081/api/notifications/stream
+
+
+

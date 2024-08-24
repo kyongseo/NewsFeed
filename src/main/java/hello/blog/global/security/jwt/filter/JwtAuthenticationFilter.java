@@ -38,7 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RefreshTokenService refreshTokenService;
 
     private static final List<String> PERMIT_ALL_PATHS = List.of(
-            "/", "/css/.*", "/api/login", "/api/.*",
+            "/", "/css/.*", "/api/login",
             "/userregform", "/css/.*", "/files/.*", "/loginform"
     );
 
