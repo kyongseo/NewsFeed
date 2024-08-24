@@ -7,6 +7,7 @@ import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -96,6 +97,7 @@ public class NotificationRestController {
 
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/stream")
     public SseEmitter streamNotifications(Authentication authentication) {
         SseEmitter emitter = new SseEmitter(60000L); // 60초 타임아웃 설정
