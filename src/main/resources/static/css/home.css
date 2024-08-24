@@ -106,3 +106,25 @@ body {
 .card-footer {
     margin-top: auto;
 }
+/* home.css */
+.notification-dot {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-dot::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+    transform: translate(50%, -50%);
+    display: none;
+}
+
+.notification-dot.active::after {
+    display: block;
+}

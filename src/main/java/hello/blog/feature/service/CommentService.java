@@ -64,9 +64,7 @@ public class CommentService {
 
         // 댓글을 작성한 사용자와 게시글 작성자가 동일하지 않을 때만 알림을 보냄
         if (!commenter.getUserId().equals(postAuthor.getUserId())) {
-            notificationService.createNotification(
-                    postAuthor.getUserName(),
-                    commenter.getUserName() + "님이 댓글을 달았습니다: " + content
+            notificationService.createNotification(postAuthor.getUserName(), commenter.getUserName() + "님이 댓글을 달았습니다: "
             );
         }
     }

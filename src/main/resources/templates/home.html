@@ -24,8 +24,9 @@
         </li>
         <!-- 알림 링크 추가 -->
         <li class="nav-item" th:if="${username != null and username != ''}">
-          <a class="nav-link text-white" th:href="@{/notifications}">알림</a>
+          <a class="nav-link text-white notification-dot" th:href="@{/notifications}">📪</a>
         </li>
+
       </ul>
       <div th:if="${username != null and username != ''}" class="d-flex align-items-center ms-auto">
         <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
@@ -109,6 +110,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const eventSource = new EventSource('/api/notifications/stream');
+    const notificationDot = document.querySelector('.notification-dot');
 
     eventSource.addEventListener('notification', function(event) {
       try {
@@ -121,6 +123,11 @@
 
         const notificationBanner = document.getElementById('notification-banner');
         notificationBanner.classList.remove('d-none');
+
+        // 빨간색 점 활성화
+        if (notificationDot) {
+          notificationDot.classList.add('active');
+        }
 
         // 5초 후 배너를 숨김
         setTimeout(() => {

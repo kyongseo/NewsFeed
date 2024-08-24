@@ -39,10 +39,26 @@ public class NotificationService {
        // notificationRepository.delete(notification);
     }
 
+    @Transactional
+    public void markAsRead(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+        notification.setRead(false);
+        notificationRepository.save(notification);
+    }
+
+
     // 특정 ID로 알림을 가져옴
     public Notification getNotificationById(Long id) {
         return notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+    }
+
+    @Transactional
+    public void deleteNotification(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+        notificationRepository.delete(notification);
     }
 
     // 알림을 삭제

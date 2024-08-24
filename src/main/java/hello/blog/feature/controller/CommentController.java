@@ -26,11 +26,11 @@ public class CommentController {
             // 댓글을 추가합니다.
             commentService.addComment(postId, content);
 
-            // 게시글 작성자에게 알림
-            String postOwnerUsername = commentService.getPostOwnerUsername(postId);
-            if (!username.equals(postOwnerUsername)) {
-                notificationService.createNotification(postOwnerUsername, username + "님이 댓글을 달았습니다.");
-            }
+//            // 게시글 작성자에게 알림
+//            String postOwnerUsername = commentService.getPostOwnerUsername(postId);
+//            if (!username.equals(postOwnerUsername)) {
+//                notificationService.createNotification(postOwnerUsername, username + "님이 댓글을 달았습니다.");
+//            }
             return "redirect:/posts/" + postId;
         } else {
             return "redirect:/loginform";
