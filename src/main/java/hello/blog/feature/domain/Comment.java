@@ -24,7 +24,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // 댓글 작성자는 반드시 로그인된 사용자여야 한ㅁ
+    private User user; // 댓글 작성자는 반드시 로그인된 사용자
 
     @Column(nullable = false)
     private String content;

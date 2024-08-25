@@ -46,7 +46,6 @@ public class CommentService {
         comment.setUser(user);
         comment.setContent(content);
 
-        // 댓글을 데이터베이스에 저장
         Comment savedComment = commentRepository.save(comment);
 
         // 댓글 작성 후 알림 전송
