@@ -1,4 +1,4 @@
-package hello.blog.global.config;
+package hello.blog.global.config.scheduling;
 
 import hello.blog.feature.domain.Notification;
 import hello.blog.feature.repository.NotificationRepository;

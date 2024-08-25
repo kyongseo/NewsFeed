@@ -1,4 +1,4 @@
-package hello.blog.global.config;
+package hello.blog.global.config.scheduling;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
