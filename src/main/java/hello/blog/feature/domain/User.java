@@ -66,22 +66,4 @@ public class User {
 
     private String filename;
     private String filepath;
-
-
-
-    @Column(name = "fcm_token")
-    private String fcmToken;
-
-
-
-    /**
-     * 기존 User에 소셜로그인 정보 추가
-     */
-    // socialId : 구굴 로그인 한 유저의 고유 ID가 들어감
-    @Column(name = "social_id", length = 255)
-    private String socialId;
-
-    // provider : kakao 들어감
-    @Column(name = "provider", length = 50)
-    private String provider;
 }
