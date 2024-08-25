@@ -13,7 +13,6 @@ import java.util.Set;
 
 /**
  * 게시글 도메인
- * 사용자는 여러개의 게시글을 갖을 수 있다.
  */
 @Entity
 @Table(name = "posts")

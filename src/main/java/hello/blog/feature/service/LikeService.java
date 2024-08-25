@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class LikeService {
+
     private final LikeRepository likeRepository;
 
     public boolean like(Post post, User user) {
