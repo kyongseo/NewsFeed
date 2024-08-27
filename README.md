@@ -1,7 +1,7 @@
 # [📢 NewsFeed](https://youtu.be/vrL-VPoE8to)
 <img src="https://github.com/user-attachments/assets/b47aa9be-18b5-431c-a8f1-bfd6faf0be7c" width="400" height="400">
 
-NewsFeed는 최신 기술 스택을 활용하여 사용자가 최신 뉴스 및 블로그 게시물을 쉽게 검색하고 공유할 수 있는 플랫폼입니다. 
+사용자가 최신 뉴스 및 블로그 게시물을 쉽게 검색하고 공유할 수 있는 플랫폼입니다. 
 
 <br>
 
