@@ -116,16 +116,6 @@
 
 <br>
 
-### 🏷️ 관리자
-| **사용자 조회** | **게시글 조회**    |
-| :--------: | :--------: |
-|  <img src="https://github.com/user-attachments/assets/7c12dc50-6875-4e8c-a86a-b5b898f05557"  width="400px" height="300px"/>  | <img src="https://github.com/user-attachments/assets/2e4ac236-30c5-4241-8789-33c2d25e1320"  width="400px" height="300px"/>  |
-- 역할에 따라 페이지를 다르게 구현했습니다
-- 모든 사용자 조회 및 중지가 가능합니다
-- 모든 게시글 조회가 가능합니다
-
-<br>
-
 ## 🗄️ Structure
 ### 🏷️ DB Schema
 ![DBSchema](https://github.com/user-attachments/assets/0ff3c768-6a19-431a-90cd-dfb49ef2064f)
