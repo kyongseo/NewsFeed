@@ -25,12 +25,12 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<Notification> getNotificationsByUsername(String username) {
-        return notificationRepository.findByUsername(username);
-    }
+//    public List<Notification> getNotificationsByUsername(String username) {
+//        return notificationRepository.findByUsername(username);
+//    }
 
-//    // 알림을 "전송됨"으로 표시하거나 삭제하는 메서드
-    public void markAsSent(Notification notification) {
+    // 알림을 "전송됨"으로 표시하거나 삭제하는 메서드
+    public void markAsRead(Notification notification) {
         // 예: 알림을 "전송됨"으로 표시
         notification.setRead(true);
         notificationRepository.save(notification);
@@ -47,24 +47,23 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-
     // 특정 ID로 알림을 가져옴
     public Notification getNotificationById(Long id) {
         return notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
     }
 
-    @Transactional
-    public void deleteNotification(Long notificationId) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
-        notificationRepository.delete(notification);
-    }
-
-    // 알림을 삭제
-    public void deleteNotification(Notification notification) {
-        notificationRepository.delete(notification);
-    }
+//    @Transactional
+//    public void deleteNotification(Long notificationId) {
+//        Notification notification = notificationRepository.findById(notificationId)
+//                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+//        notificationRepository.delete(notification);
+//    }
+//
+//    // 알림을 삭제
+//    public void deleteNotification(Notification notification) {
+//        notificationRepository.delete(notification);
+//    }
 //    // 알림을 읽은 상태로 업데이트
 //    public void markAsRead(Long notificationId) {
 //        Notification notification = notificationRepository.findById(notificationId)

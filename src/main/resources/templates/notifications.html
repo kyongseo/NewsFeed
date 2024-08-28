@@ -113,9 +113,6 @@
                     <form th:action="@{/notifications/mark-as-sent/{id}(id=${notification.id})}" method="post">
                         <button type="submit" class="btn btn-outline-dark" th:text="${notification.isRead ? '읽음' : '읽음으로 표시'}"></button>
                     </form>
-                    <form th:action="@{/notifications/delete/{id}(id=${notification.id})}" method="post">
-                        <button type="submit" class="btn">삭제</button>
-                    </form>
                 </div>
             </li>
         </ul>

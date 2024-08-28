@@ -3,7 +3,6 @@ package hello.blog.feature.controller;
 import hello.blog.feature.domain.Notification;
 import hello.blog.feature.service.NotificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,12 @@ import java.util.List;
 public class NotificationController {
     private final NotificationService notificationService;
 
+    /**
+     * 로그인한 사용자의 읽지 않은 알림
+     * @param model
+     * @param authentication
+     * @return
+     */
     //@PreAuthorize("hasRole('USER')")
     @GetMapping
     public String getNotifications(Model model, Authentication authentication) {
@@ -38,10 +43,11 @@ public class NotificationController {
     // 알림을 읽음 상태로 변경하는 메서드
     //@PreAuthorize("hasRole('USER')")
     @PostMapping("/mark-as-sent/{id}")
-    public String markAsSent(@PathVariable("id") Long id) {
+    public String markAsRead(@PathVariable("id") Long id) {
         Notification notification = notificationService.getNotificationById(id);
         if (notification != null) {
-            notificationService.markAsSent(notification);
+            notificationService.markAsRead(notification);
+            //notificationService.markAsRead(id);
         }
         return "redirect:/notifications"; // 알림 목록 페이지로 리다이렉트
     }
