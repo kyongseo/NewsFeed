@@ -118,7 +118,7 @@
 
 ## 🗄️ Structure
 ### 🏷️ DB Schema
-![DBSchema](https://github.com/user-attachments/assets/0ff3c768-6a19-431a-90cd-dfb49ef2064f)
+![DBSchema](https://github.com/user-attachments/assets/39c18ede-b5f5-4f97-aab7-05f09bea6ee6)
 
 <br>
 
