@@ -3,7 +3,7 @@ package hello.blog.feature.controller.api;
 import hello.blog.feature.dto.UserLoginDto;
 import hello.blog.feature.dto.UserLoginResponseDto;
 import hello.blog.feature.domain.*;
-import hello.blog.global.security.jwt.util.JwtTokenizer;
+import hello.blog.global.jwt.util.JwtTokenizer;
 import hello.blog.feature.service.JwtBlacklistService;
 import hello.blog.feature.service.RefreshTokenService;
 import hello.blog.feature.service.UserService;
