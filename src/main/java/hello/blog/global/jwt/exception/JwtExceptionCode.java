@@ -1,4 +1,4 @@
-package hello.blog.global.security.jwt.exception;
+package hello.blog.global.jwt.exception;
 
 import lombok.Getter;
 

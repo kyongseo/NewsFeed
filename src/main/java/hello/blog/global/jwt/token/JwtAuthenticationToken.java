@@ -1,4 +1,4 @@
-package hello.blog.global.security.jwt.token;
+package hello.blog.global.jwt.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

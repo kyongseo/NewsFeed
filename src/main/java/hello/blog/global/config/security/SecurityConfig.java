@@ -1,8 +1,8 @@
 package hello.blog.global.config.security;
 
-import hello.blog.global.security.jwt.exception.CustomAuthenticationEntryPoint;
-import hello.blog.global.security.jwt.filter.JwtAuthenticationFilter;
-import hello.blog.global.security.jwt.util.JwtTokenizer;
+import hello.blog.global.jwt.exception.CustomAuthenticationEntryPoint;
+import hello.blog.global.jwt.filter.JwtAuthenticationFilter;
+import hello.blog.global.jwt.util.JwtTokenizer;
 import hello.blog.feature.service.JwtBlacklistService;
 import hello.blog.feature.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;

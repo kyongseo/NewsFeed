@@ -1,4 +1,4 @@
-package hello.blog.global.security.user;
+package hello.blog.global.security;
 
 import hello.blog.feature.domain.User;
 import hello.blog.feature.repository.UserRepository;

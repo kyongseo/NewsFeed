@@ -1,4 +1,4 @@
-package hello.blog.global.security.jwt.util;
+package hello.blog.global.jwt.util;
 
 import hello.blog.feature.domain.RoleName;
 import io.jsonwebtoken.Claims;
