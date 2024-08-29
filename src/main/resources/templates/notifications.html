@@ -22,7 +22,7 @@
 <a href="/home">홈으로 돌아가기</a>
 </body>
 </html>
--->
+
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -120,5 +120,55 @@
     <a href="/trending" class="home-link">홈으로 돌아가기</a>
 </div>
 </body>
-</html>
+</html>-->
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 알림</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>내 알림</h1>
+    <div>
+        <ul>
+            <li th:each="notification : ${notifications}" class="notification-card">
+                <p class="notification-message" th:text="${notification.message}"></p>
+                <div class="notification-actions">
+                    <button class="btn btn-outline-dark mark-as-read-button"
+                            data-id="[[${notification.id}]]"
+                            th:text="${notification.isRead ? '읽음' : '읽음으로 표시'}"></button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <a href="/trending" class="home-link">홈으로 돌아가기</a>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('.mark-as-read-button').click(function() {
+            var notificationId = $(this).data('id');
+            var button = $(this);
+
+            $.ajax({
+                url: '/api/notifications/mark-as-sent/' + notificationId,
+                type: 'POST',
+                success: function(response) {
+                    alert('알림이 읽음으로 표시되었습니다.');
+                    button.text('읽음');
+                    button.attr('disabled', true);  // 버튼 비활성화
+                },
+                error: function(xhr) {
+                    alert('알림 상태를 변경하는 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
