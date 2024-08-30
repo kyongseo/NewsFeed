@@ -20,43 +20,26 @@ public class NotificationController {
 
     /**
      * 로그인한 사용자의 읽지 않은 알림
-     * @param model
-     * @param authentication
-     * @return
      */
-    //@PreAuthorize("hasRole('USER')")
     @GetMapping("/notifications")
     public String getNotifications(Model model, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "redirect:/loginform"; // 로그인 페이지로 리다이렉트
         }
-
         String username = authentication.getName();
         List<Notification> notifications = notificationService.getUnreadNotificationsByUsername(username);
-
         model.addAttribute("notifications", notifications);
 
         return "notifications";
     }
 
     // 알림을 읽음 상태로 변경하는 메서드
-    //@PreAuthorize("hasRole('USER')")
-//    @PostMapping("/mark-as-sent/{id}")
-//    public String markAsRead(@PathVariable("id") Long id) {
-//        Notification notification = notificationService.getNotificationById(id);
-//        if (notification != null) {
-//            notificationService.markAsRead(notification);
-//            //notificationService.markAsRead(id);
-//        }
-//        return "redirect:/notifications"; // 알림 목록 페이지로 리다이렉트
-//    }
-
-    @PostMapping("/api/notifications/mark-as-sent/{id}")
+    @PostMapping("/notifications/mark-as-sent/{id}")
     @ResponseBody
     public ResponseEntity<String> markAsRead(@PathVariable("id") Long id) {
         Notification notification = notificationService.getNotificationById(id);
         if (notification != null) {
-            notificationService.markAsRead(notification);
+            notificationService.markAsRead(id);
             return ResponseEntity.ok("Notification marked as read");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Notification not found");

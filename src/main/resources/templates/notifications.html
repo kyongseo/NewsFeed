@@ -130,6 +130,78 @@
     <title>내 알림</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .notification-card {
+            background-color: #2C2C2C;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .notification-message {
+            color: #E0E0E0;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            background-color: transparent;
+            border: 2px solid #E0E0E0;
+            color: #E0E0E0;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #E0E0E0;
+            color: #1E1E1E;
+        }
+        .btn-outline-dark {
+            color: #FFFFFF;
+            border-color: #FFFFFF;
+        }
+        .btn-outline-dark:hover {
+            color: #000000;
+            background-color: #FFFFFF;
+        }
+        .action-links a,
+        .action-links button,
+        .action-links form {
+            display: inline-block;
+            color: #b9fad0;
+            text-decoration: underline;
+        }
+        .action-links a:hover,
+        .action-links button:hover {
+            color: #dcffe1;
+        }
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #b9fad0;
+            text-decoration: underline;
+        }
+        .home-link:hover {
+            color: #dcffe1;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -156,7 +228,7 @@
             var button = $(this);
 
             $.ajax({
-                url: '/api/notifications/mark-as-sent/' + notificationId,
+                url: '/notifications/mark-as-read/' + notificationId, // URL 수정
                 type: 'POST',
                 success: function(response) {
                     alert('알림이 읽음으로 표시되었습니다.');
@@ -170,5 +242,6 @@
         });
     });
 </script>
+
 </body>
 </html>

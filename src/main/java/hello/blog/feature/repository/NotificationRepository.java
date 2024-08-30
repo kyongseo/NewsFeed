@@ -13,7 +13,4 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     // '읽음'으로 표시된 알림 중 특정 시간 이전에 생성된 알림을 찾는 메서드
     List<Notification> findByIsReadAndCreatedAtBefore(boolean isRead, LocalDateTime cutoffTime);
-
-    // 또는 '읽음'으로 설정된 알림을 삭제할 수 있는 메서드
-    // void deleteByIsReadAndCreatedAtBefore(boolean isRead, LocalDateTime cutoffTime);
 }

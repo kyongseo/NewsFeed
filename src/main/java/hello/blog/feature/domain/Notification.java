@@ -17,7 +17,8 @@ public class Notification {
     private Long id;
     private String username;
     private String message;
-    private boolean isRead;
+    private boolean isRead; // 읽음 상태
+    private boolean isSent; // 전송됨 상태
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

@@ -25,44 +25,43 @@ repositories {
 
 dependencies {
 
-    // Spring Data redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
     // security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    // db
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     runtimeOnly 'com.mysql:mysql-connector-j'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
+    // lombok
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
-    //developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
-    implementation 'org.jsoup:jsoup:1.14.3'
 
     // jwt
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
-    // gson
+    // jsoup & gson
     implementation 'com.google.code.gson:gson'
+    implementation 'org.jsoup:jsoup:1.14.3'
 
     // validation
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 
-    // s3
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    // socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-    implementation 'com.google.firebase:firebase-admin:9.2.0'
+    // spring batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 
 }
 

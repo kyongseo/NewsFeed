@@ -25,25 +25,19 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-//    public List<Notification> getNotificationsByUsername(String username) {
-//        return notificationRepository.findByUsername(username);
-//    }
-
-    // 알림을 "전송됨"으로 표시하거나 삭제하는 메서드
-    public void markAsRead(Notification notification) {
-        // 예: 알림을 "전송됨"으로 표시
-        notification.setRead(true);
+    @Transactional
+    public void markAsSent(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
+        notification.setSent(true); // 전송됨 상태로 설정
         notificationRepository.save(notification);
-
-        // 또는 알림을 삭제
-       // notificationRepository.delete(notification);
     }
 
     @Transactional
     public void markAsRead(Long notificationId) {
         Notification notification = notificationRepository.findById(notificationId)
                 .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
-        notification.setRead(false);
+        notification.setRead(true);
         notificationRepository.save(notification);
     }
 
@@ -52,25 +46,6 @@ public class NotificationService {
         return notificationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
     }
-
-//    @Transactional
-//    public void deleteNotification(Long notificationId) {
-//        Notification notification = notificationRepository.findById(notificationId)
-//                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
-//        notificationRepository.delete(notification);
-//    }
-//
-//    // 알림을 삭제
-//    public void deleteNotification(Notification notification) {
-//        notificationRepository.delete(notification);
-//    }
-//    // 알림을 읽은 상태로 업데이트
-//    public void markAsRead(Long notificationId) {
-//        Notification notification = notificationRepository.findById(notificationId)
-//                .orElseThrow(() -> new RuntimeException("알림을 찾을 수 없습니다."));
-//        notification.setRead(true);
-//        notificationRepository.save(notification);
-//    }
 
     // 사용자에게 보낸 알림 목록을 반환
     public List<Notification> getUnreadNotificationsByUsername(String username) {
