@@ -72,11 +72,8 @@ public class NotificationRestController {
                                 emitter.send(SseEmitter.event()
                                         .name("notification")
                                         .data(notification.getMessage()));
-
-                                // 알림을 읽음 상태로 업데이트 및 전송됨 상태로 설정
-                                notificationService.markAsRead(notification.getId());
-                                notificationService.markAsSent(notification.getId());
                             }
+                            break;
                         }
                     } else {
                         break; // emitter가 이미 완료된 경우 반복문 종료
