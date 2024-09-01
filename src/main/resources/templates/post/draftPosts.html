@@ -9,6 +9,56 @@
     <link href="/css/home.css" rel="stylesheet"/>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
+        <a class="navbar-brand text-white" th:href="@{/trending}">NewsFeed</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active text-white" aria-current="page" th:href="@{/mypage}" th:text="${user.userName} + '_velog'"></a>
+                </li>
+            </ul>
+            <!-- 사용자 영역 -->
+            <div th:if="${user.userName == user}" class="d-flex align-items-center ms-auto">
+                <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
+                        <i class="bi bi-caret-down-fill text-white"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
+                        <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 비로그인 유저 -->
+            <div th:if="${user.userName == null or user.userName == ''}" class="d-flex">
+                <a class="btn btn-outline-dark me-2" th:href="@{/loginform}">로그인</a>
+            </div>
+            <!-- 로그인 유저 -->
+            <div th:if="${user.userName != null and user.userName != ''}" class="d-flex align-items-center ms-auto">
+                <a class="btn btn-outline-light me-3" th:href="@{/posts/create}">새 글 작성</a>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="profile-image" th:src="@{${profileImage}}" alt="Profile Image">
+                        <i class="bi bi-caret-down-fill text-white"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" th:href="@{/mypage}">내 벨로그</a></li>
+                        <li><a class="dropdown-item" th:href="@{/mypage/edit}">설정</a></li>
+                        <li><a class="dropdown-item" th:href="@{/posts/drafts}">임시 글</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
 
 <main class="container my-5">
     <h2>임시 글 목록</h2>
