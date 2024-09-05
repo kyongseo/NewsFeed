@@ -15,7 +15,7 @@
 
 ## 💻 Skills
 📌 Front-End : Thymeleaf / JavaScript / HTML / CSS   <br>
-📌 Back-End : Spring Boot / REST API / Java / Spring Data JPA <br>
+📌 Back-End : JAVA / Spring Boot / Spring Data JPA / Spring Batch / REST API <br>
 📌 DB : MySQL    <br>
 📌 Authentication : Spring Security / JWT    <br>
 📌 Tool	 : IntelliJ, Postman, Git <br>
