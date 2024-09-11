@@ -16,7 +16,7 @@ public class NotificationBatchScheduler {
     private final JobLauncher jobLauncher; // 정의된 job 을 주기적 실행
     private final Job deleteNotificationsJob;
 
-    @Scheduled(cron = "0 0 * * * ?", zone = "Asia/Seoul") // 매 5분마다 실행
+    @Scheduled(cron="0 0 12 * * *", zone = "Asia/Seoul") // 매일 자정에 실행
     public void runDeleteUnreadNotificationsJob() {
         try {
             jobLauncher.run(deleteNotificationsJob, new JobParametersBuilder()
