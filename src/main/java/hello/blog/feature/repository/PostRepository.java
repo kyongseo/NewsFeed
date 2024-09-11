@@ -20,8 +20,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable); // 제목, 내용에 검색어가 포함된 게시글 검색
 
-    @Query("SELECT p FROM Post p LEFT JOIN p.likes l GROUP BY p ORDER BY COUNT(l) DESC")
-    List<Post> findAllOrderByLikesDesc(); // 좋아요 수 정렬 내림차순
+//    @Query("SELECT p FROM Post p LEFT JOIN p.likes l GROUP BY p ORDER BY COUNT(l) DESC")
+//    List<Post> findAllOrderByLikesDesc(); // 좋아요 수 정렬 내림차순
+
+    @Query("SELECT p FROM Post p LEFT JOIN FETCH p.likes l GROUP BY p ORDER BY COUNT(l) DESC")
+    List<Post> findAllOrderByLikesDesc();
+
 
     List<Post> findByUserAndIsDraftTrue(User user); // 게시글 임시저장 상태
 
