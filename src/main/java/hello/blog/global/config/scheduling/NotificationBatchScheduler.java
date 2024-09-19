@@ -8,6 +8,9 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * 시간 기반 트리거링 사용
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor
