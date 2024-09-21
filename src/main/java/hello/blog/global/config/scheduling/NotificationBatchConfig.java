@@ -34,7 +34,6 @@ public class NotificationBatchConfig {
     // 배치 작업의 전체 실행
     @Bean
     public Job deleteNotificationsJob(Step deleteUnreadNotificationsStep) {
-        log.info(">>> Creating deleteNotificationsJob");
         return new JobBuilder("deleteNotificationsJob", jobRepository)
                 .start(deleteUnreadNotificationsStep)
                 .build();
@@ -45,18 +44,18 @@ public class NotificationBatchConfig {
     public Step deleteUnreadNotificationsStep() {
         log.info(">>> Creating deleteUnreadNotificationsStep");
         return new StepBuilder("deleteUnreadNotificationsStep", jobRepository)
-                .tasklet(deleteUnreadNotificationsTasklet(), platformTransactionManager)
+               // .tasklet(deleteUnreadNotificationsTasklet(), platformTransactionManager)
+                .tasklet(checkUnreadNotificationsTasklet(), platformTransactionManager)
                 .build();
     }
 
-    // 10분 이상 읽지 않은 알림 삭제
+    // 7일 이상 읽지 않은 알림 삭제
     @Bean
     public Tasklet deleteUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
-            LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(10);
+            LocalDateTime cutoffTime = LocalDateTime.now().minusDays(7);
             List<Notification> notificationsToDelete = notificationRepository.findByIsReadAndCreatedAtBefore(false, cutoffTime);
             notificationRepository.deleteAll(notificationsToDelete);
-            log.info("Deleted unread notifications older than 10 minutes");
             return RepeatStatus.FINISHED;
         };
     }
@@ -65,14 +64,12 @@ public class NotificationBatchConfig {
     @Bean
     public Tasklet checkUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
-            LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(10);
+            LocalDateTime cutoffTime = LocalDateTime.now().minusDays(7);
             List<Long> usersWithUnreadNotifications = notificationRepository.findUsersWithUnreadNotifications(cutoffTime);
 
             for (Long userId : usersWithUnreadNotifications) {
-                notificationRestController.sendUnreadNotificationAlert(userId);
+                notificationRestController.sendUnreadNotificationAlert(userId); // 재알림 전송
             }
-
-            log.info("Sent unread notification alerts to users");
             return RepeatStatus.FINISHED;
         };
     }
