@@ -118,15 +118,10 @@ public class NotificationBatchConfig {
     @Bean
     public StepExecutionListener batchStepFailureListener() {
         return new StepExecutionListener() {
-            @Override
-            public void beforeStep(StepExecution stepExecution) {
-                // 작업 시작 전 로직 필요시 작성
-            }
 
             @Override
             public ExitStatus afterStep(StepExecution stepExecution) {
                 if (stepExecution.getStatus() == BatchStatus.FAILED) {
-                    log.error("Batch step failed after all retries");
 
                     // 관리자가 실패를 인지할 수 있도록 알림 전송
                     String errorMessage = "Batch step failed after all retries. Please investigate the issue.";
