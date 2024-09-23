@@ -32,10 +32,12 @@ public class NotificationRestController {
 
     private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/stream")
     public SseEmitter streamNotifications(Authentication authentication) {
         SseEmitter emitter = new SseEmitter(60000L); // 60초 타임아웃 설정
+
+        // 중복 방지: 동일한 사용자가 이미 구독 중이면 기존 Emitter 제거
+        emitters.removeIf(existingEmitter -> existingEmitter.equals(emitter));
         emitters.add(emitter);
 
         emitter.onCompletion(() -> emitters.remove(emitter));
