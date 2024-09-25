@@ -135,6 +135,5 @@ public class NotificationBatchConfig {
     private void sendAdminAlert(String subject, String message) {
         // 관리자에게 이메일 알림 전송하는 로직
         emailService.send("pokj930@naver.com", subject, message);
-        log.info(">>> Sent alert to admin: {}", subject);
     }
 }
