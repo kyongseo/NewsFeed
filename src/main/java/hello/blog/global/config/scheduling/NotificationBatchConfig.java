@@ -68,18 +68,18 @@ public class NotificationBatchConfig {
                 .build();
     }
 
-    // 7일 이상 읽지 않은 알림 삭제
+    // 30일 이상 읽지 않은 알림 삭제
     @Bean
     public Tasklet deleteUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
-            LocalDateTime cutoffTime = LocalDateTime.now().minusDays(7);
+            LocalDateTime cutoffTime = LocalDateTime.now().minusDays(30);
             List<Notification> notificationsToDelete = notificationRepository.findByIsReadAndCreatedAtBefore(false, cutoffTime);
             notificationRepository.deleteAll(notificationsToDelete);
             return RepeatStatus.FINISHED;
         };
     }
 
-    // 읽지 않은 알림 확인 후 사용자에게 SSE 알림 전송
+    // 7일 이상 읽지 않은 알림 확인 후 사용자에게 SSE 알림 전송
     @Bean
     public Tasklet checkUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
@@ -125,7 +125,11 @@ public class NotificationBatchConfig {
 
                     // 관리자가 실패를 인지할 수 있도록 알림 전송
                     String errorMessage = "Batch step failed after all retries. Please investigate the issue.";
-                    sendAdminAlert("Batch Failure: deleteUnreadNotificationsStep", errorMessage);
+                    try {
+                        sendAdminAlert("Batch Failure: deleteUnreadNotificationsStep", errorMessage);
+                    } catch (Exception e) {
+                        log.error("Error sending admin alert", e);
+                    }
                 }
                 return stepExecution.getExitStatus();
             }
