@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
@@ -30,27 +31,12 @@ public class NotificationRestController {
     private final UserService userService;
     private final NotificationRepository notificationRepository;
 
-    private final CopyOnWriteArrayList<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    private final ConcurrentHashMap<String, SseEmitter> emitters = new ConcurrentHashMap<>();
 
     @GetMapping("/stream")
     public SseEmitter streamNotifications(Authentication authentication) {
         SseEmitter emitter = new SseEmitter(60000L); // 60초 타임아웃 설정
 
-        // 중복 방지: 동일한 사용자가 이미 구독 중이면 기존 Emitter 제거
-        emitters.removeIf(existingEmitter -> existingEmitter.equals(emitter));
-        emitters.add(emitter);
-
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> {
-            emitters.remove(emitter);
-            emitter.complete();
-        });
-        emitter.onError((e) -> {
-            emitters.remove(emitter);
-            emitter.completeWithError(e);
-        });
-
-        // 사용자 인증 확인
         if (authentication == null) {
             emitter.complete();
             return emitter;
@@ -64,14 +50,30 @@ public class NotificationRestController {
             return emitter;
         }
 
-        String user = userOptional.get().getUserName();
+        // 중복 방지: 동일한 사용자가 이미 구독 중이면 기존 Emitter 제거
+        emitters.compute(username, (key, existingEmitter) -> {
+            if (existingEmitter != null) {
+                existingEmitter.complete(); // 기존 emitter 완료
+            }
+            return emitter; // 새로운 emitter 추가
+        });
+
+        emitter.onCompletion(() -> emitters.remove(username));
+        emitter.onTimeout(() -> {
+            emitters.remove(username);
+            emitter.complete();
+        });
+        emitter.onError((e) -> {
+            emitters.remove(username);
+            emitter.completeWithError(e);
+        });
 
         // 새로운 쓰레드에서 알림을 전송
         new Thread(() -> {
             try {
                 while (true) {
-                    if (emitters.contains(emitter)) {
-                        List<Notification> notifications = notificationService.getUnreadNotificationsByUsername(user);
+                    if (emitters.containsKey(username)) {
+                        List<Notification> notifications = notificationService.getUnreadNotificationsByUsername(username);
                         if (!notifications.isEmpty()) {
                             for (Notification notification : notifications) {
                                 emitter.send(SseEmitter.event()
@@ -87,8 +89,8 @@ public class NotificationRestController {
                 }
             } catch (Exception e) {
                 log.info(e.getMessage());
-                emitters.remove(emitter);
-                //emitter.completeWithError(e);
+                emitters.remove(username);
+                // emitter.completeWithError(e);
             }
         }).start();
 
