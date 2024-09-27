@@ -20,7 +20,7 @@ public class EmailService {
             message.setTo(to);
             message.setSubject(subject);
             message.setText(text);
-            message.setFrom("pokj930@gmail.com"); // 보내는 이메일 주소 설정
+            message.setFrom("pokj930@gmail.com");
             mailSender.send(message);
 
             log.info(">>> Email sent successfully to {}", to);

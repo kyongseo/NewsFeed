@@ -28,15 +28,13 @@ public class NotificationController {
 
         String username = authentication.getName();
 
-        // 읽지 않은 알림과 읽은 알림을 구분하여 조회
         List<Notification> unreadNotifications = notificationService.getUnreadNotificationsByUsername(username);
         List<Notification> readNotifications = notificationService.getReadNotificationsByUsername(username);
 
-        // 모델에 읽지 않은 알림과 읽은 알림을 추가
         model.addAttribute("unreadNotifications", unreadNotifications);
         model.addAttribute("readNotifications", readNotifications);
 
-        return "notifications"; // HTML 템플릿 이름
+        return "notifications";
     }
 
     // 알림을 읽음 상태로 변경하는 메서드
@@ -44,7 +42,7 @@ public class NotificationController {
     @ResponseBody
     public ResponseEntity<String> markAsRead(@PathVariable("id") Long id) {
         Notification notification = notificationService.getNotificationById(id);
-        System.out.println(notification);
+
         if (notification != null) {
             notificationService.markAsRead(id); // 알림을 읽음 상태로 변경
             return ResponseEntity.ok("Notification marked as read");

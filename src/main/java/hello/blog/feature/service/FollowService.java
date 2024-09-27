@@ -47,7 +47,7 @@ public class FollowService {
         }
     }
 
-    // 팔로우 상태 호거인
+    // 팔로우 상태
     public boolean isFollowing(User loggedInUser, User followeeUser) {
         return followRepository.findByUserAndFollowee(loggedInUser, followeeUser).isPresent();
     }

@@ -1,6 +1,5 @@
 package hello.blog.feature.controller;
 
-
 import hello.blog.feature.domain.Post;
 import hello.blog.feature.domain.User;
 import hello.blog.feature.service.FollowService;
@@ -44,7 +43,6 @@ public class HomeController {
         } else {
             model.addAttribute("username", "");
         }
-
 
         List<Post> blogPosts = postService.getAllPosts();
         model.addAttribute("blogPosts", blogPosts);
@@ -97,7 +95,7 @@ public class HomeController {
         List<Post> searchUsersResults = postService.searchPostUser(query); // 작성자 검색
 
         List<Post> comSearchResults  = new ArrayList<>(searchResults);
-        comSearchResults .addAll(searchUsersResults);
+        comSearchResults.addAll(searchUsersResults);
 
         model.addAttribute("blogPosts", comSearchResults);
 

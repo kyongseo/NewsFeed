@@ -41,9 +41,6 @@ public class UserRestController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid UserLoginDto userLoginDto,
                                 BindingResult bindingResult, HttpServletResponse response) {
-        System.out.println("들어오나*****************************************************************************");
-        System.out.println(userLoginDto.getUsername());
-        System.out.println(userLoginDto.getPassword());
 
         if(bindingResult.hasErrors()){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -147,7 +144,7 @@ public class UserRestController {
     public void logout(@CookieValue(name = "accessToken", required = false) String accessToken,
                        @CookieValue(name = "refreshToken", required = false) String refreshToken,
                        HttpServletResponse response) {
-        System.out.println("로그아웃 들어왔나");
+
         if (accessToken == null) {
             try {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -166,7 +163,6 @@ public class UserRestController {
                 .parseClaimsJws(jwt)
                 .getBody()
                 .getExpiration();
-        System.out.println("만료시간: " + expirationTime);
 
         JwtBlacklist blacklist = new JwtBlacklist(jwt, expirationTime);
         jwtBlackListService.save(blacklist);

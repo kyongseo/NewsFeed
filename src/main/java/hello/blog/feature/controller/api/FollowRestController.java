@@ -35,7 +35,7 @@ public class FollowRestController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
             }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("노권한");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
     }
 
     // 내가 팔로우한 사람 목록 보기

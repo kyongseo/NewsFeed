@@ -66,13 +66,12 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("http://localhost:8080"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // 허용할 헤더 설정
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드 설정
-        config.setAllowCredentials(true); // 인증 정보를 허용하려면 true로 설정
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowCredentials(true);
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
-        //config.setAllowedMethods(List.of("GET", "POST", "DELETE"));
         source.registerCorsConfiguration("/**", config);
 
         return source;

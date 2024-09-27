@@ -1,6 +1,5 @@
 package hello.blog.feature.controller;
 
-import hello.blog.feature.service.NotificationService;
 import hello.blog.feature.domain.Reply;
 import hello.blog.feature.domain.User;
 import hello.blog.feature.repository.UserRepository;
@@ -19,7 +18,6 @@ public class ReplyController {
     private final ReplyService replyService;
     private final CommentService commentService;
     private final UserRepository userRepository;
-    private final NotificationService notificationService;
 
     // 대댓글 생성 처리
     @PostMapping("/replies/create/{commentId}")

@@ -53,20 +53,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // 쿠키에서 Access Token을 얻어냄
         String token = getToken(request);
 
         if (!StringUtils.hasText(token)) {
-            // Access Token이 없는 경우 처리
             handleMissingToken(request, response);
         } else {
-            // Access Token이 있는 경우 처리
             handleTokenValidation(request, response, token);
         }
 
         filterChain.doFilter(request, response);
-
-        log.info("토큰 제대로?? : {}", token);
     }
 
     // 요청 경로가 인증 없이 접근 가능한지 확인하는 메서드
@@ -76,34 +71,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // Access Token이 없는 경우 처리하는 메서드
     private void handleMissingToken(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // 쿠키에서 Refresh Token을 얻어옴
         String refreshToken = getRefreshToken(request);
         if (StringUtils.hasText(refreshToken)) {
             try {
-                // Refresh Token이 DB에 존재하는지 확인
                 if (refreshTokenService.isRefreshTokenValid(refreshToken)) {
-                    // Refresh Token이 유효한지 확인
                     if (!jwtTokenizer.isRefreshTokenExpired(refreshToken)) {
-                        // Refresh Token이 유효한 경우 새로운 Access Token 발급
+
                         String newAccessToken = jwtTokenizer.refreshAccessToken(refreshToken);
-                        // 새로운 Access Token을 쿠키에 설정
                         setAccessTokenCookie(response, newAccessToken);
-                        // 새로운 Access Token으로 인증 정보 설정
                         getAuthentication(newAccessToken);
                     } else {
-                        // Refresh Token이 만료된 경우
                         handleException(request, JwtExceptionCode.EXPIRED_TOKEN, "Refresh token expired");
                     }
                 } else {
-                    // Refresh Token이 DB에 없는 경우
                     handleException(request, JwtExceptionCode.NOT_FOUND_TOKEN, "Refresh token not found in database");
                 }
             } catch (ExpiredJwtException e) {
-                // Refresh Token이 만료된 경우
                 handleException(request, JwtExceptionCode.EXPIRED_TOKEN, "Expired refresh token", e);
             }
         } else {
-            // Refresh Token도 없는 경우
             handleException(request, JwtExceptionCode.NOT_FOUND_TOKEN, "Token not found in request");
         }
     }
@@ -111,28 +97,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // Access Token이 있는 경우 처리하는 메서드
     private void handleTokenValidation(HttpServletRequest request, HttpServletResponse response, String token) throws ServletException, IOException {
         try {
-            // 토큰이 블랙리스트에 있는지 확인
             if (jwtBlacklistService.isTokenBlacklisted(token)) {
-                // 토큰이 블랙리스트에 있으면 인증 실패 처리
                 handleException(request, JwtExceptionCode.BLACKLISTED_TOKEN, "Token is blacklisted: " + token);
             } else {
-                // 블랙리스트에 없으면 인증 정보 설정 시도
                 getAuthentication(token);
             }
         } catch (ExpiredJwtException e) {
-            // Access Token이 만료된 경우 Refresh Token 확인
             handleExpiredAccessToken(request, response, token, e);
         } catch (UnsupportedJwtException e) {
-            // 지원하지 않는 토큰인 경우
             handleException(request, JwtExceptionCode.UNSUPPORTED_TOKEN, "Unsupported token: " + token, e);
         } catch (MalformedJwtException e) {
-            // 잘못된 형식의 토큰인 경우
             handleException(request, JwtExceptionCode.INVALID_TOKEN, "Invalid token: " + token, e);
         } catch (IllegalArgumentException e) {
-            // 토큰이 없는 경우
             handleException(request, JwtExceptionCode.NOT_FOUND_TOKEN, "Token not found: " + token, e);
         } catch (Exception e) {
-            // 그 외 다른 예외 발생 시
             handleException(request, JwtExceptionCode.UNKNOWN_ERROR, "JWT filter internal error: " + token, e);
         }
     }
@@ -142,26 +120,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.warn("Access token expired: {}", token);
         String refreshToken = getRefreshToken(request);
         if (StringUtils.hasText(refreshToken) && !jwtTokenizer.isRefreshTokenExpired(refreshToken)) {
-            // Refresh Token이 유효한 경우 새로운 Access Token 발급
             String newAccessToken = jwtTokenizer.refreshAccessToken(refreshToken);
-            // 새로운 Access Token을 쿠키에 설정
             setAccessTokenCookie(response, newAccessToken);
-            // 새로운 Access Token으로 인증 정보 설정
             getAuthentication(newAccessToken);
         } else {
-            // Refresh Token이 없거나 만료된 경우 처리 필요
             handleException(request, JwtExceptionCode.EXPIRED_TOKEN, "Expired Token : " + token, e);
         }
     }
 
     // 쿠키에서 Access Token을 추출하는 메서드
     private String getToken(HttpServletRequest request) {
-        // 추가
         String authorization = request.getHeader("Authorization");
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
             return authorization.substring(7);
         }
-        //
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -202,7 +175,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Long userId = claims.get("userId", Long.class);
         String username = claims.get("username", String.class);
         List<GrantedAuthority> authorities = getGrantedAuthorities(claims);
-
 
         CustomUserDetails userDetails = new CustomUserDetails(username, "", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 

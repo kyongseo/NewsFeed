@@ -1,6 +1,5 @@
 package hello.blog.feature.controller.api;
 
-import hello.blog.feature.service.NotificationService;
 import hello.blog.feature.domain.Comment;
 import hello.blog.feature.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class CommentRestController {
 
     private final CommentService commentService;
-    private final NotificationService notificationService;
-
-
 
     @PostMapping("/post/{postId}")
     public ResponseEntity<String> addComment(@PathVariable("postId") Long postId,
@@ -31,7 +27,7 @@ public class CommentRestController {
             // 댓글 작성 후 알림 전송
             return ResponseEntity.ok("댓글 생성 완료");
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한 없음");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
         }
     }
 
@@ -58,7 +54,7 @@ public class CommentRestController {
         if (updatedComment != null) {
             return ResponseEntity.ok("댓글 수정 완료");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글 없어ㅠ");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
 
@@ -73,7 +69,7 @@ public class CommentRestController {
             commentService.deleteComment(commentId);
             return ResponseEntity.ok("댓글 삭제 완료");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글 없어");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
 }

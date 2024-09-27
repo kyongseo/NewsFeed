@@ -8,7 +8,6 @@ import hello.blog.feature.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,12 +48,12 @@ public class NotificationRestController {
             return emitter;
         }
 
-        // 중복 방지: 동일한 사용자가 이미 구독 중이면 기존 Emitter 제거
+        // 중복 방지
         emitters.compute(username, (key, existingEmitter) -> {
             if (existingEmitter != null) {
-                existingEmitter.complete(); // 기존 emitter 완료
+                existingEmitter.complete();
             }
-            return emitter; // 새로운 emitter 추가
+            return emitter;
         });
 
         emitter.onCompletion(() -> emitters.remove(username));
@@ -83,14 +81,13 @@ public class NotificationRestController {
                             break;
                         }
                     } else {
-                        break; // emitter가 이미 완료된 경우 반복문 종료
+                        break;
                     }
-                    Thread.sleep(10000); // 10초마다 알림을 체크
+                    Thread.sleep(10000);
                 }
             } catch (Exception e) {
                 log.info(e.getMessage());
                 emitters.remove(username);
-                // emitter.completeWithError(e);
             }
         }).start();
 

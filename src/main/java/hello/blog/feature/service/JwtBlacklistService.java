@@ -17,11 +17,6 @@ public class JwtBlacklistService {
         jwtBlacklistRepository.save(blacklist);
     }
 
-    public void addToBlacklist(String token, Date expirationDate) {
-        JwtBlacklist blacklist = new JwtBlacklist(token, expirationDate);
-        jwtBlacklistRepository.save(blacklist);
-    }
-
     public boolean isTokenBlacklisted(String token) {
         return jwtBlacklistRepository.existsByToken(token);
     }

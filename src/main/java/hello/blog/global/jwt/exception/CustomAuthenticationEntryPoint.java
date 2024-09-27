@@ -31,7 +31,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.error("Page Request - Commence Get Exception : {}", exception);
 
         if (exception != null) {
-            // 추가적인 페이지 요청에 대한 예외 처리 로직을 여기에 추가할 수 있습니다.
+
         }
 
         response.sendRedirect("/loginform");

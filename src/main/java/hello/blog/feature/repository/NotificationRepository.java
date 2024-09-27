@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-    List<Notification> findByUsername(String username);
 
     List<Notification> findByUsernameAndIsRead(String username, boolean isRead);
 

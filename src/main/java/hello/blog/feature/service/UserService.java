@@ -32,7 +32,7 @@ public class UserService {
     private String uploadDir;
 
     /**
-     * 사용자, 관리자 - 회원가입
+     * 회원가입
      */
     @Transactional
     public void registerUser(String username, String email, String password, String passwordCheck, String usernick, MultipartFile file) throws IOException {
@@ -47,28 +47,11 @@ public class UserService {
             throw new IllegalArgumentException("이메일이 존재합니다.");
         }
 
-        Role role;
-
-        // admin 사용자의 비밀번호를 암호화 안해서 암호화하기
-        if (username.equals("admin")) {
-            Optional<User> adminUser = userRepository.findByUserName("admin");
-            if (adminUser.isPresent()) {
-                User existingAdmin = adminUser.get();
-                existingAdmin.setPassword(passwordEncoder.encode(password));
-                uploadUserFile(existingAdmin, file);
-                userRepository.save(existingAdmin);
-                return;
-            }
-            role = roleRepository.findByRoleName(RoleName.ROLE_ADMIN)
-                    .orElseThrow(() -> new UserNotFoundException("Admin 역할이 없습니다."));
-        } else {
-            role = roleRepository.findByRoleName(RoleName.ROLE_USER)
+        Role role = roleRepository.findByRoleName(RoleName.ROLE_USER)
                     .orElseThrow(() -> new UserNotFoundException("User 역할이 없습니다."));
-        }
 
-        // 관리자가 아니면 user 역할의 새로운 사용자 객체 생성
         User user = new User();
-        user.setRole(Collections.singleton(role));  // singleton -- 단일 역할 설정
+        user.setRole(Collections.singleton(role));
         user.setUserName(username);
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
@@ -76,25 +59,21 @@ public class UserService {
 
         // 파일 업로드 처리
         if (!file.isEmpty()) {
-            // 회원가입할 때 파일을 추가했으면 업로드된 파일 사용
             uploadUserFile(user, file);
         } else {
-            // 추가하지않은 채 회원가입했다면 기본 이미지 사용
             String defaultFilename = "user.png";
             String defaultFilepath = uploadDir + defaultFilename;
             user.setFilename(defaultFilename);
             user.setFilepath(defaultFilepath);
         }
-
         userRepository.save(user);
     }
 
     /**
-     * 사용자 - 회원 탈퇴
+     * 회원 탈퇴
      */
     @Transactional
     public void deleteUser(String username) {
-        // 사용자 삭제
         Optional<User> userOptional = userRepository.findByUserName(username);
         if (userOptional.isPresent()) {
             userRepository.delete(userOptional.get());
@@ -104,7 +83,7 @@ public class UserService {
     }
 
     /**
-     * 사용자 - 한줄 소개 업로드
+     * 한줄 소개 업로드
      */
     @Transactional
     public void saveUser(User user) {

@@ -36,7 +36,6 @@ public class PostController {
      */
     @GetMapping("/create")
     public String showCreatePost(Model model) {
-
         model.addAttribute("post", new Post());
         return "/post/createPost";
     }
@@ -57,11 +56,10 @@ public class PostController {
 
             log.info("게시글 생성 Id : {}", post.getId());
 
-            // 임시 저장인 경우 임시저장된 글 페이지로 리다이렉트 // 디폴트가 false 고 얘는 출간 상태임, true 는 임시저장 상태임
             if (isDraft) {
                 return "redirect:/posts/drafts";
             } else {
-                return "redirect:/trending"; // 출간된 글이면 메인 홈으로 리다이렉트
+                return "redirect:/trending";
             }
         } else {
             return "redirect:/loginform";
@@ -79,9 +77,9 @@ public class PostController {
             String username = authentication.getName();
             List<Post> draftPosts = postService.getDraftPostsByUser(username);
             model.addAttribute("draftPosts", draftPosts);
-            return "/post/draftPosts"; // 임시 저장된 글 목록을 보여주는 페이지
+            return "/post/draftPosts";
         }
-        return "redirect:/loginform"; // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+        return "redirect:/loginform";
     }
 
     /**
@@ -128,12 +126,10 @@ public class PostController {
 
     /**
      * 상세 페이지
-     * 시큐리티에서 인증된 사용자를 확인
      */
     @GetMapping("/{postId}")
     public String getPostById(@PathVariable("postId") Long postId,
-                              Model model,
-                              Authentication authentication) {
+                              Model model, Authentication authentication) {
 
         postService.updateView(postId);
 

@@ -27,7 +27,6 @@ public class LikeApiController {
     private final UserService userService;
     private final NotificationService notificationService;
 
-
     // 좋아요 버튼을 눌렀을 때
     @PostMapping("/posts/{postId}/like")
     public ResponseEntity<?> like(@PathVariable("postId") Long postId,
@@ -55,7 +54,7 @@ public class LikeApiController {
                 }
             }
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
     }
 
     @Data

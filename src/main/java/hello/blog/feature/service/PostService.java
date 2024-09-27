@@ -10,7 +10,6 @@ import hello.blog.global.config.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -142,7 +141,6 @@ public class PostService {
     @Transactional
     public void deletePostById(Long postId) {
         postRepository.deleteById(postId);
-        log.info("게시글 삭제 Id : {}", postId);
     }
 
     // 게시글 작성자 확인
@@ -183,21 +181,11 @@ public class PostService {
         return postRepository.findAllOrderByLikesDesc();
     }
 
-    // 페이지 처리
-    @Transactional
-    public Page<Post> getPostPageList(Pageable pageable){
-        return postRepository.findAll(pageable);
-    }
-
-    /**
-     * 관리자 - 게시글 삭제
-     */
     @Transactional
     public void deletePostAdmin(Long postId) {
         postRepository.deleteById(postId);
     }
 
-    // 팔로우한 사람 목록
     public List<Post> getPostByUsers(List<User> users) {
         return postRepository.findByUserIn(users);
     }

@@ -13,8 +13,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class JwtBlacklist {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String token;

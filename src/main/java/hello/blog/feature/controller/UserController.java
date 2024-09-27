@@ -48,7 +48,6 @@ public class UserController {
             redirectAttributes.addFlashAttribute("msg", "회원가입에 실패했습니다: " + e.getMessage());
             e.printStackTrace();
         } catch (IllegalArgumentException e) {
-            // id, email -> 중복 체크, password check -> 틀린지 같은지..
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/userregform";
         }
@@ -63,7 +62,9 @@ public class UserController {
         return "login";
     }
 
-    // 특정 회원의 페이지 보여주기
+    /**
+     * 특정 회원의 페이지 보여주기
+     */
     @GetMapping("/{username}")
     public String showMyPage(@PathVariable("username") String username,
                              Model model,
@@ -75,10 +76,9 @@ public class UserController {
             model.addAttribute("user", userOptional.get());
             List<Post> allPosts = postService.getAllPosts();
             model.addAttribute("posts", allPosts);
-            // 로그인된 사용자가 아닌 사용자의 프로필 사진이 보여야 함
+
             model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
 
-            // 상단에는 로그인한 사용자의 프로필이 보여야 한다.
             if (authentication != null) {
                 String loggedInUsername = authentication.getName();
                 model.addAttribute("username", loggedInUsername);
@@ -88,7 +88,6 @@ public class UserController {
                     User loggedInUser = loggedInUserOptional.get();
                     model.addAttribute("loggedInProfileImage", "/files/" + loggedInUser.getFilename());
 
-                    // 팔로우 상태 확인 및 모델에 추가
                     boolean isFollowing = followService.isFollowing(loggedInUser, userOptional.get());
                     model.addAttribute("isFollowing", isFollowing);
                 }
@@ -102,7 +101,9 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    //     로그인 성공 시 로그인한 유저의 마이페이지 보여주기
+    /**
+     * 마이페이지
+     */
     @GetMapping("/mypage")
     public String showMyPage(Model model,
                              Authentication authentication) {
@@ -121,7 +122,9 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    // 마이페이지 수정
+    /**
+     * 마이페이지 수정
+     */
     @GetMapping("/mypage/edit")
     public String userEditForm(Model model,
                                Authentication authentication) {
@@ -148,7 +151,9 @@ public class UserController {
         return "redirect:/loginform";
     }
 
-    // 마이페이지 수정 처리
+    /**
+     * 마이페이지 수정 처리
+     */
     @PostMapping("/mypage/edit")
     public String editUser(Authentication authentication,
                            @RequestParam("email") String email,
@@ -167,7 +172,9 @@ public class UserController {
         return "redirect:/" + username;
     }
 
-    // 사용자 탈퇴 처리
+    /**
+     * 사용자 탈퇴 처리
+     */
     @PostMapping("/mypage/delete")
     public String deleteUser(Authentication authentication,
                              RedirectAttributes redirectAttributes) {
@@ -183,13 +190,14 @@ public class UserController {
         return "redirect:/trending";
     }
 
-    // 소개 페이지
+    /**
+     * 소개 페이지
+     */
     @GetMapping("/about/{username}")
     public String aboutUser(@PathVariable("username") String username,
                             Model model,
                             Authentication authentication) {
 
-        // 현재 로그인한 사용자 아이디를 가져옴
         String loggedInUsername = null;
         if (authentication != null && authentication.isAuthenticated()) {
             loggedInUsername = authentication.getName();

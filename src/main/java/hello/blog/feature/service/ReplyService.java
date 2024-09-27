@@ -16,7 +16,7 @@ public class ReplyService {
 
     private final ReplyRepository replyRepository;
     private final CommentRepository commentRepository;
-    private final NotificationService notificationService; // 알림 서비스 추가
+    private final NotificationService notificationService;
 
     // 대댓글 생성 및 알림 전송
     @Transactional
@@ -31,8 +31,8 @@ public class ReplyService {
         reply.setComment(comment);
         replyRepository.save(reply);
 
-        // 대댓글 작성자와 원 댓글 작성자가 다를 때 알림을 보냅니다.
-        User commentOwner = comment.getUser(); // 원 댓글 작성자
+        // 대댓글 작성자와 원 댓글 작성자가 다를 때 알림
+        User commentOwner = comment.getUser();
         if (!user.getUserName().equals(commentOwner.getUserName())) {
             notificationService.createNotification(commentOwner.getUserName(), user.getUserName() + "님이 대댓글을 달았습니다.");
         }

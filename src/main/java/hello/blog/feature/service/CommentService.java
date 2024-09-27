@@ -58,7 +58,6 @@ public class CommentService {
      * 댓글 작성 시 알림 전송
      */
     private void sendCommentNotification(Post post, User commenter, String content) {
-        // 게시글 작성자 정보 가져오기
         User postAuthor = post.getUser();
 
         // 댓글을 작성한 사용자와 게시글 작성자가 동일하지 않을 때만 알림을 보냄
