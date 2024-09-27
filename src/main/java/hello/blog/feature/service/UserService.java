@@ -37,7 +37,7 @@ public class UserService {
     @Transactional
     public void registerUser(String username, String email, String password, String passwordCheck, String usernick, MultipartFile file) throws IOException {
         if (!password.equals(passwordCheck)) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다。");
+            throw new IllegalArgumentException("비밀번호가 다릅니다.");
         }
         if (userRepository.existsByUserName(username)) {
             throw new IllegalArgumentException("아이디가 존재합니다.");
