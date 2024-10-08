@@ -7,9 +7,13 @@ import hello.blog.feature.repository.RoleRepository;
 import hello.blog.feature.repository.UserRepository;
 import hello.blog.global.config.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
@@ -48,7 +52,7 @@ public class UserService {
         }
 
         Role role = roleRepository.findByRoleName(RoleName.ROLE_USER)
-                    .orElseThrow(() -> new UserNotFoundException("User 역할이 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException("User 역할이 없습니다."));
 
         User user = new User();
         user.setRole(Collections.singleton(role));
@@ -159,7 +163,30 @@ public class UserService {
     /**
      * jwt 토큰 사용시 메서드
      */
-    public Optional<User> getUser(Long id){
+    public Optional<User> getUser(Long id) {
         return userRepository.findById(id);
     }
+
+    /**
+     * 인증 과정 공통 로직
+     * @param model html model
+     * @param authentication security 인증
+     */
+    public void setAuthenticationAttributes(Model model, Authentication authentication) {
+        if (authentication != null) {
+            String loggedInUsername = authentication.getName();
+            model.addAttribute("username", loggedInUsername);
+
+            Optional<User> loggedInUserOptional = userRepository.findByUserName(loggedInUsername);
+            if (loggedInUserOptional.isPresent()) {
+                User loggedInUser = loggedInUserOptional.get();
+                model.addAttribute("loggedInProfileImage", "/files/" + loggedInUser.getFilename());
+            }
+        } else {
+            model.addAttribute("username", "");
+            model.addAttribute("loggedInProfileImage", "");
+            model.addAttribute("isFollowing", false);
+        }
+    }
+
 }

@@ -70,35 +70,19 @@ public class UserController {
                              Model model,
                              Authentication authentication) {
 
-        Optional<User> userOptional = userService.findByUserName(username); // 경로에서 전달된 사용자 아이디 조회
+        userService.setAuthenticationAttributes(model, authentication);
+        Optional<User> userOptional = userService.findByUserName(username);
 
-        if (userOptional.isPresent()) {
-            model.addAttribute("user", userOptional.get());
-            List<Post> allPosts = postService.getAllPosts();
-            model.addAttribute("posts", allPosts);
-
-            model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
-
-            if (authentication != null) {
-                String loggedInUsername = authentication.getName();
-                model.addAttribute("username", loggedInUsername);
-
-                Optional<User> loggedInUserOptional = userService.findByUserName(loggedInUsername);
-                if (loggedInUserOptional.isPresent()) { // 로그인한 사용자의 프로필 사진이 보이도록
-                    User loggedInUser = loggedInUserOptional.get();
-                    model.addAttribute("loggedInProfileImage", "/files/" + loggedInUser.getFilename());
-
-                    boolean isFollowing = followService.isFollowing(loggedInUser, userOptional.get());
-                    model.addAttribute("isFollowing", isFollowing);
-                }
-            } else {
-                model.addAttribute("username", "");
-                model.addAttribute("loggedInProfileImage", "");
-                model.addAttribute("isFollowing", false);
+        if (authentication != null && userOptional.isPresent()) {
+            User loggedInUser = userService.findByUserName(authentication.getName()).orElse(null);
+            if (loggedInUser != null) {
+                boolean isFollowing = followService.isFollowing(loggedInUser, userOptional.get());
+                model.addAttribute("isFollowing", isFollowing);
+                List<Post> allPosts = postService.getAllPosts();
+                model.addAttribute("posts", allPosts);
             }
-            return "/user/userPage";
         }
-        return "redirect:/loginform";
+        return "/user/userPage";
     }
 
     /**
@@ -108,6 +92,7 @@ public class UserController {
     public String showMyPage(Model model,
                              Authentication authentication) {
 
+        userService.setAuthenticationAttributes(model, authentication);
         String username = authentication.getName();
         Optional<User> userOptional = userService.findByUserName(username);
 
@@ -129,23 +114,17 @@ public class UserController {
     public String userEditForm(Model model,
                                Authentication authentication) {
 
-        String username = authentication.getName();
+        userService.setAuthenticationAttributes(model, authentication);
 
+        String username = authentication.getName();
         Optional<User> userOptional = userService.findByUserName(username);
+
         if (userOptional.isPresent()) {
             model.addAttribute("user", userOptional.get());
-
             List<Post> allPosts = postService.getAllPosts();
             model.addAttribute("posts", allPosts);
             model.addAttribute("profileImage", "/files/" + userOptional.get().getFilename());
-            model.addAttribute("username", username);
 
-            // 로그인한 사용자 이름 추가
-            if (authentication != null) {
-                model.addAttribute("username", authentication.getName());
-            } else {
-                model.addAttribute("username", "");
-            }
             return "/user/editPage";
         }
         return "redirect:/loginform";
@@ -160,6 +139,7 @@ public class UserController {
                            @RequestParam("usernick") String usernick,
                            @RequestParam("file") MultipartFile file,
                            RedirectAttributes redirectAttributes) {
+
         String username = authentication.getName();
 
         try {

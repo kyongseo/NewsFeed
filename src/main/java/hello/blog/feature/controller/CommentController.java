@@ -13,14 +13,13 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    // 댓글 추가
     @PostMapping("/post/{postId}/comments")
     public String addComment(@PathVariable("postId") Long postId,
                              @RequestParam("content") String content,
                              Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
-
             commentService.addComment(postId, content);
-
             return "redirect:/posts/" + postId;
         } else {
             return "redirect:/loginform";
@@ -41,7 +40,7 @@ public class CommentController {
     public String deleteComment(@PathVariable("commentId") Long commentId) {
         Long postId = commentService.getPostIdByCommentId(commentId);
 
-        commentService.deleteComment(commentId); // 댓글 삭제 처리
+        commentService.deleteComment(commentId);
 
         return "redirect:/posts/" + postId;
     }

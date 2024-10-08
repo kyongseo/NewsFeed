@@ -17,17 +17,17 @@ import org.springframework.stereotype.Component;
 public class NotificationBatchScheduler {
 
     private final JobLauncher jobLauncher; // 정의된 job 을 주기적 실행
-    private final Job deleteNotificationsJob;
+    private final Job notificationsJob;
 
     @Scheduled(cron="0 0 12 * * *", zone = "Asia/Seoul") // 매일 자정에 실행
     public void runDeleteUnreadNotificationsJob() {
         try {
-            jobLauncher.run(deleteNotificationsJob, new JobParametersBuilder()
+            jobLauncher.run(notificationsJob, new JobParametersBuilder()
                     .addLong("timestamp", System.currentTimeMillis())
                     .toJobParameters());
-            log.info("Notification deletion job executed successfully.");
+            log.info("Notification deletion job and Notifications Unread check job executed successfully");
         } catch (Exception e) {
-            log.error("Failed to execute notification deletion job", e);
+            log.error("Failed to job", e);
         }
     }
 }
