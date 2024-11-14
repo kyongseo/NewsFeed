@@ -107,7 +107,7 @@ public class NotificationBatchConfig {
 
             } catch (Exception e) {
                 log.error("Error during notification processing", e);
-                throw e; // 재시도를 위해 예외를 던짐
+                throw e;
             }
             return RepeatStatus.FINISHED;
         });
