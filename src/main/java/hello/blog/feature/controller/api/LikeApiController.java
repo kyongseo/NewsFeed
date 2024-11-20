@@ -41,7 +41,8 @@ public class LikeApiController {
 
         try {
             // 락을 5초 동안 시도하고, 락을 얻으면 3초 후 자동 해제
-            if (lock.tryLock(5, 3, TimeUnit.SECONDS)) {
+            boolean isLocked = lock.tryLock(5, 3, TimeUnit.SECONDS);
+            if (isLocked) {
                 if (authentication != null && authentication.isAuthenticated()) {
                     String username = authentication.getName();
                     Optional<User> userOptional = userService.findByUserName(username);
