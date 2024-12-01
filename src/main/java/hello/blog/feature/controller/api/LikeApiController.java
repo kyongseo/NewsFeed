@@ -33,8 +33,7 @@ public class LikeApiController {
 
     // 좋아요 버튼을 눌렀을 때
     @PostMapping("/posts/{postId}/like")
-    public ResponseEntity<?> like(@PathVariable("postId") Long postId,
-                                  Authentication authentication) {
+    public ResponseEntity<?> like(@PathVariable("postId") Long postId, Authentication authentication) {
 
         // Redis 분산 락을 postId에 기반하여 생성
         RLock lock = redissonClient.getLock("post-like-lock:" + postId);
@@ -60,7 +59,6 @@ public class LikeApiController {
                             if (!username.equals(postOwnerUsername)) {
                                 notificationService.createNotification(postOwnerUsername, username + "님이 게시글에 좋아요를 눌렀습니다.");
                             }
-
                             return ResponseEntity.ok().body(new LikeResponse(liked, likeCount));
                         }
                     }
