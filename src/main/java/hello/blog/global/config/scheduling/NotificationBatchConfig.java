@@ -59,7 +59,7 @@ public class NotificationBatchConfig {
                 .build();
     }
 
-    // Step 1: 배치 작업 내 실행되는 개별 처리
+    // Step 1: 30일 이상 읽지 않은 알림 삭제
     @Bean
     public Step deleteUnreadNotificationsStep() {
         log.info(">>> Creating deleteUnreadNotificationsStep");
@@ -76,7 +76,7 @@ public class NotificationBatchConfig {
                 .build();
     }
 
-    // Tasklet 1 - 30일 이상 읽지 않은 알림 삭제
+    // Tasklet 1: 30일 이상 읽지 않은 알림 삭제
     @Bean
     public Tasklet deleteUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
@@ -87,7 +87,7 @@ public class NotificationBatchConfig {
         };
     }
 
-    // Tasklet 2 - 7일 이상 읽지 않은 알림 확인 후 사용자에게 SSE 알림 전송
+    // Tasklet 2: 7일 이상 읽지 않은 알림 확인 후 SSE 알림 전송
     @Bean
     public Tasklet checkUnreadNotificationsTasklet() {
         return (contribution, chunkContext) -> {
@@ -101,7 +101,7 @@ public class NotificationBatchConfig {
         };
     }
 
-    // Tasklet 3 - 재시도 로직
+    // Tasklet 3: 재시도 로직
     @Bean
     public Tasklet retryableTasklet() {
         return (contribution, chunkContext) -> retryTemplate().execute(context -> {
@@ -122,7 +122,7 @@ public class NotificationBatchConfig {
         });
     }
 
-    // StepExecutionListener - 배치 작업 실패 시 관리자에게 알림 전송
+    // StepExecutionListener: 배치 작업 실패 시 관리자에게 알림 전송
     @Bean
     public StepExecutionListener batchStepFailureListener() {
         return new StepExecutionListener() {
