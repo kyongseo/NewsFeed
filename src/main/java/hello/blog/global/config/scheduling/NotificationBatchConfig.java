@@ -52,17 +52,26 @@ public class NotificationBatchConfig {
 
     // Job - 배치 작업의 전체 실행
     @Bean
-    public Job deleteNotificationsJob(Step deleteUnreadNotificationsStep) {
+    public Job deleteNotificationsJob(Step deleteUnreadNotificationsStep, Step checkUnreadNotificationsStep) {
         return new JobBuilder("deleteNotificationsJob", jobRepository)
                 .start(deleteUnreadNotificationsStep)
+                .next(checkUnreadNotificationsStep)
                 .build();
     }
 
-    // Step - 배치 작업 내 실행되는 개별 처리
+    // Step 1: 배치 작업 내 실행되는 개별 처리
     @Bean
     public Step deleteUnreadNotificationsStep() {
         log.info(">>> Creating deleteUnreadNotificationsStep");
         return new StepBuilder("deleteUnreadNotificationsStep", jobRepository)
+                .tasklet(deleteUnreadNotificationsTasklet(), platformTransactionManager)
+                .build();
+    }
+
+    // Step 2: 7일 이상 읽지 않은 알림 확인 후 SSE 알림 전송
+    @Bean
+    public Step checkUnreadNotificationsStep() {
+        return new StepBuilder("checkUnreadNotificationsStep", jobRepository)
                 .tasklet(checkUnreadNotificationsTasklet(), platformTransactionManager)
                 .build();
     }
